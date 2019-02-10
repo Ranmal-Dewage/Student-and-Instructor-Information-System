@@ -1,1 +1,6 @@
-SLIIT 3rd year first semester application frameworks project
+SLIIT 3rd Year First Semester Application Frameworks Project
+
+* Tenusha Guruge
+* Vimukthi Rajapaksha
+* Aravinda Kulasooriya
+* Ranmal Dewage

@@ -1,4 +1,4 @@
-SLIIT 3rd Year First Semester Application Frameworks Project
+SLIIT 3rd Year 1st Semester Application Frameworks Project
 
 ## Getting Started
 

@@ -1,9 +1,4 @@
-SLIIT 3rd Year 1st Semester Application Frameworks Project
-
-## Getting Started
-
-<code>npm install</code><br/>
-<code>npm start</code>
+SLIIT 3rd Year 1st Semester Application Frameworks Project - Student and Instructor Information System
 
 ## Developers
 * Tenusha Guruge

@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react'
+import Routes from '../src/components/Routes'
+import {BrowserRouter as Router} from 'react-router-dom'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import TopNavigation from './components/TopNavigation'
+import SideNavigation from './components/SideNavigation'
+import Footer from './components/Footer'
+
+
+import '@fortawesome/fontawesome-free/css/all.min.css'
+import 'bootstrap-css-only/css/bootstrap.min.css'
+import 'mdbreact/dist/css/mdb.css'
+import './index.css'
+
+class App extends Component {
+
+    render() {
+        return (
+            <Router>
+                <div className="flexible-content">
+                    <TopNavigation/>
+                    <SideNavigation/>
+                    <main id="content" className="p-5">
+                        <Routes/>
+                    </main>
+                    <Footer/>
+                </div>
+            </Router>
+        );
+    }
 }
 
-export default App;
+export default App

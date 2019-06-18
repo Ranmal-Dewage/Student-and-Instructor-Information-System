@@ -8,7 +8,7 @@ import {
 } from 'mdbreact';
 import EventCalender from './EventCalender';
 
-class ChartSection1 extends Component {
+class HomeBody extends Component {
     render() {
         return (
             <MDBRow className="mb-4">
@@ -58,7 +58,7 @@ class ChartSection1 extends Component {
                     </MDBCard>
                 </MDBCol>
                 <MDBCol md="12" className="mb-4">
-                    <MDBCard className="mb-4" style={{height: 540}}>
+                    <MDBCard className="mb-4" style={{height: 500}}>
                         <MDBCardHeader>Event Calender</MDBCardHeader>
                         <MDBCardBody>
                             <EventCalender/>
@@ -70,5 +70,5 @@ class ChartSection1 extends Component {
     }
 }
 
-export default ChartSection1;
+export default HomeBody;
 

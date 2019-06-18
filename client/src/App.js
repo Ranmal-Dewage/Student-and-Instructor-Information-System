@@ -14,6 +14,10 @@ import './index.css'
 
 class App extends Component {
 
+    componentDidMount(){
+        document.title = "SLIIT | Student & Instructor management"
+    }
+
     render() {
         return (
             <Router>

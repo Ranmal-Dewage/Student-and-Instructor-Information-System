@@ -44,8 +44,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 		// permit all requests for login end point
 		http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/login").permitAll()
-				.antMatchers(HttpMethod.POST, "/users").permitAll() // permit POST requests for /users end point
-				.anyRequest().authenticated().and().addFilter(new JWTAuthenticationFilter(authenticationManager()))
+				// POST requests for /users end point authentication needed for instructors
+				.antMatchers(HttpMethod.POST, "/users").hasAuthority("INSTRUCTOR").anyRequest().authenticated()
+				// permit POST requests for /users end point
+				.antMatchers(HttpMethod.POST, "/users").permitAll().anyRequest().authenticated().and()
+				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager()))
 				// this disables session creation on Spring Security
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

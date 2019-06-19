@@ -4,17 +4,25 @@
 package com.sliit.af.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sliit.af.domain.UserDTO;
+import com.sliit.af.model.Role;
 import com.sliit.af.model.User;
+import com.sliit.af.repository.RoleRepository;
 import com.sliit.af.repository.UserRepository;
 import com.sliit.af.service.UserService;
 
@@ -27,6 +35,8 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	RoleRepository roleRepository;
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -65,7 +75,7 @@ public class UserServiceImpl implements UserService {
 		}
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), true, // Email
 				true, // verification status
-				true, true, new ArrayList<>());
+				true, true, getUserAuthority(user.getRoles()));
 	}
 
 	/**
@@ -76,6 +86,11 @@ public class UserServiceImpl implements UserService {
 		if (Objects.isNull(user.getId())) {
 			// when user is a new user. insert only
 			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+			Optional<Role> requestedRole = user.getRoles().stream().findFirst();
+			if (requestedRole.isPresent()) {
+				user.setRoles(new HashSet<>(
+						Arrays.asList(roleRepository.findByRole(requestedRole.get().getRole()).orElse(null))));
+			}
 		}
 		// for insert and update
 		return userRepository.save(user);
@@ -95,5 +110,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void delete(String id) {
 		userRepository.deleteById(id);
+	}
+
+	private List<GrantedAuthority> getUserAuthority(Set<Role> userRoles) {
+		Set<GrantedAuthority> roles = new HashSet<>();
+		userRoles.forEach((role) -> {
+			roles.add(new SimpleGrantedAuthority(role.getRole()));
+		});
+
+		List<GrantedAuthority> grantedAuthorities = new ArrayList<>(roles);
+		return grantedAuthorities;
 	}
 }

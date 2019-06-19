@@ -4,6 +4,8 @@ import Home from './pages/Home'
 import Profile from './pages/Profile'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import Register from './pages/Register'
+import SearchCourse from './pages/SearchCourse'
 import CourseView from './pages/CourseView'
 import DegreeList from './pages/DegreeList'
 import NotFoundPage from './pages/NotFoundPage'
@@ -17,6 +19,8 @@ class Routes extends React.Component {
                 <Route path='/profile' component={Profile}/>
                 <Route path='/about' component={About}/>
                 <Route path='/contact' component={Contact}/>
+                <Route path='/register' component={Register}/>
+                <Route path='/courses/search' component={SearchCourse}/>
                 <Route path='/courses/:id/view' component={CourseView}/>
                 <Route path='/faculties/:id/degrees' component={DegreeList}/>
                 <Route component={NotFoundPage}/>

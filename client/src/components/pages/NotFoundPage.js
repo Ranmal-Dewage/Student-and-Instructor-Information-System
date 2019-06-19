@@ -1,6 +1,5 @@
 import React from 'react'
-import {MDBCol, MDBRow} from 'mdbreact';
-import logo from "../../images/SLIIT.png";
+import {MDBCol, MDBRow} from 'mdbreact'
 
 
 export default class NotFoundPage extends React.Component {

@@ -17,8 +17,7 @@ class HomeBody extends Component {
                         <MDBCardHeader>Latest announcements</MDBCardHeader>
                         <MDBCardBody>
                             <div className="row header clearfix">
-                                <div className="left picture"><a
-                                    href="http://courseweb.sliit.lk/user/profile.php?id=22494"></a></div>
+                                <div className="left picture"></div>
                                 <div className="topic firstpost starter">
                                     <div className="subject" role="heading" aria-level="2">Prorata Registration Notice
                                         FoE (June- Dec 2019)
@@ -45,8 +44,7 @@ class HomeBody extends Component {
                             <div className="row side">
                                 <div className="left">&nbsp;</div>
                                 <div className="options clearfix">
-                                    <div className="attachments"><a
-                                        href="http://courseweb.sliit.lk/pluginfile.php/49/mod_forum/attachment/15430/Prorata%20Registration%20Notice%20Jun-Dec%20FOE.pdf"></a>
+                                    <div className="attachments">
                                         <a href="http://courseweb.sliit.lk/pluginfile.php/49/mod_forum/attachment/15430/Prorata%20Registration%20Notice%20Jun-Dec%20FOE.pdf">Prorata
                                             Registration Notice Jun-Dec FOE.pdf</a><br/><br/></div>
                                     <div className="commands"><a

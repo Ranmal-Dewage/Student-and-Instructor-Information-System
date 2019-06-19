@@ -1,5 +1,5 @@
 import React from 'react'
-import {MDBCollapse, MDBIcon, MDBListGroup, MDBListGroupItem} from "mdbreact";
+import {MDBListGroup, MDBListGroupItem} from "mdbreact";
 
 export default class FacultyList extends React.Component {
 

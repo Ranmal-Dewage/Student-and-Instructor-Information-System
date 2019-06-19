@@ -1,5 +1,5 @@
-import React from 'react';
-import { MDBFooter, MDBBtn, MDBIcon } from 'mdbreact';
+import React from 'react'
+import { MDBFooter, MDBIcon } from 'mdbreact'
 
 const Footer = () => {
     return (
@@ -18,4 +18,4 @@ const Footer = () => {
     );
 }
 
-export default Footer;
+export default Footer

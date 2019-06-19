@@ -8,21 +8,23 @@ import Register from './pages/Register'
 import SearchCourse from './pages/SearchCourse'
 import CourseView from './pages/CourseView'
 import DegreeList from './pages/DegreeList'
+import CourseList from './pages/CourseList'
 import NotFoundPage from './pages/NotFoundPage'
 
 class Routes extends React.Component {
     render() {
         return (
             <Switch>
-                <Route path='/' exact component={Home}/>
-                <Route path='/home' component={Home}/>
-                <Route path='/profile' component={Profile}/>
-                <Route path='/about' component={About}/>
-                <Route path='/contact' component={Contact}/>
-                <Route path='/register' component={Register}/>
-                <Route path='/courses/search' component={SearchCourse}/>
-                <Route path='/courses/:id/view' component={CourseView}/>
-                <Route path='/faculties/:id/degrees' component={DegreeList}/>
+                <Route exact path='/' component={Home}/>
+                <Route exact path='/home' component={Home}/>
+                <Route exact path='/profile' component={Profile}/>
+                <Route exact path='/about' component={About}/>
+                <Route exact path='/contact' component={Contact}/>
+                <Route exact path='/register' component={Register}/>
+                <Route exact path='/degree/:id/courses' component={CourseList}/>
+                <Route exact path='/courses/search' component={SearchCourse}/>
+                <Route exact path='/courses/:id/view' component={CourseView}/>
+                <Route exact path='/faculties/:id/degrees' component={DegreeList}/>
                 <Route component={NotFoundPage}/>
             </Switch>
         );

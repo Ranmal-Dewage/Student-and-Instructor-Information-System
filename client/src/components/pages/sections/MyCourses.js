@@ -1,7 +1,7 @@
 import React from 'react'
 import {MDBListGroup, MDBListGroupItem} from "mdbreact";
 
-export default class CourseList extends React.Component {
+export default class MyCourses extends React.Component {
 
     handleClick = id => {
         window.location = '/courses/' + id + '/view'

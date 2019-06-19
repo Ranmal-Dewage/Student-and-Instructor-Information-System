@@ -22,7 +22,6 @@ class TopNavigation extends Component {
     }
 
     toggle = () => {
-        console.log("called")
         this.setState({
             modal: !this.state.modal
         });

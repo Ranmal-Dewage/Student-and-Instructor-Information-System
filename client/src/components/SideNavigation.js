@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import logo from "../images/SLIIT.png"
-import CourseList from './pages/sections/CourseList'
+import MyCourses from './pages/sections/MyCourses'
 import FacultyList from './pages/sections/FacultyList'
 import {
     MDBListGroup,
@@ -34,6 +34,7 @@ class SideNavigation extends Component {
                         <MDBListGroupItem onClick={this.toggleCollapse("facultiesCollapse")}>
                             <MDBIcon icon="university" className="mr-3"/>
                             Faculties
+                            <div className="float-right"><i className="fa fa-angle-down" style={{paddingLeft: 5}}/></div>
                             <MDBCollapse id="facultiesCollapse" isOpen={this.state.collapseID}>
                                 <FacultyList/>
                             </MDBCollapse>
@@ -43,6 +44,7 @@ class SideNavigation extends Component {
                         <MDBListGroupItem onClick={this.toggleCollapse("asCollapse")}>
                             <MDBIcon icon="laptop" className="mr-3"/>
                             Academic Services
+                            <div className="float-right"><i className="fa fa-angle-down" style={{paddingLeft: 5}}/></div>
                             <MDBCollapse id="asCollapse" isOpen={this.state.collapseID}>
                                 <MDBListGroup className="list-group-flush" style={{width: "100"}}>
                                     <MDBListGroupItem
@@ -64,6 +66,7 @@ class SideNavigation extends Component {
                         <MDBListGroupItem onClick={this.toggleCollapse("libraryCollapse")}>
                             <MDBIcon icon="book" className="mr-3"/>
                             Libraries
+                            <div className="float-right"><i className="fa fa-angle-down" style={{paddingLeft: 5}}/></div>
                             <MDBCollapse id="libraryCollapse" isOpen={this.state.collapseID}>
                                 <MDBListGroup className="list-group-flush" style={{width: "100"}}>
                                     <MDBListGroupItem onClick={() => window.open("http://library.sliit.lk/", "_blank")}>SLIIT
@@ -78,6 +81,7 @@ class SideNavigation extends Component {
                         <MDBListGroupItem onClick={this.toggleCollapse("emailCollapse")}>
                             <MDBIcon icon="user-tie" className="mr-3"/>
                             Student Email
+                            <div className="float-right"><i className="fa fa-angle-down" style={{paddingLeft: 5}}/></div>
                             <MDBCollapse id="emailCollapse" isOpen={this.state.collapseID}>
                                 <MDBListGroup className="list-group-flush" style={{width: "100"}}>
                                     <MDBListGroupItem onClick={() => window.open("https://mail.google.com", "_blank")}>G
@@ -93,8 +97,9 @@ class SideNavigation extends Component {
                         <MDBListGroupItem onClick={this.toggleCollapse("courseCollapse")}>
                             <MDBIcon icon="book-open" className="mr-3"/>
                             My Courses
+                            <div className="float-right"><i className="fa fa-angle-down" style={{paddingLeft: 5}}/></div>
                             <MDBCollapse id="courseCollapse" isOpen={this.state.collapseID}>
-                                <CourseList/>
+                                <MyCourses/>
                             </MDBCollapse>
                         </MDBListGroupItem>
                     </NavLink>

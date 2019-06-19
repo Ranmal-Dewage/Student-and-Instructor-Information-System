@@ -32,7 +32,6 @@ class Login extends Component {
         let value = event;
         if (event.target) {
             value = event.target.value;
-            console.log(value)
         }
         this.setState({[event.target.name]: value})
     }

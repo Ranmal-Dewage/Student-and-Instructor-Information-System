@@ -23,6 +23,10 @@ class SideNavigation extends Component {
         }));
     }
 
+    handleAdminClick(){
+        window.location = '/admin/facultyManagement'
+    }
+
     render() {
         return (
             <div className="sidebar-fixed position-fixed overflow-auto">
@@ -104,8 +108,7 @@ class SideNavigation extends Component {
                             Faculty Management
                             <MDBCollapse id="fmCollapse" isOpen={this.state.collapseID}>
                                 <MDBListGroup className="list-group-flush" style={{width: "100"}}>
-                                    <MDBListGroupItem>Add Faculty</MDBListGroupItem>
-                                    <MDBListGroupItem>Edit Faculty</MDBListGroupItem>
+                                    <MDBListGroupItem onClick={() => this.handleAdminClick()}>Manage Faculties</MDBListGroupItem>
                                 </MDBListGroup>
                             </MDBCollapse>
                         </MDBListGroupItem>

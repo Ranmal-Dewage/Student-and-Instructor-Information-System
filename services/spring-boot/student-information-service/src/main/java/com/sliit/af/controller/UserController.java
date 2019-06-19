@@ -6,6 +6,7 @@ package com.sliit.af.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sliit.af.model.User;
 import com.sliit.af.service.UserService;
+import com.sliit.af.util.OnRegistrationEvent;
 
 /**
  * @author Vimukthi Rajapaksha
@@ -32,6 +34,8 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
+	@Autowired
+	ApplicationEventPublisher eventPublisher;
 
 	/**
 	 * This method will save a new user in the database
@@ -40,7 +44,9 @@ public class UserController {
 	public ResponseEntity<?> register(@RequestBody @Valid User user) {
 		ResponseEntity<?> responseEntity = null;
 		try {
-			responseEntity = new ResponseEntity<>(userService.save(user), HttpStatus.OK);
+			user = userService.save(user);
+			responseEntity = new ResponseEntity<>(user, HttpStatus.OK);
+			eventPublisher.publishEvent(new OnRegistrationEvent(UserController.class, user));
 		} catch (Exception e) {
 			responseEntity = new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
 		}

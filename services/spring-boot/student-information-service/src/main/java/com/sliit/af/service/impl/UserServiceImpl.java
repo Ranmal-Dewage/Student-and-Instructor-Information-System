@@ -3,6 +3,7 @@
  */
 package com.sliit.af.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import com.sliit.af.domain.UserDTO;
 import com.sliit.af.model.Role;
 import com.sliit.af.model.User;
+import com.sliit.af.model.VerificationToken;
 import com.sliit.af.repository.RoleRepository;
 import com.sliit.af.repository.UserRepository;
 import com.sliit.af.service.UserService;
@@ -86,6 +89,7 @@ public class UserServiceImpl implements UserService {
 		if (Objects.isNull(user.getId())) {
 			// when user is a new user. insert only
 			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+			generateVerficationToken(user, UUID.randomUUID());
 			Optional<Role> requestedRole = user.getRoles().stream().findFirst();
 			if (requestedRole.isPresent()) {
 				user.setRoles(new HashSet<>(
@@ -114,11 +118,18 @@ public class UserServiceImpl implements UserService {
 
 	private List<GrantedAuthority> getUserAuthority(Set<Role> userRoles) {
 		Set<GrantedAuthority> roles = new HashSet<>();
-		userRoles.forEach((role) -> {
-			roles.add(new SimpleGrantedAuthority(role.getRole()));
-		});
+		userRoles.forEach(role -> roles.add(new SimpleGrantedAuthority(role.getRole())));
 
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<>(roles);
 		return grantedAuthorities;
+	}
+
+	public void generateVerficationToken(User user, UUID token) {
+		VerificationToken verificationToken = new VerificationToken();
+		verificationToken.setExpiryDate(LocalDateTime.now());
+		verificationToken.setToken(token.toString());
+		verificationToken.setId(UUID.randomUUID().toString());
+
+		user.setVerificationToken(verificationToken);
 	}
 }

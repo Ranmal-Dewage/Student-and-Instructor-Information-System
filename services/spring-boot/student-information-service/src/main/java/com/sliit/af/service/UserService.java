@@ -23,9 +23,8 @@ public interface UserService extends UserDetailsService {
 	public User getByEmail(String email);
 
 	public User save(User user);
-	
+
 	public List<User> getAll();
-	
+
 	public void delete(String id);
-	
 }

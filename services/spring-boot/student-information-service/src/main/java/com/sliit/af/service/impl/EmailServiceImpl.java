@@ -9,7 +9,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.sliit.af.model.User;
 import com.sliit.af.service.EmailService;
+import com.sliit.af.util.OnRegistrationEvent;
 
 /**
  * @author vimukthi_r
@@ -24,6 +26,8 @@ public class EmailServiceImpl implements EmailService {
 	public JavaMailSender emailSender;
 	@Value("${spring.mail.username:ds-assignment@mail.com}")
 	private String from;
+	@Value("${student.info.service.url}")
+	private String serviceUrl;
 
 	/**
 	 * This method will send an email to user email with passed String subject as
@@ -37,5 +41,18 @@ public class EmailServiceImpl implements EmailService {
 		message.setSubject(subject);
 		message.setText(text);
 		emailSender.send(message);
+	}
+
+	@Override
+	public void onApplicationEvent(OnRegistrationEvent event) {
+		User user = event.getUser();
+		String token = user.getVerificationToken().getToken();
+
+		String recipientAddress = user.getEmail();
+		String subject = "Registration Confirmation";
+		String confirmationUrl = serviceUrl + "/regitrationConfirm?token=" + token;
+
+		sendEmail(recipientAddress, subject, "Please Click to complete registraion : " + confirmationUrl);
+
 	}
 }

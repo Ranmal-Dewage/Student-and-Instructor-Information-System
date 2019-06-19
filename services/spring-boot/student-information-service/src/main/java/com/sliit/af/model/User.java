@@ -45,4 +45,6 @@ public class User {
 	@DBRef
 	@Valid
 	private Set<Role> roles;
+	@Valid
+	private VerificationToken verificationToken;
 }

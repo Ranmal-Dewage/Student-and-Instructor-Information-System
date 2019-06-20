@@ -9,6 +9,7 @@ import {
     MDBBtn,
     MDBRow
 } from "mdbreact"
+import {getHash} from '../functions/Functions'
 
 export default class Register extends React.Component {
 
@@ -35,6 +36,7 @@ export default class Register extends React.Component {
 
         if (this.state.degree && this.state.faculty) {
             console.log(this.state)
+            console.log(getHash(this.state.password))
         } else {
             this.setState({showErr: true})
         }
@@ -128,6 +130,18 @@ export default class Register extends React.Component {
                                                 required
                                                 validate
                                                 name="email"
+                                                error="wrong"
+                                                success="right"
+                                                onChange={this.handleChange}
+                                            />
+                                        </MDBCol>
+                                        <MDBCol md={6}>
+                                            <MDBInput
+                                                label="Password"
+                                                type="password"
+                                                required
+                                                validate
+                                                name="password"
                                                 error="wrong"
                                                 success="right"
                                                 onChange={this.handleChange}

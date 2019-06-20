@@ -1,5 +1,5 @@
 import React from 'react'
-import {MDBCard, MDBCardImage, MDBRow, MDBCardBody, MDBCardTitle, MDBCardText} from "mdbreact";
+import {MDBCard, MDBCardImage, MDBCardBody, MDBCardTitle, MDBCardText} from "mdbreact";
 
 import './About.css'
 
@@ -54,40 +54,40 @@ export default class About extends React.Component {
                             greater
                             understanding about the practical application of their knowledge.</p>
                     </div>
-                        <MDBCard className="m-3">
-                            <MDBCardBody>
-                                <MDBCardTitle>OUR VISION</MDBCardTitle>
-                                <MDBCardText>
-                                    To advance knowledge, foster and promote innovation to enrich lives & broaden
-                                    horizons
-                                </MDBCardText>
-                            </MDBCardBody>
-                        </MDBCard>
-                        <MDBCard className="m-3">
-                            <MDBCardBody>
-                                <MDBCardTitle>OUR MISSION</MDBCardTitle>
-                                <MDBCardText>
-                                    To create a learning and research environment with best possible resources for our
-                                    students and staff to be innovative and dedicated to excellence and to produce
-                                    graduates with strong analytical, problem solving and communication skills.
-                                </MDBCardText>
-                            </MDBCardBody>
-                        </MDBCard>
-                        <MDBCard className="m-3">
-                            <MDBCardBody>
-                                <MDBCardTitle>OUR OBJECTIVES</MDBCardTitle>
-                                <MDBCardText>
-                                    Education & training of professionals at a high level of excellence in the fields of
-                                    IT, business and engineering assisting and promoting enterprises, innovators and
-                                    start-up companies with the necessary expertise to achieve business objectives
-                                    provision of consultancy services and software services to public and private sector
-                                    enterprises of Sri Lanka at a reasonable cost conduct and promotion of research &
-                                    development leading to specialized applications, services and innovative technology
-                                    products. Expanding horizons in the fields of IT, business and engineering to reach
-                                    international level
-                                </MDBCardText>
-                            </MDBCardBody>
-                        </MDBCard>
+                    <MDBCard className="m-3">
+                        <MDBCardBody>
+                            <MDBCardTitle>OUR VISION</MDBCardTitle>
+                            <MDBCardText>
+                                To advance knowledge, foster and promote innovation to enrich lives & broaden
+                                horizons
+                            </MDBCardText>
+                        </MDBCardBody>
+                    </MDBCard>
+                    <MDBCard className="m-3">
+                        <MDBCardBody>
+                            <MDBCardTitle>OUR MISSION</MDBCardTitle>
+                            <MDBCardText>
+                                To create a learning and research environment with best possible resources for our
+                                students and staff to be innovative and dedicated to excellence and to produce
+                                graduates with strong analytical, problem solving and communication skills.
+                            </MDBCardText>
+                        </MDBCardBody>
+                    </MDBCard>
+                    <MDBCard className="m-3">
+                        <MDBCardBody>
+                            <MDBCardTitle>OUR OBJECTIVES</MDBCardTitle>
+                            <MDBCardText>
+                                Education & training of professionals at a high level of excellence in the fields of
+                                IT, business and engineering assisting and promoting enterprises, innovators and
+                                start-up companies with the necessary expertise to achieve business objectives
+                                provision of consultancy services and software services to public and private sector
+                                enterprises of Sri Lanka at a reasonable cost conduct and promotion of research &
+                                development leading to specialized applications, services and innovative technology
+                                products. Expanding horizons in the fields of IT, business and engineering to reach
+                                international level
+                            </MDBCardText>
+                        </MDBCardBody>
+                    </MDBCard>
                 </section>
             </MDBCard>
         )

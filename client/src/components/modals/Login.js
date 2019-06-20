@@ -9,7 +9,8 @@ import {
     MDBCard,
     MDBCardBody
 } from 'mdbreact'
-// import {login} from '../Services'
+import {getHash} from '../functions/Functions'
+import {login} from '../functions/Services'
 // import {getHash} from './commons/Functions'
 
 class Login extends Component {
@@ -41,6 +42,9 @@ class Login extends Component {
     handleSubmit = event => {
         this.setState({MDBModalShowErr: false})
         console.log(this.state)
+        console.log(getHash(this.state.password))
+
+        login(this.state,"Bearer tojanscasvmsakdnauishdkjsbd").then(data=>console.log(data))
 
         // login({username: this.state.username, password: getHash(this.state.password)})
         //     .then(res => {
@@ -71,11 +75,11 @@ class Login extends Component {
                             </div>
                             <MDBCardBody className="mx-4 mt-4">
                                 <form onSubmit={this.handleSubmit}>
-                                    <MDBInput label="Your Id"
-                                              group type="text"
-                                              name="username"
-                                              icon="envelope"
+                                    <MDBInput label="Your email"
+                                              type="email"
                                               validate
+                                              name="email"
+                                              icon="envelope"
                                               onChange={this.handleChange}
                                               required
                                     />

@@ -1,0 +1,33 @@
+.about-top-diagonal {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    overflow: hidden;
+}
+
+.about-top-diagonal::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background-color: #2196f3;
+    background-size: 200%, 0;
+    transform: skewY(5deg);
+    transform-origin: bottom right;
+}
+
+.about-top-diagonal::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    left: 50%;
+    background-color: #2196f3;
+    background-size: 200%, 0;
+    background-position: -100% 0;
+    transform: skewY(-5deg);
+    transform-origin: bottom left;
+}
+

@@ -74,6 +74,7 @@ class Login extends Component {
                                     <MDBInput label="Your Id"
                                               group type="text"
                                               name="username"
+                                              icon="envelope"
                                               validate
                                               onChange={this.handleChange}
                                               required
@@ -83,6 +84,7 @@ class Login extends Component {
                                         group
                                         name="password"
                                         type="password"
+                                        icon="lock"
                                         validate
                                         containerClass="mb-0"
                                         onChange={this.handleChange}

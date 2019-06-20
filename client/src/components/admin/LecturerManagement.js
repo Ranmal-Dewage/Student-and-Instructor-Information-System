@@ -25,13 +25,61 @@ export default class LecturerManagement extends Component {
     componentDidMount() {
         this.setState({lecturerButtonName: "Add Lecturer"});
         //Fetch from back end and assign to faculties array from here
+        this.getFaculties();
+        this.getLecturers();
     }
 
-    deleteLecturer(value) {
-        let tempArray = this.state.courses;
+    getFaculties = () => {
+        let allFaculties = [];
+        fetch("http://localhost:3001/admin/faculties").then(res =>{
+            if(res.ok){
+                return res.json();
+            } else {
+                alert("Error when obtaining lecturers")
+            }
+        }).then(data => {
+            data.map((item) =>{
+                return allFaculties.push({facultyPrefix: item.facultyPrefix, facultyID: item.facultyID, facultyName: item.facultyName, degrees: item.degrees, facultyDescription: item.facultyDescription})
+            });
+            this.setState({faculties: allFaculties})
+        }).catch(err => {
+            console.log(err)
+        })
+    };
 
-        tempArray = tempArray.filter(obj => obj.degreeID !== value);
-        this.setState({courses: tempArray});
+    getLecturers = () => {
+        let allLecturers = [];
+        fetch("http://localhost:3001/admin/lecturers").then(res =>{
+            if(res.ok){
+                return res.json();
+            } else {
+                alert("Error when obtaining lecturers")
+            }
+        }).then(data => {
+            data.map((item) =>{
+                return allLecturers.push({lecturerID: item.lecturerID, lecturerPrefix: item.lecturerIDPrefix ,lecturerName: item.lecturerName , lecturerEmail: item.lecturerEmail, lecturerPhone: item.lecturerPhone, lecturerUsername: item.lecturerUsername, lecturerPassword: item.lecturerPassword})
+            });
+            this.setState({lecturers: allLecturers})
+        }).catch(err => {
+            console.log(err)
+        })
+    };
+
+    deleteLecturer(value) {
+        fetch("http://localhost:3001/admin/lecturers/"+ value, {
+            method: 'DELETE',
+            headers:{'Content-Type': 'application/json'}
+        }).then(result => {
+            if(result.ok){
+                alert("lecturer deleted successfully");
+                this.getLecturers();
+            } else {
+                alert("lecturer can't be deleted");
+            }
+        }).catch(err => {
+            alert(JSON.parse(err.error));
+        });
+
     }
 
     addUpdateLecturer(value, prefix, source){
@@ -44,6 +92,7 @@ export default class LecturerManagement extends Component {
                     alert("Error message");
                 } else {
                     let lecturerID = this.state.lecturerIDPrefix + this.state.lecturerID;
+                    this.setState({lecturerUsername: this.state.lecturerIDPrefix + this.state.lecturerID});
                     if(tempArray !== []){
                         let breakCondition = false;
                         tempArray.map((item) => {
@@ -56,23 +105,61 @@ export default class LecturerManagement extends Component {
                             return null;
                         });
                         if(!breakCondition){
-                            tempArray.push({lecturerID: lecturerID, lecturerPrefix: this.state.lecturerIDPrefix ,lecturerName: this.state.lecturerName , lecturerEmail: this.state.lecturerEmail, lecturerPhone: this.state.lecturerPhone, lecturerUsername: this.state.lecturerUsername, lecturerPassword: this.state.lecturerPassword});
-                            this.setState({lecturers: tempArray});
+                            let lectureObj = {
+                                lecturerID: lecturerID,
+                                lecturerPrefix: this.state.lecturerIDPrefix ,
+                                lecturerName: this.state.lecturerName ,
+                                lecturerEmail: this.state.lecturerEmail,
+                                lecturerPhone: this.state.lecturerPhone,
+                                lecturerUsername: this.state.lecturerUsername,
+                                lecturerPassword: this.state.lecturerPassword
+                            };
+
+                            this.addLecturer(lectureObj);
+                            this.getLecturers();
+                            //tempArray.push({lecturerID: lecturerID, lecturerPrefix: this.state.lecturerIDPrefix ,lecturerName: this.state.lecturerName , lecturerEmail: this.state.lecturerEmail, lecturerPhone: this.state.lecturerPhone, lecturerUsername: this.state.lecturerUsername, lecturerPassword: this.state.lecturerPassword});
+                            //this.setState({lecturers: tempArray});
                         }
                     } else {
-                        tempArray.push({lecturerID: lecturerID, lecturerPrefix: this.state.lecturerIDPrefix ,lecturerName: this.state.lecturerName , lecturerEmail: this.state.lecturerEmail, lecturerPhone: this.state.lecturerPhone, lecturerUsername: this.state.lecturerUsername, lecturerPassword: this.state.lecturerPassword});
-                        this.setState({lecturers: tempArray});
+                        let lectureObj = {
+                            lecturerID: lecturerID,
+                            lecturerPrefix: this.state.lecturerIDPrefix ,
+                            lecturerName: this.state.lecturerName ,
+                            lecturerEmail: this.state.lecturerEmail,
+                            lecturerPhone: this.state.lecturerPhone,
+                            lecturerUsername: this.state.lecturerUsername,
+                            lecturerPassword: this.state.lecturerPassword
+                        };
+
+                        this.addLecturer(lectureObj);
+                        this.getLecturers();
+                        //tempArray.push({lecturerID: lecturerID, lecturerPrefix: this.state.lecturerIDPrefix ,lecturerName: this.state.lecturerName , lecturerEmail: this.state.lecturerEmail, lecturerPhone: this.state.lecturerPhone, lecturerUsername: this.state.lecturerUsername, lecturerPassword: this.state.lecturerPassword});
+                        //this.setState({lecturers: tempArray});
                     }
                 }
             } else if(this.state.lecturerButtonName === "Update Lecturer") {
-                tempArray[this.state.lecturerPositionIndex].lecturerPrefix = this.state.lecturerIDPrefix;
-                tempArray[this.state.lecturerPositionIndex].lecturerID = this.state.lecturerIDPrefix + this.state.lecturerID;
-                tempArray[this.state.lecturerPositionIndex].lecturerName = this.state.lecturerName;
-                tempArray[this.state.lecturerPositionIndex].lecturerEmail = this.state.lecturerEmail;
-                tempArray[this.state.lecturerPositionIndex].lecturerPhone = this.state.lecturerPhone;
-                tempArray[this.state.lecturerPositionIndex].lecturerPassword = this.state.lecturerPassword;
+                let lecturerID = this.state.lecturerIDPrefix + this.state.lecturerID;
 
-                this.setState({lecturers: tempArray});
+                let lectureObj = {
+                    lecturerID: lecturerID,
+                    lecturerPrefix: this.state.lecturerIDPrefix ,
+                    lecturerName: this.state.lecturerName ,
+                    lecturerEmail: this.state.lecturerEmail,
+                    lecturerPhone: this.state.lecturerPhone,
+                    lecturerUsername: this.state.lecturerUsername,
+                    lecturerPassword: this.state.lecturerPassword
+                };
+
+                //tempArray[this.state.lecturerPositionIndex].lecturerPrefix = this.state.lecturerIDPrefix;
+                //tempArray[this.state.lecturerPositionIndex].lecturerID = this.state.lecturerIDPrefix + this.state.lecturerID;
+                //tempArray[this.state.lecturerPositionIndex].lecturerName = this.state.lecturerName;
+                //tempArray[this.state.lecturerPositionIndex].lecturerEmail = this.state.lecturerEmail;
+                //tempArray[this.state.lecturerPositionIndex].lecturerPhone = this.state.lecturerPhone;
+                //tempArray[this.state.lecturerPositionIndex].lecturerPassword = this.state.lecturerPassword;
+
+                this.updateLecturer(lecturerID, lectureObj);
+
+                //this.setState({lecturers: tempArray});
                 //Degree is updated here send changes from here
                 this.setState({lecturerButtonName: "Add Lecturer"});
             }
@@ -86,30 +173,81 @@ export default class LecturerManagement extends Component {
         } else if(source === "fromEditLecturer"){
             this.setState({lecturerButtonName: "Update Lecturer"});
 
-            let breakCondition = false;
-            tempArray.map((item, index) => {
-                if(item.degreeID === value && !breakCondition){
-                    this.setState({degreePositionIndex: index});
-                    breakCondition = true;
-                    return null;
-                }
-                return null;
-            });
-            console.log(value);
-            let lecturerObj = tempArray.filter(obj => obj.lecturerID === value);
-            if(lecturerObj.length > 0){
-                this.setState({lecturerIDPrefix: lecturerObj[0].lecturerIDPrefix});
-                this.setState({lecturerID: lecturerObj[0].lecturerID.substring(2)});
-                this.setState({lecturerName: lecturerObj[0].lecturerName});
-                this.setState({lecturerEmail: lecturerObj[0].lecturerEmail});
-                this.setState({lecturerUsername: lecturerObj[0].lecturerUsername});
-                this.setState({lecturerPassword: lecturerObj[0].lecturerPassword});
-            } else {
-                alert("Error");
-            }
+            this.getLecturerByID(value)
+            //let breakCondition = false;
+            //tempArray.map((item, index) => {
+                //if(item.lecturerID === value && !breakCondition){
+                   // this.setState({lecturerPositionIndex: index});
+                   // breakCondition = true;
+                   // return null;
+               // }
+               // return null;
+            //});
+            //console.log(value);
+            //let lecturerObj = tempArray.filter(obj => obj.lecturerID === value);
+            //if(lecturerObj.length > 0){
+               // this.setState({lecturerIDPrefix: lecturerObj[0].lecturerIDPrefix});
+               // this.setState({lecturerID: lecturerObj[0].lecturerID.substring(2)});
+               // this.setState({lecturerName: lecturerObj[0].lecturerName});
+               // this.setState({lecturerEmail: lecturerObj[0].lecturerEmail});
+               // this.setState({lecturerUsername: lecturerObj[0].lecturerUsername});
+               // this.setState({lecturerPassword: lecturerObj[0].lecturerPassword});
+            //} else {
+               // alert("Error");
+           // }
         }
     };
 
+    getLecturerByID = (lecturerID) => {
+        fetch("http://localhost:3001/admin/lecturers/"+ lecturerID).then(res => {
+            if(res.ok){
+                return res.json();
+            } else {
+                alert("Error when obtaining the lecturer information")
+            }
+        }).then(data => {
+            this.setState({lecturerIDPrefix: data.lecturerIDPrefix});
+            this.setState({lecturerID: data.lecturerID.substring(2)});
+            this.setState({lecturerName: data.lecturerName});
+            this.setState({lecturerEmail: data.lecturerEmail});
+            this.setState({lecturerUsername: data.lecturerUsername});
+            this.setState({lecturerPassword: data.lecturerPassword});
+        }).catch(err => {
+            console.log(err)
+        })
+    };
+
+    addLecturer = (obj) => {
+        fetch("http://localhost:3001/admin/lecturers", {
+            method: 'POST',
+            body: JSON.stringify(obj),
+            headers:{'Content-Type': 'application/json'}
+        }).then(result => {
+            if(result.ok){
+                alert("lecturer added successfully");
+            } else {
+                alert("The lecturer can't be added");
+            }
+        }).catch(err => {
+            alert(JSON.parse(err.error));
+        });
+    };
+
+    updateLecturer = (id,obj) => {
+        fetch("http://localhost:3001/admin/lecturers"+ id, {
+            method: 'PUT',
+            body: JSON.stringify(obj),
+            headers:{'Content-Type': 'application/json'}
+        }).then(result => {
+            if(result.ok){
+                alert("lecturer updated successfully");
+            } else {
+                alert("The lecturer can't be updated");
+            }
+        }).catch(err => {
+            alert(JSON.parse(err.error));
+        });
+    };
 
 
     setPrefix(value){

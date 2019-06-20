@@ -16,8 +16,8 @@ export default class FacultyManagement extends Component {
             degrees: [],
             degreeButtonName: '',
             facultyButtonName: '',
-            degreePositionIndex: 0,
-            facultyPositionIndex: 0,
+            //degreePositionIndex: 0,
+            //facultyPositionIndex: 0,
             facultyDescription: '',
             degreeDescription: '',
             faculties: []
@@ -28,21 +28,140 @@ export default class FacultyManagement extends Component {
         this.setState({degreeButtonName: "Add Degree"});
         this.setState({facultyButtonName: "Add Faculty"});
         //Fetch from back end and assign to faculties array from here
+        this.getFaculties();
     }
 
-    deleteDegree(value) {
-        let tempArray = this.state.degrees;
+    getFaculties = () => {
+        let allFaculties = [];
+        fetch("http://localhost:3001/admin/faculties").then(res =>{
+            if(res.ok){
+                return res.json();
+            } else {
+                alert("Error when obtaining faculty")
+            }
+        }).then(data => {
+            data.map((item) =>{
+                return allFaculties.push({facultyPrefix: item.facultyPrefix, facultyID: item.facultyID, facultyName: item.facultyName, degrees: item.degrees, facultyDescription: item.facultyDescription})
+            });
+            this.setState({faculties: allFaculties})
+        }).catch(err => {
+            console.log(err)
+        })
+    };
 
-        tempArray = tempArray.filter(obj => obj.degreeID !== value);
-        this.setState({degrees: tempArray});
+    getDegrees = () => {
+        let allDegrees = [];
+        fetch("http://localhost:3001/admin/faculties/degrees").then(res =>{
+            if(res.ok){
+                return res.json();
+            } else {
+                alert("Error when obtaining degrees")
+            }
+        }).then(data => {
+            data.map((item) =>{
+                return allDegrees.push({facultyID: item.facultyID ,degreeID: item.degreeID, degreePrefix: item.degreePrefix ,degreeName: item.degreeName, degreeDescription: item.degreeDescription})
+            });
+            this.setState({degrees: allDegrees})
+        }).catch(err => {
+            console.log(err)
+        })
+    };
+
+    deleteDegree(value) {
+        fetch("http://localhost:3001/admin/faculties/degrees"+ value, {
+            method: 'DELETE',
+            headers:{'Content-Type': 'application/json'}
+        }).then(result => {
+            if(result.ok){
+                alert("degree deleted successfully");
+                this.getDegrees();
+            } else {
+                alert("degree can't be deleted");
+            }
+        }).catch(err => {
+            alert(JSON.parse(err.error));
+        });
     }
 
     deleteFaculty(value) {
-        let tempArray = this.state.faculties;
-
-        tempArray = tempArray.filter(obj => obj.facultyID !== value);
-        this.setState({faculties: tempArray});
+        fetch("http://localhost:3001/admin/faculties/"+ value, {
+            method: 'DELETE',
+            headers:{'Content-Type': 'application/json'}
+        }).then(result => {
+            if(result.ok){
+                alert("faculty deleted successfully");
+                this.getFaculties();
+            } else {
+                alert("faculty can't be deleted");
+            }
+        }).catch(err => {
+            alert(JSON.parse(err.error));
+        });
     }
+
+    addDegree = (obj) => {
+        fetch("http://localhost:3001/admin/faculties/degrees", {
+            method: 'POST',
+            body: JSON.stringify(obj),
+            headers:{'Content-Type': 'application/json'}
+        }).then(result => {
+            if(result.ok){
+                alert("degree added successfully");
+            } else {
+                alert("The degree can't be added");
+            }
+        }).catch(err => {
+            alert(JSON.parse(err.error));
+        });
+    };
+
+    addFaculty = (obj) => {
+        fetch("http://localhost:3001/admin/faculties", {
+            method: 'POST',
+            body: JSON.stringify(obj),
+            headers:{'Content-Type': 'application/json'}
+        }).then(result => {
+            if(result.ok){
+                alert("faculty added successfully");
+            } else {
+                alert("The faculty can't be added");
+            }
+        }).catch(err => {
+            alert(JSON.parse(err.error));
+        });
+    };
+
+    updateDegree = (id,obj) => {
+        fetch("http://localhost:3001/admin/faculties/degrees"+ id, {
+            method: 'PUT',
+            body: JSON.stringify(obj),
+            headers:{'Content-Type': 'application/json'}
+        }).then(result => {
+            if(result.ok){
+                alert("degree updated successfully");
+            } else {
+                alert("The degree can't be updated");
+            }
+        }).catch(err => {
+            alert(JSON.parse(err.error));
+        });
+    };
+
+    updateFaculty = (id,obj) => {
+        fetch("http://localhost:3001/admin/faculties/"+ id, {
+            method: 'PUT',
+            body: JSON.stringify(obj),
+            headers:{'Content-Type': 'application/json'}
+        }).then(result => {
+            if(result.ok){
+                alert("faculty updated successfully");
+            } else {
+                alert("The faculty can't be updated");
+            }
+        }).catch(err => {
+            alert(JSON.parse(err.error));
+        });
+    };
 
     addUpdateDegree(value, prefix, source){
         let tempArray = this.state.degrees;
@@ -72,23 +191,55 @@ export default class FacultyManagement extends Component {
                             return null;
                         });
                         if(!breakCondition){
-                            tempArray.push({facultyID: this.state.facultyID ,degreeID: degreeID, degreePrefix: this.state.degreePrefix ,degreeName: this.state.degreeName, degreeDescription: this.state.degreeDescription});
-                            this.setState({degrees: tempArray});
+                            let degreeObj = {
+                                facultyID: this.state.facultyID ,
+                                degreeID: degreeID,
+                                degreePrefix: this.state.degreePrefix ,
+                                degreeName: this.state.degreeName,
+                                degreeDescription: this.state.degreeDescription
+                            };
+
+                            this.addDegree(degreeObj);
+                            this.getDegrees();
+
+                            // tempArray.push({facultyID: this.state.facultyID ,degreeID: degreeID, degreePrefix: this.state.degreePrefix  ,degreeName: this.state.degreeName,  degreeDescription: this.state.degreeDescription});
+                            // this.setState({degrees: tempArray});
                         }
                     } else {
-                        tempArray.push({facultyID: this.state.facultyID ,degreeID: degreeID, degreePrefix: this.state.degreePrefix  ,degreeName: this.state.degreeName,  degreeDescription: this.state.degreeDescription});
-                        this.setState({degrees: tempArray});
+                        let degreeObj = {
+                            facultyID: this.state.facultyID ,
+                            degreeID: degreeID,
+                            degreePrefix: this.state.degreePrefix ,
+                            degreeName: this.state.degreeName,
+                            degreeDescription: this.state.degreeDescription
+                        };
+
+                        this.addDegree(degreeObj);
+                        this.getDegrees();
+                       // tempArray.push({facultyID: this.state.facultyID ,degreeID: degreeID, degreePrefix: this.state.degreePrefix  ,degreeName: this.state.degreeName,  degreeDescription: this.state.degreeDescription});
+                       // this.setState({degrees: tempArray});
                     }
                 }
             } else if(this.state.degreeButtonName === "Update Degree") {
-                tempArray[this.state.degreePositionIndex].degreePrefix = this.state.degreePrefix;
-                tempArray[this.state.degreePositionIndex].degreeID = this.state.degreePrefix + this.state.degreeID;
-                tempArray[this.state.degreePositionIndex].degreeName = this.state.degreeName;
-                tempArray[this.state.degreePositionIndex].degreeDescription = this.state.degreeDescription;
+                let degreeID = this.state.degreePrefix + this.state.degreeID;
 
-                this.setState({degrees: tempArray});
+                let degreeObj = {
+                    degreeID: degreeID,
+                    degreePrefix: this.state.degreePrefix ,
+                    degreeName: this.state.degreeName,
+                    degreeDescription: this.state.degreeDescription
+                };
+
+                this.updateDegree(degreeID, degreeObj);
+
+                //tempArray[this.state.degreePositionIndex].degreePrefix = this.state.degreePrefix;
+                //tempArray[this.state.degreePositionIndex].degreeID = this.state.degreePrefix + this.state.degreeID;
+                //tempArray[this.state.degreePositionIndex].degreeName = this.state.degreeName;
+                //tempArray[this.state.degreePositionIndex].degreeDescription = this.state.degreeDescription;
+
+                //this.setState({degrees: tempArray});
                 //Degree is updated here send changes from here
-                this.setState({degreeButtonName: "Add Degree"});
+                //this.setState({degreeButtonName: "Add Degree"});
             }
 
             this.setState({degreeDescription: ''});
@@ -98,26 +249,65 @@ export default class FacultyManagement extends Component {
         } else if(source === "fromEditDegree"){
             this.setState({degreeButtonName: "Update Degree"});
 
-            let breakCondition = false;
-            tempArray.map((item, index) => {
-                if(item.degreeID === value && !breakCondition){
-                    this.setState({degreePositionIndex: index});
-                    breakCondition = true;
-                    return null;
-                }
-                return null;
-            });
+            this.getDegreeByID(value);
 
-            let degreeObj = tempArray.filter(obj => obj.degreeID === value);
-            if(degreeObj.length > 0){
-                this.setState({degreePrefix: degreeObj[0].degreePrefix});
-                this.setState({degreeID: degreeObj[0].degreeID.substring(2)});
-                this.setState({degreeName: degreeObj[0].degreeName});
-                this.setState({degreeDescription: degreeObj[0].degreeDescription});
-            } else {
-                alert("Error");
-            }
+            //let breakCondition = false;
+            //tempArray.map((item, index) => {
+               // if(item.degreeID === value && !breakCondition){
+                   // this.setState({degreePositionIndex: index});
+                   // breakCondition = true;
+                   // return null;
+               // }
+            //    return null;
+            //});
+
+           // let degreeObj = tempArray.filter(obj => obj.degreeID === value);
+           // if(degreeObj.length > 0){
+              //  this.setState({degreePrefix: degreeObj[0].degreePrefix});
+              //  this.setState({degreeID: degreeObj[0].degreeID.substring(2)});
+               // this.setState({degreeName: degreeObj[0].degreeName});
+              //  this.setState({degreeDescription: degreeObj[0].degreeDescription});
+           // } else {
+               // alert("Error");
+            //}
         }
+    };
+
+    getDegreeByID = (degreeID) => {
+        fetch("http://localhost:3001/admin/faculties/degrees/"+ degreeID).then(res => {
+            if(res.ok){
+                return res.json();
+            } else {
+                alert("Error when obtaining the degree information")
+            }
+        }).then(data => {
+            this.setState({degreePrefix: data.degreePrefix});
+            this.setState({degreeID: data.degreeID.substring(2)});
+            this.setState({degreeName: data.degreeName});
+            this.setState({degreeDescription: data.degreeDescription});
+        }).catch(err => {
+            console.log(err)
+        })
+    };
+
+    getFacultyByID = (facultyID) => {
+        fetch("http://localhost:3001/admin/faculties/"+ facultyID).then(res => {
+            if(res.ok){
+                return res.json();
+            } else {
+                alert("Error when obtaining the faculty information")
+            }
+        }).then(data => {
+            this.setState({facultyPrefix: data.facultyPrefix});
+            this.setState({facultyID: data.facultyID.substring(2)});
+            this.setState({facultyName: data.facultyName});
+            this.setState({degreeID: data.degreeID});
+            this.setState({degreeName: data.degreeName});
+            this.setState({degrees: data.degrees});
+            this.setState({facultyDescription: data.facultyDescription});
+        }).catch(err => {
+            console.log(err)
+        })
     };
 
     addUpdateFaculty(value, prefix, source){
@@ -143,33 +333,70 @@ export default class FacultyManagement extends Component {
                                 alert("Error message SIMILAR NAMES");
                                 breakCondition = true;
                                 return null;
+                            } else if((item.facultyPrefix === this.state.facultyPrefix) && !breakCondition){
+                                //Error message if degree names are same
+                                alert("Error message SIMILAR PREFIX");
+                                breakCondition = true;
+                                return null;
                             }
                             return null;
                         });
                         if(!breakCondition){
+                            let facultyObj = {
+                                facultyPrefix: this.state.facultyPrefix,
+                                facultyID: facultyID,
+                                facultyName: this.state.facultyName,
+                                degrees: this.state.degrees,
+                                facultyDescription: this.state.facultyDescription
+                            };
 
-                            tempArray.push({facultyPrefix: this.state.facultyPrefix, facultyID: facultyID, facultyName: this.state.facultyName,degrees: this.state.degrees, facultyDescription: this.state.facultyDescription});
-                            this.setState({faculties: tempArray});
+                            this.addFaculty(facultyObj);
+                            this.getFaculties();
+
+                           // tempArray.push({facultyPrefix: this.state.facultyPrefix, facultyID: facultyID, facultyName: this.state.facultyName,degrees: this.state.degrees, facultyDescription: this.state.facultyDescription});
+                            //this.setState({faculties: tempArray});
                             //Update both degree and faculty tables from here using faculties and degrees arrays
                         }
                     } else {
+                        let facultyObj = {
+                            facultyPrefix: this.state.facultyPrefix,
+                            facultyID: facultyID,
+                            facultyName: this.state.facultyName,
+                            degrees: this.state.degrees,
+                            facultyDescription: this.state.facultyDescription
+                        };
 
-                        tempArray.push({facultyPrefix: this.state.facultyPrefix, facultyID: facultyID, facultyName: this.state.facultyName,degrees: this.state.degrees, facultyDescription: this.state.facultyDescription});
-                        this.setState({faculties: tempArray});
+                        this.addFaculty(facultyObj);
+                        this.getFaculties();
+
+                        //tempArray.push({facultyPrefix: this.state.facultyPrefix, facultyID: facultyID, facultyName: this.state.facultyName,degrees: this.state.degrees, facultyDescription: this.state.facultyDescription});
+                        //this.setState({faculties: tempArray});
                         //Update Initial push of both degree and faculty tables from here using faculties and degrees arrays
                     }
                 }
             } else if(this.state.facultyButtonName === "Update Faculty") {
-                //Changes the updated values
-                tempArray[this.state.facultyPositionIndex].facultyPrefix = this.state.facultyPrefix;
-                tempArray[this.state.facultyPositionIndex].facultyID = this.state.facultyPrefix + this.state.facultyID;
-                tempArray[this.state.facultyPositionIndex].facultyName = this.state.facultyName;
-                tempArray[this.state.facultyPositionIndex].degrees = this.state.degrees;
-                tempArray[this.state.facultyPositionIndex].facultyDescription = this.state.facultyDescription;
+                let facultyID = this.state.degreePrefix + this.state.degreeID;
 
-                this.setState({faculties: tempArray});
+                let facultyObj = {
+                    facultyPrefix: this.state.facultyPrefix,
+                    facultyID: facultyID,
+                    facultyName: this.state.facultyName,
+                    degrees: this.state.degrees,
+                    facultyDescription: this.state.facultyDescription
+                };
+
+                this.updateFaculty(facultyID, facultyObj);
+
+                //Changes the updated values
+                //tempArray[this.state.facultyPositionIndex].facultyPrefix = this.state.facultyPrefix;
+                //tempArray[this.state.facultyPositionIndex].facultyID = this.state.facultyPrefix + this.state.facultyID;
+                //tempArray[this.state.facultyPositionIndex].facultyName = this.state.facultyName;
+                //tempArray[this.state.facultyPositionIndex].degrees = this.state.degrees;
+                //tempArray[this.state.facultyPositionIndex].facultyDescription = this.state.facultyDescription;
+
+                //this.setState({faculties: tempArray});
                 //Send the edited faculty array to backend from here
-                this.setState({facultyButtonName: "Add Faculty"});
+                //this.setState({facultyButtonName: "Add Faculty"});
             }
 
             this.setState({facultyPrefix: ''});
@@ -179,30 +406,34 @@ export default class FacultyManagement extends Component {
             this.setState({facultyDescription: ''});
         } else if(source === "fromEditFaculty"){
             this.setState({facultyButtonName: "Update Faculty"});
-            let facultyID = prefix + value;
-            console.log(facultyID);
-            let breakCondition = false;
-            tempArray.map((item, index) => {
-                if(item.facultyID === facultyID && !breakCondition){
-                    this.setState({facultyPositionIndex: index});
-                    breakCondition = true;
-                    return null;
-                }
-                return null;
-            });
 
-            let facultyObj = tempArray.filter(obj => obj.facultyID === facultyID);
-            if(facultyObj.length > 0){
-                this.setState({facultyPrefix: facultyObj[0].facultyPrefix});
-                this.setState({facultyID: facultyObj[0].facultyID.substring(2)});
-                this.setState({facultyName: facultyObj[0].facultyName});
-                this.setState({degreeID: facultyObj[0].degreeID});
-                this.setState({degreeName: facultyObj[0].degreeName});
-                this.setState({degrees: facultyObj[0].degrees});
-                this.setState({facultyDescription: facultyObj[0].facultyDescription});
-            } else {
-                alert("Error");
-            }
+            console.log(value);
+            this.getFacultyByID(value);
+
+            //let facultyID = prefix + value;
+
+            //let breakCondition = false;
+            //tempArray.map((item, index) => {
+                //if(item.facultyID === facultyID && !breakCondition){
+                   // this.setState({facultyPositionIndex: index});
+                   // breakCondition = true;
+                    //return null;
+                //}
+               // return null;
+            //});
+
+            //let facultyObj = tempArray.filter(obj => obj.facultyID === facultyID);
+            //if(facultyObj.length > 0){
+              //  this.setState({facultyPrefix: facultyObj[0].facultyPrefix});
+               // this.setState({facultyID: facultyObj[0].facultyID.substring(2)});
+               // this.setState({facultyName: facultyObj[0].facultyName});
+               // this.setState({degreeID: facultyObj[0].degreeID});
+               // this.setState({degreeName: facultyObj[0].degreeName});
+               // this.setState({degrees: facultyObj[0].degrees});
+               // this.setState({facultyDescription: facultyObj[0].facultyDescription});
+            //} else {
+                //alert("Error");
+            //}
         }
     }
 
@@ -319,7 +550,7 @@ export default class FacultyManagement extends Component {
                                                 </td>
                                                 <td>{faculty.facultyDescription}</td>
                                                 <td><MDBBtn color="primary" rounded type="button" className="z-depth-1a"
-                                                            onClick={() => this.addUpdateFaculty(faculty.facultyID, this.state.facultyPrefix,"fromEditFaculty")}>Edit</MDBBtn>{' '}
+                                                            onClick={() => this.addUpdateFaculty(faculty.facultyID, faculty.facultyPrefix,"fromEditFaculty")}>Edit</MDBBtn>{' '}
                                                     <MDBBtn color="danger" rounded type="button" className="z-depth-1a"
                                                             onClick={() => this.deleteFaculty(faculty.facultyID)}>Delete</MDBBtn>
                                                 </td>

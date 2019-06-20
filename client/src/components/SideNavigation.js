@@ -112,7 +112,7 @@ class SideNavigation extends Component {
                             Faculty Management
                             <MDBCollapse id="fmCollapse" isOpen={this.state.collapseID}>
                                 <MDBListGroup className="list-group-flush" style={{width: "100"}}>
-                                    <MDBListGroupItem onClick={() => this.handleAdminClick()}>Manage Faculties</MDBListGroupItem>
+                                    <MDBListGroupItem onClick={() => this.handleAdminClick()}>Faculty Management</MDBListGroupItem>
                                 </MDBListGroup>
                             </MDBCollapse>
                         </MDBListGroupItem>

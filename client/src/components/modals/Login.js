@@ -5,7 +5,9 @@ import {
     MDBBtn,
     MDBInput,
     MDBRow,
-    MDBCol
+    MDBCol,
+    MDBCard,
+    MDBCardBody
 } from 'mdbreact'
 // import {login} from '../Services'
 // import {getHash} from './commons/Functions'
@@ -38,6 +40,7 @@ class Login extends Component {
 
     handleSubmit = event => {
         this.setState({MDBModalShowErr: false})
+        console.log(this.state)
 
         // login({username: this.state.username, password: getHash(this.state.password)})
         //     .then(res => {
@@ -56,46 +59,56 @@ class Login extends Component {
     render() {
         return (
             <MDBModal isOpen={this.props.modal} toggle={this.props.toggle}>
-                <div className="modal-header text-center">
-                    <h3 className="modal-title w-100">Sign in</h3>
-                    <button type="button" className="close" aria-label="Close" onClick={this.props.toggle}><span
-                        aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <MDBRow style={{padding: 30}}>
+                <MDBRow>
                     <MDBCol md="12">
-                        <form onSubmit={this.handleSubmit}>
-                            <MDBRow className="align-items-center justify-content-center">
-                                <img src={require("../../images/login.png")} width="30%" className="img-fluid" alt=""/>
-                            </MDBRow>
-                            <div className="grey-text">
-                                <MDBInput
-                                    label="Type your username"
-                                    icon="envelope"
-                                    group
-                                    type="text"
-                                    validate
-                                    error="wrong"
-                                    success="right"
-                                    name="username"
-                                    onChange={this.handleChange}
-                                    required
-                                />
-                                <MDBInput
-                                    label="Type your password"
-                                    icon="lock"
-                                    group
-                                    name="password"
-                                    type="password"
-                                    validate
-                                    onChange={this.handleChange}
-                                    required
-                                />
+                        <MDBCard>
+                            <div className="header pt-3 grey lighten-2">
+                                <MDBRow className="d-flex justify-content-start">
+                                    <h3 className="deep-grey-text mt-3 mb-4 pb-1 mx-5">
+                                        Log in
+                                    </h3>
+                                </MDBRow>
                             </div>
-                            <div className="text-center">
-                                <MDBBtn type="submit">Login</MDBBtn>
-                            </div>
-                        </form>
+                            <MDBCardBody className="mx-4 mt-4">
+                                <form onSubmit={this.handleSubmit}>
+                                    <MDBInput label="Your Id"
+                                              group type="text"
+                                              name="username"
+                                              validate
+                                              onChange={this.handleChange}
+                                              required
+                                    />
+                                    <MDBInput
+                                        label="Your password"
+                                        group
+                                        name="password"
+                                        type="password"
+                                        validate
+                                        containerClass="mb-0"
+                                        onChange={this.handleChange}
+                                        required
+                                    />
+                                    <div className="text-center mb-4 mt-5">
+                                        <MDBBtn
+                                            color="primary"
+                                            type="submit"
+                                            className="btn-block z-depth-2"
+                                        >
+                                            Log in
+                                        </MDBBtn>
+                                    </div>
+                                    <p className="font-small grey-text d-flex justify-content-center">
+                                        Don't have an account?
+                                        <a
+                                            href="/register"
+                                            className="dark-grey-text font-weight-bold ml-1"
+                                        >
+                                            Sign up
+                                        </a>
+                                    </p>
+                                </form>
+                            </MDBCardBody>
+                        </MDBCard>
                     </MDBCol>
                 </MDBRow>
             </MDBModal>

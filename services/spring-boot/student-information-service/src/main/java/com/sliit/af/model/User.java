@@ -41,6 +41,7 @@ public class User {
 	private String email;
 	@NotBlank
 	private String password;
+	private int permissionLevel;
 	private boolean isEnabled;
 	@DBRef
 	@Valid

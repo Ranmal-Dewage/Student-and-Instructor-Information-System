@@ -21,6 +21,8 @@ public interface UserService extends UserDetailsService {
 	public User getByEmailAndPassword(UserDTO userDTO);
 
 	public User getByEmail(String email);
+	
+	public User getByToken(String token);
 
 	public User save(User user);
 

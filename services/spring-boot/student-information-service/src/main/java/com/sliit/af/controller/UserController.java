@@ -3,6 +3,9 @@
  */
 package com.sliit.af.controller;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sliit.af.model.User;
@@ -108,6 +112,20 @@ public class UserController {
 			responseEntity = new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
 		}
 		return responseEntity;
+	}
+
+	@GetMapping(value = "/regitrationConfirm")
+	public String confirmRegistration(@RequestParam("token") String token) {
+
+		User user = userService.getByToken(token);
+		if (Objects.isNull(user)) {
+			return "registration error";
+		} else if (user.getVerificationToken().getExpiryDate().isBefore(LocalDateTime.now())) {
+			user.setEnabled(true);
+			userService.save(user);
+			return "registration success";
+		}
+		return "registration not complete";
 	}
 
 }

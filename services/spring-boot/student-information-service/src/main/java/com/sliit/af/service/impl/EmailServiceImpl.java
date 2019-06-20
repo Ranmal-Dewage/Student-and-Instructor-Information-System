@@ -50,7 +50,7 @@ public class EmailServiceImpl implements EmailService {
 
 		String recipientAddress = user.getEmail();
 		String subject = "Registration Confirmation";
-		String confirmationUrl = serviceUrl + "/regitrationConfirm?token=" + token;
+		String confirmationUrl = serviceUrl + "/users/regitrationConfirm?token=" + token;
 
 		sendEmail(recipientAddress, subject, "Please Click to complete registraion : " + confirmationUrl);
 

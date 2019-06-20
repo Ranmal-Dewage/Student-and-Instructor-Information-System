@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.sliit.af.service.UserService;
+import com.sliit.af.util.Param;
 
 /**
  * @author Vimukthi Rajapaksha
@@ -44,11 +45,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 		// permit all requests for login end point
 		http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/login").permitAll()
+		.antMatchers(HttpMethod.GET, "/users/regitrationConfirm").permitAll()
 				// POST requests for /users end point authentication needed for instructors
-				.antMatchers(HttpMethod.POST, "/users").hasAuthority("ADMIN").anyRequest().authenticated()
+				.antMatchers(HttpMethod.POST, "/users")
+				.access("not( hasRole('" + Param.INSTRUCTOR + "') ) and isAuthenticated()")
 				// permit POST requests for /users end point
-				.antMatchers(HttpMethod.POST, "/users").permitAll().anyRequest().authenticated().and()
-				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
+				.anyRequest().authenticated().and().addFilter(new JWTAuthenticationFilter(authenticationManager()))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager()))
 				// this disables session creation on Spring Security
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

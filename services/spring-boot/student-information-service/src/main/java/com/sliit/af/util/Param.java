@@ -17,4 +17,8 @@ public class Param {
 	public static final String HEADER_STRING = "Authorization";
 	public static final long EXPIRATION_TIME = 1_200_000; // 20 minutes
 
+	public static final String ADMIN = "ADMIN";
+	public static final String INSTRUCTOR = "INSTRUCTOR";
+	public static final String STUDENT = "STUDENT";
+
 }

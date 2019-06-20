@@ -28,6 +28,7 @@ import com.sliit.af.model.VerificationToken;
 import com.sliit.af.repository.RoleRepository;
 import com.sliit.af.repository.UserRepository;
 import com.sliit.af.service.UserService;
+import com.sliit.af.util.Param;
 
 /**
  * @author Vimukthi Rajapaksha
@@ -75,6 +76,8 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findByEmail(email).orElse(null);
 		if (Objects.isNull(user)) {
 			throw new UsernameNotFoundException(email);
+		} else if (!user.isEnabled()) {
+			throw new UsernameNotFoundException("Activate your account first");
 		}
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), true, // Email
 				true, // verification status
@@ -92,6 +95,7 @@ public class UserServiceImpl implements UserService {
 			generateVerficationToken(user, UUID.randomUUID());
 			Optional<Role> requestedRole = user.getRoles().stream().findFirst();
 			if (requestedRole.isPresent()) {
+				setPermissionLevel(requestedRole.get(), user);
 				user.setRoles(new HashSet<>(
 						Arrays.asList(roleRepository.findByRole(requestedRole.get().getRole()).orElse(null))));
 			}
@@ -131,5 +135,26 @@ public class UserServiceImpl implements UserService {
 		verificationToken.setId(UUID.randomUUID().toString());
 
 		user.setVerificationToken(verificationToken);
+	}
+
+	private void setPermissionLevel(Role role, User user) {
+		switch (role.getRole()) {
+		case Param.ADMIN:
+			user.setPermissionLevel(3);
+			break;
+		case Param.INSTRUCTOR:
+			user.setPermissionLevel(2);
+			break;
+		case Param.STUDENT:
+			user.setPermissionLevel(1);
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public User getByToken(String token) {
+		return userRepository.findByVerificationTokenToken(token).orElse(null);
 	}
 }

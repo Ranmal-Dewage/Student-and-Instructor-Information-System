@@ -10,6 +10,8 @@ import {
     MDBRow
 } from "mdbreact"
 import {getHash} from '../functions/Functions'
+import {register} from '../functions/Services'
+import {toast} from 'react-toastify'
 
 export default class Register extends React.Component {
 
@@ -35,22 +37,29 @@ export default class Register extends React.Component {
         this.setState({showErr: false})
 
         if (this.state.degree && this.state.faculty) {
-            console.log(this.state)
-            console.log(getHash(this.state.password))
+            const body = {
+                "firstName": this.state.fname,
+                "lastName": this.state.lname,
+                "mobile": this.state.phone,
+                "email": this.state.email,
+                "password": getHash(this.state.password),
+                "roles": [{"role": "STUDENT"}],
+                "faculty": [this.state.faculty],
+                "degree": [this.state.degree],
+                "nic": this.state.nic
+            }
+            register(body)
+                .then(res => {
+                    toast.success("Registration successful. Click the confirmation link sent to your email")
+                    this.props.history.push('/')
+                })
+                .catch(err => {
+                    console.log(err)
+                    toast.error("Unable to register the new user")
+                })
         } else {
             this.setState({showErr: true})
         }
-
-
-        // login({username: this.state.username, password: getHash(this.state.password)})
-        //     .then(res => {
-        //         localStorage.setItem('user', JSON.stringify(res))
-        //         this.props.handleClose()
-        //     })
-        //     .catch(err => {
-        //         console.log(err)
-        //         this.setState({MDBModalShowErr: true})
-        //     })
 
         event.preventDefault()
         event.stopPropagation()

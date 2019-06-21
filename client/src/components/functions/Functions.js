@@ -4,5 +4,5 @@ export function getHash(str) {
 		hash += Math.pow(str.charCodeAt(i) * 31, str.length - i)
 		hash = hash & hash // Convert to 32bit integer
 	}
-	return hash
+	return JSON.stringify(hash)
 };

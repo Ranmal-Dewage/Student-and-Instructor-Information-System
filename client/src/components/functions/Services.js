@@ -62,10 +62,6 @@ const handleres = (res) => {
     if (res.ok) {
         return res.json();
     } else {
-        if (res.status === 404) {
-            return Promise.reject();
-        } else {
-            throw res.json();
-        }
+        return Promise.reject();
     }
 }

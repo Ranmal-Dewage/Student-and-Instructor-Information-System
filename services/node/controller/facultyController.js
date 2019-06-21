@@ -4,12 +4,13 @@ const jwt = require("jsonwebtoken")
 const Faculties = require("../model/faculties")
 const Degrees = require("../model/degrees")
 const tf = require("../verifyToken")
+const config = require("../config.json")
 
 
 //faculty creation
 route.post("/", tf.verifyToken, (req, res) => {
 
-    jwt.verify(req.token, "c6h12o6", (err, authData) => {
+    jwt.verify(req.token, config.secret, (err, authData) => {
         if (err) {
             res.status(403).json({ status: "forbidden" })
         } else {
@@ -45,9 +46,10 @@ route.post("/", tf.verifyToken, (req, res) => {
 
 //get all faculties
 route.get("/", tf.verifyToken, (req, res) => {
-
-    jwt.verify(req.token, "c6h12o6", (err, authData) => {
+    
+    jwt.verify(req.token, config.secret, (err, authData) => {
         if (err) {
+            console.log(err)
             res.status(403).json({ status: "forbidden" })
         } else {
             try {
@@ -71,7 +73,7 @@ route.get("/", tf.verifyToken, (req, res) => {
 //update faculties
 route.put("/:code", tf.verifyToken, (req, res) => {
 
-    jwt.verify(req.token, "c6h12o6", (err, authData) => {
+    jwt.verify(req.token, config.secret, (err, authData) => {
         if (err) {
             res.status(403).json({ status: "forbidden" })
         } else {
@@ -96,7 +98,7 @@ route.put("/:code", tf.verifyToken, (req, res) => {
 //delete faculties
 route.delete("/:code", tf.verifyToken, (req, res) => {
 
-    jwt.verify(req.token, "c6h12o6", (err, authData) => {
+    jwt.verify(req.token, config.secret, (err, authData) => {
         if (err) {
             res.status(403).json({ status: "forbidden" })
         } else {
@@ -122,7 +124,7 @@ route.delete("/:code", tf.verifyToken, (req, res) => {
 //eg :- localhost:4000/faculties/IT/degrees
 route.get("/:code/degrees", tf.verifyToken, (req, res) => {
 
-    jwt.verify(req.token, "c6h12o6", (err, authData) => {
+    jwt.verify(req.token, config.secret, (err, authData) => {
         if (err) {
             res.status(403).json({ status: "forbidden" })
         } else {

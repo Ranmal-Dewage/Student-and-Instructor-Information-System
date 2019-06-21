@@ -4,12 +4,12 @@ const jwt = require("jsonwebtoken")
 const Degrees = require("../model/degrees")
 const Courses = require("../model/courses")
 const tf = require("../verifyToken")
-
+const config = require("../config.json")
 
 //degree creation
 route.post("/", tf.verifyToken, (req, res) => {
 
-    jwt.verify(req.token, "c6h12o6", (err, authData) => {
+    jwt.verify(req.token, config.secret, (err, authData) => {
         if (err) {
             res.status(403).json({ status: "forbidden" })
         } else {
@@ -46,7 +46,7 @@ route.post("/", tf.verifyToken, (req, res) => {
 //get all degrees 
 route.get("/", tf.verifyToken, (req, res) => {
 
-    jwt.verify(req.token, "c6h12o6", (err, authData) => {
+    jwt.verify(req.token, config.secret, (err, authData) => {
         if (err) {
             res.status(403).json({ status: "forbidden" })
         } else {
@@ -71,7 +71,7 @@ route.get("/", tf.verifyToken, (req, res) => {
 //update degrees
 route.put("/:code", tf.verifyToken, (req, res) => {
 
-    jwt.verify(req.token, "c6h12o6", (err, authData) => {
+    jwt.verify(req.token, config.secret, (err, authData) => {
         if (err) {
             res.status(403).json({ status: "forbidden" })
         } else {
@@ -96,7 +96,7 @@ route.put("/:code", tf.verifyToken, (req, res) => {
 //delete degrees
 route.delete("/:code", tf.verifyToken, (req, res) => {
 
-    jwt.verify(req.token, "c6h12o6", (err, authData) => {
+    jwt.verify(req.token, config.secret, (err, authData) => {
         if (err) {
             res.status(403).json({ status: "forbidden" })
         } else {
@@ -122,7 +122,7 @@ route.delete("/:code", tf.verifyToken, (req, res) => {
 //eg :- localhost:4000/degrees/SE/courses
 route.get("/:code/courses", tf.verifyToken, (req, res) => {
 
-    jwt.verify(req.token, "c6h12o6", (err, authData) => {
+    jwt.verify(req.token, config.secret, (err, authData) => {
         if (err) {
             res.status(403).json({ status: "forbidden" })
         } else {

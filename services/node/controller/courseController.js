@@ -3,12 +3,13 @@ const route = express.Router()
 const jwt = require("jsonwebtoken")
 const Courses = require("../model/courses")
 const tf = require("../verifyToken")
+const config = require("../config.json")
 
 
 //create courses
 route.post("/", tf.verifyToken, (req, res) => {
 
-    jwt.verify(req.token, "c6h12o6", (err, authData) => {
+    jwt.verify(req.token, config.secret, (err, authData) => {
         if (err) {
             res.status(403).json({ status: "forbidden" })
         } else {
@@ -46,12 +47,10 @@ route.post("/", tf.verifyToken, (req, res) => {
 //meke mama instructors id eka update karapu widiya wenas ube UI eke update eka balala ayee eka hadanna onee 
 route.put("/:code", tf.verifyToken, (req, res) => {
 
-    jwt.verify(req.token, "c6h12o6", (err, authData) => {
+    jwt.verify(req.token, config.secret, (err, authData) => {
         if (err) {
             res.status(403).json({ status: "forbidden" })
         } else {
-            var arrayIns = req.body.iid
-            delete req.body.iid
             try {
                 const query = { ccode: req.params.code }
                 Courses.updateOne(query, req.body, (err) => {
@@ -59,26 +58,7 @@ route.put("/:code", tf.verifyToken, (req, res) => {
                         console.log(err)
                         res.status(500).json({ error: err });
                     } else {
-                        const promise = new Promise((resolve, reject) => {
-                            if (arrayIns.length != 0) {
-                                Courses.updateOne(query, { $push: { iid: arrayIns } }, (err) => {
-                                    if (err) {
-                                        console.log(err)
-                                        reject(false)
-                                    } else {
-                                        resolve(true)
-                                    }
-                                })
-                            } else {
-                                resolve(true)
-                            }
-                        })
-                        promise.then((data) => {
-                            res.status(200).json({ status: data })
-                        }).catch((err) => {
-                            console.log("Error : " + err)
-                            res.status(500).json({ error: err });
-                        })
+                        res.status(200).json({ status: true })
                     }
                 })
             } catch (ex) {
@@ -93,7 +73,7 @@ route.put("/:code", tf.verifyToken, (req, res) => {
 //delete courses
 route.delete("/:code", tf.verifyToken, (req, res) => {
 
-    jwt.verify(req.token, "c6h12o6", (err, authData) => {
+    jwt.verify(req.token, config.secret, (err, authData) => {
         if (err) {
             res.status(403).json({ status: "forbidden" })
         } else {
@@ -126,7 +106,7 @@ route.delete("/:code", tf.verifyToken, (req, res) => {
 //case insensitive
 route.get("/:name", tf.verifyToken, (req, res) => {
 
-    jwt.verify(req.token, "c6h12o6", (err, authData) => {
+    jwt.verify(req.token, config.secret, (err, authData) => {
         if (err) {
             res.status(403).json({ status: "forbidden" })
         } else {
@@ -152,7 +132,7 @@ route.get("/:name", tf.verifyToken, (req, res) => {
 //eg :- localhost:4000/courses?dcode=SE&year=3rd&sem=1st
 route.get("/", tf.verifyToken, (req, res) => {
 
-    jwt.verify(req.token, "c6h12o6", (err, authData) => {
+    jwt.verify(req.token, config.secret, (err, authData) => {
         if (err) {
             res.status(403).json({ status: "forbidden" })
         } else {

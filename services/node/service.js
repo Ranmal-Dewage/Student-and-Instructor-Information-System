@@ -53,7 +53,7 @@ app.post("/login", (req, res) => {
         name: "Ranmal Dewage"
     }
 
-    jwt.sign({ user: user }, "c6h12o6", (err, token) => {
+    jwt.sign({ user: user }, config.secret, (err, token) => {
         if (err) {
             res.status(500).json({ error: err })
         } else {

@@ -9,7 +9,6 @@ let coursesSchema = mongoose.Schema({
     dcode: String,
     year: String,
     semester: String,
-    iid: [String],
     accept:Boolean  //for instructor notification purpose 
 })
 

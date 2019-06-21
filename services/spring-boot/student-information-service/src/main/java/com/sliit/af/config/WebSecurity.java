@@ -47,8 +47,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/login").permitAll()
 		.antMatchers(HttpMethod.GET, "/users/regitrationConfirm").permitAll()
 				// POST requests for /users end point authentication needed for instructors
-				.antMatchers(HttpMethod.POST, "/users")
-				.access("not( hasRole('" + Param.INSTRUCTOR + "') ) and isAuthenticated()")
+				.antMatchers(HttpMethod.POST, "/users").permitAll()
+				//.access("not( hasRole('" + Param.INSTRUCTOR + "') ) and isAuthenticated()")
 				// permit POST requests for /users end point
 				.anyRequest().authenticated().and().addFilter(new JWTAuthenticationFilter(authenticationManager()))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager()))

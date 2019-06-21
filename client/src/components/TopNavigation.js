@@ -35,6 +35,11 @@ class TopNavigation extends Component {
         }
     }
 
+    logout = () => {
+        localStorage.clear()
+        window.location = '/'
+    }
+
     render() {
         var user = localStorage.getItem('sis-user')
         if (user) {
@@ -72,12 +77,13 @@ class TopNavigation extends Component {
                                     <MDBNavItem>
                                         <MDBDropdown>
                                             <MDBDropdownToggle nav caret>
-                                                <MDBIcon icon="user"/>
+                                                <MDBIcon icon="user"/> {user.firstName}
                                             </MDBDropdownToggle>
                                             <MDBDropdownMenu basic right>
                                                 <MDBDropdownItem href="/profile">Profile</MDBDropdownItem>
                                                 <MDBDropdownItem divider/>
-                                                <MDBDropdownItem href="#!">Sign out</MDBDropdownItem>
+                                                <MDBDropdownItem href="#!" onClick={this.logout}>Sign
+                                                    out</MDBDropdownItem>
                                             </MDBDropdownMenu>
                                         </MDBDropdown>
                                     </MDBNavItem>

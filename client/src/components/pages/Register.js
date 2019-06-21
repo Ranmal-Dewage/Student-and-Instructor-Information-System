@@ -38,6 +38,7 @@ export default class Register extends React.Component {
 
         if (this.state.degree && this.state.faculty) {
             const body = {
+                "address":this.state.address,
                 "firstName": this.state.fname,
                 "lastName": this.state.lname,
                 "mobile": this.state.phone,

@@ -10,13 +10,15 @@ import {
     MDBListGroupItem,
     MDBRow
 } from "mdbreact"
+import {searchCourse} from '../functions/Services'
 import CourseElement from "./sections/CourseElement";
 
 export default class SearchCourse extends React.Component {
 
     state = {
         name: '',
-        collapseID: ''
+        collapseID: '',
+        courses: []
     }
 
     toggleCollapse = collapseID => () => {
@@ -28,8 +30,18 @@ export default class SearchCourse extends React.Component {
     componentDidMount() {
         const name = qs.parse(this.props.location.search).name
         if (name) {
-            this.setState({name})
+            this.setState({name}, () => this.loadCourses())
         }
+    }
+
+    loadCourses = () => {
+        searchCourse(this.state.name)
+            .then(res => {
+                this.setState({courses: res.courses})
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     render() {
@@ -40,18 +52,23 @@ export default class SearchCourse extends React.Component {
                         <MDBCardHeader>Search results for course : {this.state.name}</MDBCardHeader>
                         <MDBCardBody>
                             <MDBListGroup className="list-group-flush">
-                                <a href="#!">
-                                    <MDBListGroupItem>
-                                        <div onClick={this.toggleCollapse("se3045")}>Software architecture
-                                            <div className="float-right"><i className="fa fa-angle-down"
-                                                                            style={{paddingLeft: 5}}/>
-                                            </div>
-                                        </div>
-                                        <MDBCollapse id="se3045" isOpen={this.state.collapseID}>
-                                            <CourseElement/>
-                                        </MDBCollapse>
-                                    </MDBListGroupItem>
-                                </a>
+                                {this.state.courses.map((course, i) => {
+                                    return (
+                                        <a href="#!" key={i}>
+                                            <MDBListGroupItem>
+                                                <div
+                                                    onClick={this.toggleCollapse(course.ccode)}>{course.cname}
+                                                    <div className="float-right"><i className="fa fa-angle-down"
+                                                                                    style={{paddingLeft: 5}}/>
+                                                    </div>
+                                                </div>
+                                                <MDBCollapse id={course.ccode} isOpen={this.state.collapseID}>
+                                                    <CourseElement course={course}/>
+                                                </MDBCollapse>
+                                            </MDBListGroupItem>
+                                        </a>
+                                    )
+                                })}
                             </MDBListGroup>
                         </MDBCardBody>
                     </MDBCard>

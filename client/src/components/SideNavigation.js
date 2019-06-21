@@ -23,15 +23,19 @@ class SideNavigation extends Component {
         }));
     }
 
-    handleAdminClick(){
+    handleAdminClick() {
         window.location = '/admin/facultyManagement'
     }
 
-    handleLecturerClick(){
+    handleLecturerClick() {
         window.location = '/admin/lecturerManagement'
     }
 
     render() {
+        var user = localStorage.getItem('sis-user')
+        if (user) {
+            user = JSON.parse(user)
+        }
         return (
             <div className="sidebar-fixed position-fixed overflow-auto">
                 <a href="/" className="waves-effect" style={{paddingTop: 30, paddingBottom: 30}}>
@@ -39,20 +43,11 @@ class SideNavigation extends Component {
                 </a>
                 <MDBListGroup className="list-group-flush">
                     <NavLink to="#">
-                        <MDBListGroupItem onClick={this.toggleCollapse("facultiesCollapse")}>
-                            <MDBIcon icon="university" className="mr-3"/>
-                            Faculties
-                            <div className="float-right"><i className="fa fa-angle-down" style={{paddingLeft: 5}}/></div>
-                            <MDBCollapse id="facultiesCollapse" isOpen={this.state.collapseID}>
-                                <FacultyList/>
-                            </MDBCollapse>
-                        </MDBListGroupItem>
-                    </NavLink>
-                    <NavLink to="#">
                         <MDBListGroupItem onClick={this.toggleCollapse("asCollapse")}>
                             <MDBIcon icon="laptop" className="mr-3"/>
                             Academic Services
-                            <div className="float-right"><i className="fa fa-angle-down" style={{paddingLeft: 5}}/></div>
+                            <div className="float-right"><i className="fa fa-angle-down" style={{paddingLeft: 5}}/>
+                            </div>
                             <MDBCollapse id="asCollapse" isOpen={this.state.collapseID}>
                                 <MDBListGroup className="list-group-flush" style={{width: "100"}}>
                                     <MDBListGroupItem
@@ -74,7 +69,8 @@ class SideNavigation extends Component {
                         <MDBListGroupItem onClick={this.toggleCollapse("libraryCollapse")}>
                             <MDBIcon icon="book" className="mr-3"/>
                             Libraries
-                            <div className="float-right"><i className="fa fa-angle-down" style={{paddingLeft: 5}}/></div>
+                            <div className="float-right"><i className="fa fa-angle-down" style={{paddingLeft: 5}}/>
+                            </div>
                             <MDBCollapse id="libraryCollapse" isOpen={this.state.collapseID}>
                                 <MDBListGroup className="list-group-flush" style={{width: "100"}}>
                                     <MDBListGroupItem onClick={() => window.open("http://library.sliit.lk/", "_blank")}>SLIIT
@@ -89,7 +85,8 @@ class SideNavigation extends Component {
                         <MDBListGroupItem onClick={this.toggleCollapse("emailCollapse")}>
                             <MDBIcon icon="user-tie" className="mr-3"/>
                             Student Email
-                            <div className="float-right"><i className="fa fa-angle-down" style={{paddingLeft: 5}}/></div>
+                            <div className="float-right"><i className="fa fa-angle-down" style={{paddingLeft: 5}}/>
+                            </div>
                             <MDBCollapse id="emailCollapse" isOpen={this.state.collapseID}>
                                 <MDBListGroup className="list-group-flush" style={{width: "100"}}>
                                     <MDBListGroupItem onClick={() => window.open("https://mail.google.com", "_blank")}>G
@@ -101,58 +98,82 @@ class SideNavigation extends Component {
                             </MDBCollapse>
                         </MDBListGroupItem>
                     </NavLink>
-                    <NavLink to="#">
-                        <MDBListGroupItem onClick={this.toggleCollapse("courseCollapse")}>
-                            <MDBIcon icon="book-open" className="mr-3"/>
-                            My Courses
-                            <div className="float-right"><i className="fa fa-angle-down" style={{paddingLeft: 5}}/></div>
-                            <MDBCollapse id="courseCollapse" isOpen={this.state.collapseID}>
-                                <MyCourses/>
-                            </MDBCollapse>
-                        </MDBListGroupItem>
-                    </NavLink>
-                    <NavLink to="#">
-                        <MDBListGroupItem onClick={this.toggleCollapse("fmCollapse")}>
-                            <MDBIcon icon="pen-fancy" className="mr-3"/>
-                            Faculty Management
-                            <MDBCollapse id="fmCollapse" isOpen={this.state.collapseID}>
-                                <MDBListGroup className="list-group-flush" style={{width: "100"}}>
-                                    <MDBListGroupItem onClick={() => this.handleAdminClick()}>Faculty Management</MDBListGroupItem>
-                                </MDBListGroup>
-                            </MDBCollapse>
-                        </MDBListGroupItem>
-                    </NavLink>
-                    <NavLink to="#">
-                        <MDBListGroupItem onClick={this.toggleCollapse("cmCollapse")}>
-                            <MDBIcon icon="edit" className="mr-3"/>
-                            Course Management
-                            <MDBCollapse id="cmCollapse" isOpen={this.state.collapseID}>
-                                <MDBListGroup className="list-group-flush" style={{width: "100"}}>
-                                    <MDBListGroupItem>Add Course</MDBListGroupItem>
-                                    <MDBListGroupItem>Edit Course</MDBListGroupItem>
-                                </MDBListGroup>
-                            </MDBCollapse>
-                        </MDBListGroupItem>
-                    </NavLink>
-                    <NavLink to="#">
-                        <MDBListGroupItem onClick={this.toggleCollapse("umCollapse")}>
-                            <MDBIcon icon="user-edit" className="mr-3"/>
-                            User Management
-                            <MDBCollapse id="umCollapse" isOpen={this.state.collapseID}>
-                                <MDBListGroup className="list-group-flush" style={{width: "100"}}>
-                                    <MDBListGroupItem onClick={() => this.handleLecturerClick()}>Lecturer Management</MDBListGroupItem>
-                                    <MDBListGroupItem>Edit User</MDBListGroupItem>
-                                </MDBListGroup>
-                            </MDBCollapse>
-                        </MDBListGroupItem>
-                    </NavLink>
-                    <NavLink to="/profile">
-                        <MDBListGroupItem>
-                            <MDBIcon icon="user" className="mr-4"/>
-                            Profile
-                            <MDBCollapse/>
-                        </MDBListGroupItem>
-                    </NavLink>
+                    {user && 1 <= user.permissionLevel <= 3 &&
+                    <>
+                        < NavLink to="#">
+                            <MDBListGroupItem onClick={this.toggleCollapse("facultiesCollapse")}>
+                                <MDBIcon icon="university" className="mr-3"/>
+                                Faculties
+                                <div className="float-right"><i className="fa fa-angle-down"
+                                                                style={{paddingLeft: 5}}/>
+                                </div>
+                                <MDBCollapse id="facultiesCollapse" isOpen={this.state.collapseID}>
+                                    <FacultyList/>
+                                </MDBCollapse>
+                            </MDBListGroupItem>
+                        </NavLink>
+                        <NavLink to="#">
+                            <MDBListGroupItem onClick={this.toggleCollapse("courseCollapse")}>
+                                <MDBIcon icon="book-open" className="mr-3"/>
+                                My Courses
+                                <div className="float-right"><i className="fa fa-angle-down"
+                                                                style={{paddingLeft: 5}}/>
+                                </div>
+                                <MDBCollapse id="courseCollapse" isOpen={this.state.collapseID}>
+                                    <MyCourses/>
+                                </MDBCollapse>
+                            </MDBListGroupItem>
+                        </NavLink>
+                        <NavLink to="/profile">
+                            <MDBListGroupItem>
+                                <MDBIcon icon="user" className="mr-4"/>
+                                Profile
+                                <MDBCollapse/>
+                            </MDBListGroupItem>
+                        </NavLink>
+                    </>
+                    }
+                    {user && user.permissionLevel == 3 &&
+                    <>
+                        <NavLink to="#">
+                            <MDBListGroupItem onClick={this.toggleCollapse("fmCollapse")}>
+                                <MDBIcon icon="pen-fancy" className="mr-3"/>
+                                Faculty Management
+                                <MDBCollapse id="fmCollapse" isOpen={this.state.collapseID}>
+                                    <MDBListGroup className="list-group-flush" style={{width: "100"}}>
+                                        <MDBListGroupItem onClick={() => this.handleAdminClick()}>Faculty
+                                            Management</MDBListGroupItem>
+                                    </MDBListGroup>
+                                </MDBCollapse>
+                            </MDBListGroupItem>
+                        </NavLink>
+                        <NavLink to="#">
+                            <MDBListGroupItem onClick={this.toggleCollapse("cmCollapse")}>
+                                <MDBIcon icon="edit" className="mr-3"/>
+                                Course Management
+                                <MDBCollapse id="cmCollapse" isOpen={this.state.collapseID}>
+                                    <MDBListGroup className="list-group-flush" style={{width: "100"}}>
+                                        <MDBListGroupItem>Add Course</MDBListGroupItem>
+                                        <MDBListGroupItem>Edit Course</MDBListGroupItem>
+                                    </MDBListGroup>
+                                </MDBCollapse>
+                            </MDBListGroupItem>
+                        </NavLink>
+                        <NavLink to="#">
+                            <MDBListGroupItem onClick={this.toggleCollapse("umCollapse")}>
+                                <MDBIcon icon="user-edit" className="mr-3"/>
+                                User Management
+                                <MDBCollapse id="umCollapse" isOpen={this.state.collapseID}>
+                                    <MDBListGroup className="list-group-flush" style={{width: "100"}}>
+                                        <MDBListGroupItem onClick={() => this.handleLecturerClick()}>Lecturer
+                                            Management</MDBListGroupItem>
+                                        <MDBListGroupItem>Edit User</MDBListGroupItem>
+                                    </MDBListGroup>
+                                </MDBCollapse>
+                            </MDBListGroupItem>
+                        </NavLink>
+                    </>
+                    }
                 </MDBListGroup>
             </div>
         );

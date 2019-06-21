@@ -31,19 +31,19 @@ export default class CourseElement extends Component {
                 <MDBCard>
                     <MDBCardBody>
                         <MDBCardText>
-                            Some description about the course
+                            {this.props.course.description}
                         </MDBCardText>
                         <MDBFormInline onSubmit={this.handleSubmit}>
-                                <MDBInput
-                                    label="Type enrollment key"
-                                    group
-                                    name="ek"
-                                    type="password"
-                                    validate
-                                    onChange={this.handleChange}
-                                    required
-                                />
-                                <MDBBtn size="sm" type="submit">Enroll</MDBBtn>
+                            <MDBInput
+                                label="Type enrollment key"
+                                group
+                                name="ek"
+                                type="password"
+                                validate
+                                onChange={this.handleChange}
+                                required
+                            />
+                            <MDBBtn size="sm" type="submit">Enroll</MDBBtn>
                         </MDBFormInline>
                     </MDBCardBody>
                 </MDBCard>

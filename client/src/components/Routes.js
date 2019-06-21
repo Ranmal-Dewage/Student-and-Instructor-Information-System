@@ -16,9 +16,12 @@ import LecturerManagement from './admin/LecturerManagement'
 
 class Routes extends React.Component {
     render() {
+        var user = localStorage.getItem('sis-user')
+        if (user) {
+            user = JSON.parse(user)
+        }
         return (
             <Switch>
-
                 {/*any user*/}
                 <Route exact path='/' component={Home}/>
                 <Route exact path='/home' component={Home}/>
@@ -27,18 +30,27 @@ class Routes extends React.Component {
                 <Route exact path='/register' component={Register}/>
 
                 {/*admin*/}
-                <Route exact path='/admin/facultyManagement' component={FacultyManagement}/>
-                <Route exact path='/admin/lecturerManagement' component={LecturerManagement}/>
+                {user && user.permissionLevel === 3 &&
+                <Route exact path='/admin/facultyManagement' component={FacultyManagement}/>}
+                {user && user.permissionLevel === 3 &&
+                <Route exact path='/admin/lecturerManagement' component={LecturerManagement}/>}
+
 
                 {/*instructor, admin*/}
-                <Route exact path='/courses/:id/edit' component={CourseEdit}/>
+                {user && (user.permissionLevel === 2 || user.permissionLevel === 3) &&
+                <Route exact path='/courses/:id/edit' component={CourseEdit}/>}
 
                 {/*instructor , student, admin*/}
-                <Route exact path='/profile' component={Profile}/>
-                <Route exact path='/degree/:id/courses' component={CourseList}/>
-                <Route exact path='/courses/search' component={SearchCourse}/>
-                <Route exact path='/courses/:id/view' component={CourseView}/>
-                <Route exact path='/faculties/:id/degrees' component={DegreeList}/>
+                {user && 1 <= user.permissionLevel <= 3 &&
+                <Route exact path='/profile' component={Profile}/>}
+                {user && 1 <= user.permissionLevel <= 3 &&
+                <Route exact path='/degree/:id/courses' component={CourseList}/>}
+                {user && 1 <= user.permissionLevel <= 3 &&
+                <Route exact path='/courses/search' component={SearchCourse}/>}
+                {user && 1 <= user.permissionLevel <= 3 &&
+                <Route exact path='/courses/:id/view' component={CourseView}/>}
+                {user && 1 <= user.permissionLevel <= 3 &&
+                <Route exact path='/faculties/:id/degrees' component={DegreeList}/>}
 
                 <Route component={NotFoundPage}/>
             </Switch>

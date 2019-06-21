@@ -22,20 +22,18 @@ export default class BreadcrumSection extends React.Component {
                                 style={{marginLeft: 5, marginRight: 5}}
                                 name="year" value={this.props.value}
                                 onChange={this.props.handleChange}>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
+                            <option value="1st">1st</option>
+                            <option value="2nd">2nd</option>
+                            <option value="3rd">3rd</option>
+                            <option value="4th">4th</option>
                         </select>
                         Semester :
                         <select className="browser-default custom-select"
                                 style={{marginLeft: 5, marginRight: 5}}
                                 name="semester" value={this.props.semester}
                                 onChange={this.props.handleChange}>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
+                            <option value="1st">1st</option>
+                            <option value="2nd">2nd</option>
                         </select>
                     </MDBFormInline>
                 </MDBCardBody>

@@ -4,7 +4,15 @@ import {MDBListGroup, MDBListGroupItem} from "mdbreact"
 export default class MyCourses extends React.Component {
 
     handleClick = id => {
-        window.location = '/courses/' + id + '/view'
+        var user = localStorage.getItem('sis-user')
+        if (user) {
+            user = JSON.parse(user)
+            if (user.permissionLevel == 1) {
+                window.location = '/courses/' + id + '/view'
+            } else if (user.permissionLevel == 2 || user.permissionLevel == 3) {
+                window.location = '/courses/' + id + '/edit'
+            }
+        }
     }
 
     render() {

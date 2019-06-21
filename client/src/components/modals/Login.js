@@ -10,15 +10,13 @@ import {
     MDBCardBody
 } from 'mdbreact'
 import {getHash} from '../functions/Functions'
-import {login} from '../functions/Services'
-// import {getHash} from './commons/Functions'
+import config from '../functions/config.json'
 
 class Login extends Component {
 
     constructor(props, context) {
         super(props, context)
         this.state = {
-            // validated: false,
             MDBModalShowErr: false,
             MDBModalErrMsg: "Incorrect username or password!!!",
             username: "",
@@ -41,20 +39,32 @@ class Login extends Component {
 
     handleSubmit = event => {
         this.setState({MDBModalShowErr: false})
-        console.log(this.state)
-        console.log(getHash(this.state.password))
 
-        login(this.state).then(data=>console.log(data))
+        const body = {
+            email: this.state.email,
+            password: getHash(this.state.password)
+        }
 
-        // login({username: this.state.username, password: getHash(this.state.password)})
-        //     .then(res => {
-        //         localStorage.setItem('user', JSON.stringify(res))
-        //         this.props.handleClose()
-        //     })
-        //     .catch(err => {
-        //         console.log(err)
-        //         this.setState({MDBModalShowErr: true})
-        //     })
+        fetch(config.springBaseUrl + '/login', {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })
+        })
+            .then(res => {
+                const auth = res.headers.get('authorization')
+                return res.json().then(r => {
+                    return {...r, token: auth}
+                })
+            }).then(data => {
+            localStorage.setItem('sis-user', JSON.stringify(data))
+            window.location = "/"
+            this.props.toggle()
+        }).catch(err => {
+            console.log(err)
+            this.setState({MDBModalShowErr: true})
+        })
 
         event.preventDefault()
         event.stopPropagation()
@@ -94,7 +104,13 @@ class Login extends Component {
                                         onChange={this.handleChange}
                                         required
                                     />
-                                    <div className="text-center mb-4 mt-5">
+                                    <MDBRow className="w-75">
+                                        <MDBCol>
+                                            {this.state.MDBModalShowErr &&
+                                            <p style={{color: 'red'}}>{this.state.MDBModalErrMsg}</p>}
+                                        </MDBCol>
+                                    </MDBRow>
+                                    <div className="text-center mb-4">
                                         <MDBBtn
                                             color="primary"
                                             type="submit"

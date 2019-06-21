@@ -9,16 +9,37 @@ import {
     MDBListGroup,
     MDBListGroupItem, MDBRow
 } from "mdbreact"
+import {getDegrees} from '../functions/Services'
 
 export default class DegreeList extends React.Component {
 
     state = {
-        fid: ''
+        degrees: []
     }
 
     componentDidMount() {
+
         if (this.props.match && this.props.match.params) {
-            this.setState({fid: this.props.match.params.id})
+            const did = this.props.match.params.id
+            getDegrees(did)
+                .then(res => {
+                    const degrees = []
+                    res.degrees.map((degree, i) => {
+                        const to = "/degree/" + degree.dcode + "/courses"
+                        return degrees.push(
+                            <NavLink to={to} key={i}>
+                                <MDBListGroupItem>
+                                    <MDBIcon icon="graduation-cap" className="mr-3"/>
+                                    {degree.dname}
+                                </MDBListGroupItem>
+                            </NavLink>
+                        )
+                    })
+                    this.setState({degrees: degrees})
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         } else {
             this.props.history.push('/faculties/404')
         }
@@ -32,18 +53,7 @@ export default class DegreeList extends React.Component {
                         <MDBCardHeader>Degrees</MDBCardHeader>
                         <MDBCardBody>
                             <MDBListGroup className="list-group-flush">
-                                <NavLink to="/degree/SE/courses">
-                                    <MDBListGroupItem>
-                                        <MDBIcon icon="graduation-cap" className="mr-3"/>
-                                        Software Engineering
-                                    </MDBListGroupItem>
-                                </NavLink>
-                                <NavLink to="/degree/IT/courses">
-                                    <MDBListGroupItem>
-                                        <MDBIcon icon="graduation-cap" className="mr-3"/>
-                                        Information Technology
-                                    </MDBListGroupItem>
-                                </NavLink>
+                                {this.state.degrees}
                             </MDBListGroup>
                         </MDBCardBody>
                     </MDBCard>

@@ -23,13 +23,21 @@ class SideNavigation extends Component {
         }));
     }
 
-    handleAdminClick(){
-        window.location = '/admin/facultyManagement'
+    handleAdminClicks(source){
+        if(source === "Faculty"){
+            window.location = '/admin/facultyManagement'
+        } else if(source === "Admin"){
+            window.location = '/admin/adminManagement'
+        } else if(source === "Instructor"){
+            window.location = '/admin/instructorManagement'
+        } else if(source === "Student"){
+            window.location = '/admin/studentManagement'
+        } else if(source === "Course"){
+            window.location = '/admin/courseManagement'
+        }
+
     }
 
-    handleLecturerClick(){
-        window.location = '/admin/lecturerManagement'
-    }
 
     render() {
         return (
@@ -112,7 +120,7 @@ class SideNavigation extends Component {
                             Faculty Management
                             <MDBCollapse id="fmCollapse" isOpen={this.state.collapseID}>
                                 <MDBListGroup className="list-group-flush" style={{width: "100"}}>
-                                    <MDBListGroupItem onClick={() => this.handleAdminClick()}>Faculty Management</MDBListGroupItem>
+                                    <MDBListGroupItem onClick={() => this.handleAdminClicks("Faculty")}>Faculty Management</MDBListGroupItem>
                                 </MDBListGroup>
                             </MDBCollapse>
                         </MDBListGroupItem>
@@ -123,8 +131,7 @@ class SideNavigation extends Component {
                             Course Management
                             <MDBCollapse id="cmCollapse" isOpen={this.state.collapseID}>
                                 <MDBListGroup className="list-group-flush" style={{width: "100"}}>
-                                    <MDBListGroupItem>Add Course</MDBListGroupItem>
-                                    <MDBListGroupItem>Edit Course</MDBListGroupItem>
+                                    <MDBListGroupItem onClick={() => this.handleAdminClicks("Course")}>Course Management</MDBListGroupItem>
                                 </MDBListGroup>
                             </MDBCollapse>
                         </MDBListGroupItem>
@@ -135,8 +142,9 @@ class SideNavigation extends Component {
                             User Management
                             <MDBCollapse id="umCollapse" isOpen={this.state.collapseID}>
                                 <MDBListGroup className="list-group-flush" style={{width: "100"}}>
-                                    <MDBListGroupItem onClick={() => this.handleLecturerClick()}>Lecturer Management</MDBListGroupItem>
-                                    <MDBListGroupItem>Edit User</MDBListGroupItem>
+                                    <MDBListGroupItem onClick={() => this.handleAdminClicks("Admin")}>Admin Management</MDBListGroupItem>
+                                    <MDBListGroupItem onClick={() => this.handleAdminClicks("Instructor")}>Instructor Management</MDBListGroupItem>
+                                    <MDBListGroupItem onClick={() => this.handleAdminClicks("Student")}>Student Management</MDBListGroupItem>
                                 </MDBListGroup>
                             </MDBCollapse>
                         </MDBListGroupItem>

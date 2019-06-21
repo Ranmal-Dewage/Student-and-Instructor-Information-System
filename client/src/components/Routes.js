@@ -10,6 +10,8 @@ import CourseView from './pages/CourseView'
 import DegreeList from './pages/DegreeList'
 import CourseList from './pages/CourseList'
 import NotFoundPage from './pages/NotFoundPage'
+import FacultyManagement from './admin/FacultyManagement'
+import LecturerManagement from './admin/LecturerManagement'
 
 class Routes extends React.Component {
     render() {
@@ -25,6 +27,8 @@ class Routes extends React.Component {
                 <Route exact path='/courses/search' component={SearchCourse}/>
                 <Route exact path='/courses/:id/view' component={CourseView}/>
                 <Route exact path='/faculties/:id/degrees' component={DegreeList}/>
+                <Route exact path='/admin/facultyManagement' component={FacultyManagement}/>
+                <Route exact path='/admin/lecturerManagement' component={LecturerManagement}/>
                 <Route component={NotFoundPage}/>
             </Switch>
         );

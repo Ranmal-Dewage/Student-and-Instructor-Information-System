@@ -27,6 +27,7 @@ export default class CourseManagement extends Component {
         this.setState({courseButtonName: "Add Course"});
         //Fetch from back end and assign to faculties array from here
         this.getFaculties();
+        this.getCourses();
     }
 
     getFaculties = () => {

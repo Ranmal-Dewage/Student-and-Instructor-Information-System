@@ -21,7 +21,6 @@ export default class AdminManagement extends Component {
 
     componentDidMount() {
         this.setState({adminButtonName: "Add Admin"});
-        //Fetch from back end and assign to faculties array from here
         this.getAdmins();
     }
 

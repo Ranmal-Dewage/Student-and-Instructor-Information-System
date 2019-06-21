@@ -1,3 +1,4 @@
 {
-    "baseUrl": "http://localhost:3001"
+  "nodeBaseUrl": "http://localhost:3001",
+  "springBaseUrl": "http://localhost:9090"
 }

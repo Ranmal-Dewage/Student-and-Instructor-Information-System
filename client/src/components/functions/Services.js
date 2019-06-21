@@ -1,54 +1,59 @@
 import config from './config.json'
 
-const baseUrl = config.baseUrl
+const nodeBaseUrl = config.nodeBaseUrl
+const springBaseUrl = config.springBaseUrl
 
-export function login(body, token) {
-    return callPost(baseUrl + '/login', body, token);
+function getToken() {
+    const token = "Bearer tojanscasvmsakdnauishdkjsbd" //TODO get from localStorage
+    return token
 }
 
-export function register(body, token) {
-    return callPost(baseUrl + '/register', body, token);
+export function login(body) {
+    return callPost(springBaseUrl + '/login', body);
 }
 
-const callGet = (url, token) => {
+export function register(body) {
+    return callPost(springBaseUrl + '/users', body);
+}
+
+const callGet = (url) => {
     return fetch(url, {
         method: 'GET',
         headers: new Headers({
             'Content-Type': 'text/plain',
-            'Authorization': token
+            'Authorization': getToken()
         })
     }).then(handleres);
 }
 
-const callPost = (url, body, token) => {
-    console.log(token)
+const callPost = (url, body) => {
     return fetch(url, {
         method: 'POST',
         body: JSON.stringify(body),
         headers: new Headers({
             'Content-Type': 'text/plain',
-            'Authorization': token
+            'Authorization': getToken()
         })
     }).then(handleres);
 }
 
-const callPut = (url, body, token) => {
+const callPut = (url, body) => {
     return fetch(url, {
         method: 'PUT',
         body: JSON.stringify(body),
         headers: new Headers({
             'Content-Type': 'text/plain',
-            'Authorization': token
+            'Authorization': getToken()
         })
     }).then(handleres);
 }
 
-const callDelete = (url, token) => {
+const callDelete = (url) => {
     return fetch(url, {
         method: 'DELETE',
         headers: new Headers({
             'Content-Type': 'text/plain',
-            'Authorization': token
+            'Authorization': getToken()
         })
     }).then(handleres);
 }

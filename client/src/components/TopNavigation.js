@@ -36,6 +36,10 @@ class TopNavigation extends Component {
     }
 
     render() {
+        var user = localStorage.getItem('sis-user')
+        if (user) {
+            user = JSON.parse(user)
+        }
         return (
             <>
                 <MDBNavbar className="flexible-navbar" light expand="md" scrolling>
@@ -53,35 +57,44 @@ class TopNavigation extends Component {
                             </MDBNavItem>
                         </MDBNavbarNav>
                         <MDBNavbarNav right>
-                            <MDBNavItem>
-                                <MDBFormInline waves onSubmit={this.courseSearch}>
-                                    <div className="md-form my-0">
-                                        <input className="form-control mr-sm-2" type="text" placeholder="Search courses"
-                                               aria-label="Search courses"
-                                               onChange={(e) => this.setState({searchVal: e.target.value})}/>
-                                    </div>
-                                </MDBFormInline>
-                            </MDBNavItem>
-                            <MDBNavItem>
-                                <a className="border border-light rounded mr-1 nav-link Ripple-parent" href="/register">Sign
-                                    up</a>
-                            </MDBNavItem>
-                            <MDBNavItem>
-                                <a className="border border-light rounded mr-1 nav-link Ripple-parent" href="#!"
-                                   onClick={() => this.toggle()}>Log in</a>
-                            </MDBNavItem>
-                            <MDBNavItem>
-                                <MDBDropdown>
-                                    <MDBDropdownToggle nav caret>
-                                        <MDBIcon icon="user"/>
-                                    </MDBDropdownToggle>
-                                    <MDBDropdownMenu basic right>
-                                        <MDBDropdownItem href="#!">Account settings</MDBDropdownItem>
-                                        <MDBDropdownItem divider/>
-                                        <MDBDropdownItem href="#!">Sign out</MDBDropdownItem>
-                                    </MDBDropdownMenu>
-                                </MDBDropdown>
-                            </MDBNavItem>
+                            {user ?
+                                <>
+                                    <MDBNavItem>
+                                        <MDBFormInline waves onSubmit={this.courseSearch}>
+                                            <div className="md-form my-0">
+                                                <input className="form-control mr-sm-2" type="text"
+                                                       placeholder="Search courses"
+                                                       aria-label="Search courses"
+                                                       onChange={(e) => this.setState({searchVal: e.target.value})}/>
+                                            </div>
+                                        </MDBFormInline>
+                                    </MDBNavItem>
+                                    <MDBNavItem>
+                                        <MDBDropdown>
+                                            <MDBDropdownToggle nav caret>
+                                                <MDBIcon icon="user"/>
+                                            </MDBDropdownToggle>
+                                            <MDBDropdownMenu basic right>
+                                                <MDBDropdownItem href="/profile">Profile</MDBDropdownItem>
+                                                <MDBDropdownItem divider/>
+                                                <MDBDropdownItem href="#!">Sign out</MDBDropdownItem>
+                                            </MDBDropdownMenu>
+                                        </MDBDropdown>
+                                    </MDBNavItem>
+                                </>
+                                :
+                                <>
+                                    <MDBNavItem>
+                                        <a className="border border-light rounded mr-1 nav-link Ripple-parent"
+                                           href="/register">Sign
+                                            up</a>
+                                    </MDBNavItem>
+                                    <MDBNavItem>
+                                        <a className="border border-light rounded mr-1 nav-link Ripple-parent" href="#!"
+                                           onClick={() => this.toggle()}>Log in</a>
+                                    </MDBNavItem>
+                                </>
+                            }
                         </MDBNavbarNav>
                     </MDBCollapse>
                 </MDBNavbar>

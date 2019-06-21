@@ -44,7 +44,7 @@ class Login extends Component {
         console.log(this.state)
         console.log(getHash(this.state.password))
 
-        login(this.state,"Bearer tojanscasvmsakdnauishdkjsbd").then(data=>console.log(data))
+        login(this.state).then(data=>console.log(data))
 
         // login({username: this.state.username, password: getHash(this.state.password)})
         //     .then(res => {

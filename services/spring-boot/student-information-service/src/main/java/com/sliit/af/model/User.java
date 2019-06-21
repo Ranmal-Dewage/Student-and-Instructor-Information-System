@@ -38,6 +38,8 @@ public class User {
 	@NotBlank
 	private String mobile;
 	@NotBlank
+	private String address;
+	@NotBlank
 	@Email
 	@Indexed
 	private String email;

@@ -3,11 +3,13 @@
  */
 package com.sliit.af.model;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -48,4 +50,8 @@ public class User {
 	private Set<Role> roles;
 	@Valid
 	private VerificationToken verificationToken;
+	private List<String> faculty;
+	private List<String> degree;
+	@Pattern(regexp = "(^[0-9]{9}[vVxX]$)||(^[0-9]{12}$)", message="Invalid NIC")
+	private String nic;
 }

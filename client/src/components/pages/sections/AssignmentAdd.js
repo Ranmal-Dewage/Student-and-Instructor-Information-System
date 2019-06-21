@@ -38,7 +38,8 @@ export default class AssignmentAdd extends Component {
     getFiles = acceptedFiles => {
         const data = new FormData()
         for (var x = 0; x < acceptedFiles.length; x++) {
-            data.append('files[]', acceptedFiles[x])
+            console.log(acceptedFiles[x])
+            data.append('files', acceptedFiles[x])
         }
         console.log(data)
     }
@@ -48,7 +49,7 @@ export default class AssignmentAdd extends Component {
             <MDBRow>
                 <MDBCol md="12 mt-2">
                     <MDBCard className="mb-4">
-                        <MDBCardHeader>Course Materials</MDBCardHeader>
+                        <MDBCardHeader>Assignment</MDBCardHeader>
                         <MDBRow className="align-items-center justify-content-center pb-3">
                             <MDBRow className="w-75">
                                 <MDBCol md={6}>

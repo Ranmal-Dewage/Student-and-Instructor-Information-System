@@ -54,6 +54,7 @@ public class User {
 	private VerificationToken verificationToken;
 	private List<String> faculty;
 	private List<String> degree;
+	private List<String> courses;
 	@Pattern(regexp = "(^[0-9]{9}[vVxX]$)||(^[0-9]{12}$)", message="Invalid NIC")
 	private String nic;
 }

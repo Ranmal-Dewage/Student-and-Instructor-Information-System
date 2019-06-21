@@ -51,6 +51,7 @@ export default class Register extends React.Component {
             }
             register(body)
                 .then(res => {
+                    console.log(res)
                     toast.success("Registration successful. Click the confirmation link sent to your email")
                     this.props.history.push('/')
                 })

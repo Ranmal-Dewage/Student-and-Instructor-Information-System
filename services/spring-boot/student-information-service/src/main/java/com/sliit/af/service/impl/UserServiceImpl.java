@@ -105,8 +105,9 @@ public class UserServiceImpl implements UserService {
 			if (dbUser.isPresent() && Objects.nonNull(user.getCourses())) {
 				dbUser.get().setCourses(user.getCourses());
 			}
+			return userRepository.save(dbUser.get());
 		}
-		// for insert and update
+		// for insert
 		return userRepository.save(user);
 	}
 

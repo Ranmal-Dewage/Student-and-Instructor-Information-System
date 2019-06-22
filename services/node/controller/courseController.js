@@ -146,6 +146,26 @@ route.get("/course/:code", (req, res) => {
 
 })
 
+//get all courses
+route.post("/course", async (req, res) => {
+
+    try {
+        const query = {}
+        Courses.find(query, (err, course) => {
+            if (err) {
+                console.log(err);
+                res.status(500).json({ error: err });
+            } else {
+                res.status(200).json({ courses: course })
+            }
+        });
+    } catch (ex) {
+        res.status(500).send("Server Error" + ex)
+    }
+
+})
+
+
 //get courses belong to a paricular degress,year and semester
 //eg :- localhost:4000/courses?dcode=SE&year=3rd&sem=1st
 route.get("/", tf.verifyToken, (req, res) => {

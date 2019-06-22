@@ -12,6 +12,22 @@ function getToken() {
     return null
 }
 
+export function getFaculty(id) {
+    return callGet(nodeBaseUrl + '/faculties/' + id);
+}
+
+export function getDegree(id) {
+    return callGet(nodeBaseUrl + '/degrees/' + id);
+}
+
+export function getCourse(id) {
+    return callGet(nodeBaseUrl + '/courses/course/' + id);
+}
+
+export function updateUser(body) {
+    return callPut(springBaseUrl + '/users', body);
+}
+
 export function getFaculties() {
     return callGet(nodeBaseUrl + '/faculties/');
 }

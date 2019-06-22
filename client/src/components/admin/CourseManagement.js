@@ -1,5 +1,16 @@
 import React, {Component} from 'react';
-import {MDBBtn, MDBCol, MDBInput, MDBRow, MDBTable, MDBTableBody, MDBTableHead, MDBCard, MDBCardHeader, MDBCardBody} from 'mdbreact';
+import {
+    MDBBtn,
+    MDBCol,
+    MDBInput,
+    MDBRow,
+    MDBTable,
+    MDBTableBody,
+    MDBTableHead,
+    MDBCard,
+    MDBCardHeader,
+    MDBCardBody
+} from 'mdbreact';
 import config from "../functions/config";
 import {getHash} from "../functions/Functions";
 
@@ -10,17 +21,17 @@ export default class CourseManagement extends Component {
 
     constructor(props) {
         super(props);
-        this.state ={
+        this.state = {
             courseID: '',
             courseName: '',
             courseYear: '',
             courseSemester: '',
             courseDescription: '',
             courseFaculty: '',
-            courseDegree:'',
-            courseCredits:'',
+            courseDegree: '',
+            courseCredits: '',
             courseInstructors: [],
-            instructors:[],
+            instructors: [],
             degrees: [],
             faculties: [],
             courses: [],
@@ -48,20 +59,20 @@ export default class CourseManagement extends Component {
 
     getFaculties = () => {
         let allFaculties = [];
-        fetch(nodeBaseUrl+"/faculties", {
+        fetch(nodeBaseUrl + "/faculties", {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Authorization': this.getToken()
             })
-        }).then(res =>{
-            if(res.ok){
+        }).then(res => {
+            if (res.ok) {
                 return res.json();
             } else {
                 alert("Error when obtaining faculty")
             }
         }).then(data => {
-            data.map((item) =>{
+            data.faculties.map((item) => {
                 return allFaculties.push({
                     facultyCode: item.fcode,
                     facultyName: item.fname,
@@ -76,21 +87,22 @@ export default class CourseManagement extends Component {
     };
 
     getCourses = () => {
-        let allCourses = [];
-        fetch(nodeBaseUrl+"/courses", {
-            method: 'GET',
+        var allCourses = [];
+        fetch(nodeBaseUrl + "/courses/course", {
+            method: 'POST',
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Authorization': this.getToken()
             })
-        }).then(res =>{
-            if(res.ok){
+        }).then(res => {
+            if (res.ok) {
                 return res.json();
             } else {
                 alert("Error when obtaining courses")
             }
         }).then(data => {
-            data.map((item) =>{
+            console.log(data);
+            data.courses.map((item) => {
                 return allCourses.push({
                     courseID: item.ccode,
                     courseName: item.cname,
@@ -110,71 +122,79 @@ export default class CourseManagement extends Component {
     };
 
     getDegreeForFaculty = (facultyCode) => {
-        let degrees = [];
-        fetch(nodeBaseUrl+"/degrees/"+ facultyCode, {
+        let allDegrees = [];
+        fetch(nodeBaseUrl + "/degrees", {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Authorization': this.getToken()
             })
-        }).then(res =>{
-            if(res.ok){
+        }).then(res => {
+            if (res.ok) {
                 return res.json();
             } else {
                 alert("Error when obtaining degrees")
             }
         }).then(data => {
-            data.map((item) =>{
-                return degrees.push({
+            data.degrees.map((item) => {
+                return allDegrees.push({
                     facultyCode: item.fcode,
                     degreeCode: item.dcode,
                     degreeName: item.dname,
-                    degreeDuration: item.duration})
+                    degreeDuration: item.duration
+                })
             });
-            this.setState({degrees: degrees})
+            this.setState({degrees: allDegrees})
         }).catch(err => {
             console.log(err)
         })
     };
 
-    getInstructorsForFaculty = (facultyCode) => {
-        let instructors = [];
-        fetch(nodeBaseUrl+"/admin/faculties/instructors/"+ facultyCode, {
+    getInstructors = () => {
+        let allInstructors = [];
+        fetch(springBaseUrl + "/users/roles/instructor", {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Authorization': this.getToken()
             })
-        }).then(res =>{
-            if(res.ok){
+        }).then(res => {
+            if (res.ok) {
                 return res.json();
             } else {
-                alert("Error when obtaining instructors")
+                alert("Error when obtaining instructors");
             }
         }).then(data => {
-            data.map((item) =>{
-                return instructors.push({
+            data.map((item) => {
+                return allInstructors.push({
+                    instructorID: item.id,
+                    instructorFaculty: item.faculty,
+                    instructorDegree: item.degree,
                     instructorFirstName: item.firstName,
                     instructorLastName: item.lastName,
+                    instructorNic: item.nic,
+                    instructorPhone: item.mobile,
                     instructorEmail: item.email,
-                    instructorCourses: item.courses
+                    instructorPassword: item.password,
+                    instructorAddress: item.address
                 })
             });
-            this.setState({instructors: instructors})
+
+            this.setState({instructors: allInstructors})
         }).catch(err => {
             console.log(err)
         })
     };
 
     deleteCourse(courseID) {
-        fetch(nodeBaseUrl+"/courses/"+ courseID, {
+        fetch(nodeBaseUrl + "/courses/" + courseID, {
             method: 'DELETE',
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Authorization': this.getToken()
             })
         }).then(result => {
-            if(result.ok){
+            if (result.ok) {
                 alert("Course deleted successfully");
                 this.getCourses();
             } else {
@@ -186,16 +206,15 @@ export default class CourseManagement extends Component {
     }
 
 
-
     getCourseByID = (courseID) => {
-        fetch(nodeBaseUrl+"/courses/"+ courseID, {
+        fetch(nodeBaseUrl + "/courses/" + courseID, {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
                 'Authorization': this.getToken()
             })
         }).then(res => {
-            if(res.ok){
+            if (res.ok) {
                 return res.json();
             } else {
                 alert("Error when obtaining the course information")
@@ -216,7 +235,7 @@ export default class CourseManagement extends Component {
     };
 
     addCourse = (obj) => {
-        fetch(nodeBaseUrl+"/courses", {
+        fetch(nodeBaseUrl + "/courses", {
             method: 'POST',
             body: JSON.stringify(obj),
             headers: new Headers({
@@ -224,7 +243,7 @@ export default class CourseManagement extends Component {
                 'Authorization': this.getToken()
             })
         }).then(result => {
-            if(result.ok){
+            if (result.ok) {
                 alert("Course added successfully");
             } else {
                 alert("The course can't be added");
@@ -234,8 +253,8 @@ export default class CourseManagement extends Component {
         });
     };
 
-    updateCourse = (courseID,obj) => {
-        fetch(nodeBaseUrl+"/courses/"+ courseID, {
+    updateCourse = (courseID, obj) => {
+        fetch(nodeBaseUrl + "/courses/" + courseID, {
             method: 'PUT',
             body: JSON.stringify(obj),
             headers: new Headers({
@@ -243,7 +262,7 @@ export default class CourseManagement extends Component {
                 'Authorization': this.getToken()
             })
         }).then(result => {
-            if(result.ok){
+            if (result.ok) {
                 alert("Course updated successfully");
             } else {
                 alert("The course can't be updated");
@@ -253,13 +272,13 @@ export default class CourseManagement extends Component {
         });
     };
 
-    addInstructorsToArray(name,email){
+    addInstructorsToArray(name, email) {
         let tempArray = this.state.courseInstructors;
 
-        if(tempArray !== []){
+        if (tempArray !== []) {
             let breakCondition = false;
             tempArray.map((item) => {
-                if((item.instructorEmail === email) && !breakCondition){
+                if ((item.instructorEmail === email) && !breakCondition) {
                     //Error Message if ids are same
                     alert("Trying to add the same person");
                     breakCondition = true;
@@ -267,7 +286,7 @@ export default class CourseManagement extends Component {
                 }
                 return null;
             });
-            if(!breakCondition){
+            if (!breakCondition) {
                 tempArray.push({
                     instructorName: name,
                     instructorEmail: email
@@ -284,8 +303,8 @@ export default class CourseManagement extends Component {
     };
 
     addCourseToInstructor = (courseID, email) => {
-        let instructorArray = this.state.instructors;
-        let tempArray = this.state.coursesOfAInstructor;
+        var instructorArray = this.state.instructors;
+        var tempArray = this.state.coursesOfAInstructor;
 
         if (instructorArray !== []) {
             let breakCondition = false;
@@ -293,12 +312,15 @@ export default class CourseManagement extends Component {
                 if ((item.instructorEmail === email) && !breakCondition) {
                     if (item.courses !== []) {
                         tempArray.push(item.courses);
-                        this.setState({coursesOfAInstructor: [...tempArray, courseID]}, () => {
+                        console.log(tempArray);
+                        console.log(courseID);
+                        this.setState({coursesOfAInstructor: tempArray ? [...tempArray, courseID] : [courseID]}, () => {
                             let obj = {
-                                "courses": [this.state.coursesOfAInstructor]
+                                "id": item.instructorID,
+                                "courses": this.state.coursesOfAInstructor
                             };
 
-                            fetch(springBaseUrl + "/admin/instructors/" + email, {
+                            fetch(springBaseUrl + "/users", {
                                 method: 'PUT',
                                 body: JSON.stringify(obj),
                                 headers: new Headers({
@@ -320,10 +342,11 @@ export default class CourseManagement extends Component {
                     } else {
                         this.setState({courseOfAInstructor: [courseID]}, () => {
                             let obj = {
-                                "courses": [this.state.coursesOfAInstructor]
+                                "id": item.instructorID,
+                                "courses": this.state.coursesOfAInstructor
                             };
 
-                            fetch(springBaseUrl + "/admin/instructors/" + email, {
+                            fetch(springBaseUrl + "/users", {
                                 method: 'PUT',
                                 body: JSON.stringify(obj),
                                 headers: new Headers({
@@ -347,26 +370,26 @@ export default class CourseManagement extends Component {
         }
     };
 
-    deleteInstructorFromArray(email){
+    deleteInstructorFromArray(email) {
         let tempArray = this.state.courseInstructors;
         tempArray = tempArray.filter(obj => obj.instructorEmail !== email);
         this.setState({courseInstructors: tempArray});
     }
 
-    addUpdateCourse(courseID, source){
+    addUpdateCourse(courseID, source) {
         let tempArray = this.state.courses;
 
-        if(source === "fromAddCourse"){
-            if(this.state.courseButtonName === "Add Course"){
-                if( this.state.courseID === "" || this.state.courseName === "" || this.state.courseYear === "" ||  this.state.courseSemester === "" ||
-                    this.state.courseFaculty === "" || this.state.courseDegree === "" || this.state.courseCredits === "" || this.state.courseInstructors === []) {
+        if (source === "fromAddCourse") {
+            if (this.state.courseButtonName === "Add Course") {
+                if (this.state.courseID === "" || this.state.courseName === "" || this.state.courseYear === "" || this.state.courseSemester === "" ||
+                    this.state.courseFaculty === "" || this.state.courseDegree === "" || this.state.courseCredits === "") {
                     //Error Message
                     alert("Error message NIL");
                 } else {
-                    if(tempArray !== []){
+                    if (tempArray !== []) {
                         let breakCondition = false;
                         tempArray.map((item) => {
-                            if((item.courseID === this.state.courseID) && !breakCondition){
+                            if ((item.courseID === this.state.courseID) && !breakCondition) {
                                 //Error Message if ids are same
                                 alert("Error message");
                                 breakCondition = true;
@@ -374,67 +397,70 @@ export default class CourseManagement extends Component {
                             }
                             return null;
                         });
-                        if(!breakCondition){
+                        if (!breakCondition) {
                             let courseObj = {
                                 "ccode": this.state.courseID,
-                                "cname":  this.state.courseName,
-                                "year":  this.state.courseYear,
-                                "semester":  this.state.courseSemester,
-                                "description":  this.state.courseDescription,
-                                "fcode":  this.state.courseFaculty,
-                                "dcode":  this.state.courseDegree,
-                                "credits":  this.state.courseCredits,
+                                "cname": this.state.courseName,
+                                "year": this.state.courseYear,
+                                "semester": this.state.courseSemester,
+                                "description": this.state.courseDescription,
+                                "fcode": this.state.courseFaculty,
+                                "dcode": this.state.courseDegree,
+                                "credits": this.state.courseCredits,
                                 "accept": false,
                                 "cmaterials": this.state.cmaterials,
                                 "assignments": []
                             };
 
+                            this.addCourse(courseObj);
+                            this.getCourses();
 
                             this.state.courseInstructors.map((instructor) => {
                                 this.addCourseToInstructor(this.state.courseID, instructor.instructorEmail);
                             });
 
-                            this.addCourse(courseObj);
-                            this.getCourses();
+
                         }
                     } else {
                         let courseObj = {
                             "ccode": this.state.courseID,
-                            "cname":  this.state.courseName,
-                            "year":  this.state.courseYear,
-                            "semester":  this.state.courseSemester,
-                            "description":  this.state.courseDescription,
-                            "fcode":  this.state.courseFaculty,
-                            "dcode":  this.state.courseDegree,
-                            "credits":  this.state.courseCredits,
+                            "cname": this.state.courseName,
+                            "year": this.state.courseYear,
+                            "semester": this.state.courseSemester,
+                            "description": this.state.courseDescription,
+                            "fcode": this.state.courseFaculty,
+                            "dcode": this.state.courseDegree,
+                            "credits": this.state.courseCredits,
                             "accept": false,
                             "cmaterials": this.state.cmaterials,
                             "assignments": []
                         };
 
-                        this.state.courseInstructors.map((instructor) => {
-                            this.addCourseToInstructor(this.state.courseID, instructor.instructorEmail);
-                        });
-
                         this.addCourse(courseObj);
                         this.getCourses();
+
+                        let t = this.state.courseInstructors;
+                        t.map((instructor) => {
+                            this.addCourseToInstructor(this.state.courseID, instructor.instructorEmail);
+                            return null;
+                        });
+
                     }
                 }
-            } else if(this.state.courseButtonName === "Update Course") {
+            } else if (this.state.courseButtonName === "Update Course") {
                 let courseObj = {
                     "ccode": this.state.courseID,
-                    "cname":  this.state.courseName,
-                    "year":  this.state.courseYear,
-                    "semester":  this.state.courseSemester,
-                    "description":  this.state.courseDescription,
-                    "fcode":  this.state.courseFaculty,
-                    "dcode":  this.state.courseDegree,
-                    "credits":  this.state.courseCredits,
+                    "cname": this.state.courseName,
+                    "year": this.state.courseYear,
+                    "semester": this.state.courseSemester,
+                    "description": this.state.courseDescription,
+                    "fcode": this.state.courseFaculty,
+                    "dcode": this.state.courseDegree,
+                    "credits": this.state.courseCredits,
                     "accept": false,
                     "cmaterials": this.state.cmaterials,
                     "assignments": []
                 };
-
 
 
                 this.updateCourse(courseID, courseObj);
@@ -448,49 +474,48 @@ export default class CourseManagement extends Component {
             this.setState({courseDescription: ''});
             this.setState({courseFaculty: ''});
             this.setState({courseDegree: ''});
-            this.setState({courseInstructors: ''});
             this.setState({courseCredits: ''});
-        } else if(source === "fromEditCourse"){
+        } else if (source === "fromEditCourse") {
             this.setState({courseButtonName: "Update Course"});
 
             this.getCourseByID(courseID)
         }
     };
 
-    setFacultyAndDegrees(selectedString){
-        if(selectedString !== "Select Faculty") {
+    setFacultyAndDegrees(selectedString) {
+        if (selectedString !== "Select Faculty") {
             let array = selectedString.split(" ");
             this.setState({courseFaculty: array[0]});
             this.getDegreeForFaculty(array[0]);
-            this.getInstructorsForFaculty(array[0]);
+            this.getInstructors();
         }
     }
 
-    setCourseDegree(selectedString){
-        if(selectedString !== "Select Degree") {
+    setCourseDegree(selectedString) {
+        if (selectedString !== "Select Degree") {
             let array = selectedString.split(" ");
             this.setState({courseDegree: array[0]});
         }
     }
 
-    setSelectedInstructors(){
+    setSelectedInstructors() {
         let targetValue = document.getElementById("instructorSelect");
         let instructorEmail = targetValue[targetValue.selectedIndex].value;
         let instructorName = targetValue[targetValue.selectedIndex].text;
 
-        if(instructorName !== "Select Instructor") {
-            this.addInstructorsToArray(instructorName,instructorEmail);
+        if (instructorName !== "Select Instructor") {
+            this.addInstructorsToArray(instructorName, instructorEmail);
         }
     }
 
     setYear = (selectedString) => {
-        if(selectedString !== "Select Year"){
+        if (selectedString !== "Select Year") {
             this.setState({courseYear: selectedString});
         }
     };
 
     setSemester = (selectedString) => {
-        if(selectedString !== "Select Semester"){
+        if (selectedString !== "Select Semester") {
             console.log(selectedString);
             this.setState({courseSemester: selectedString});
         }
@@ -505,7 +530,8 @@ export default class CourseManagement extends Component {
                         <form>
                             <MDBRow>
                                 <MDBCol>
-                                    <select className="browser-default custom-select" onChange={(e) => this.setFacultyAndDegrees(e.target.value)}>
+                                    <select className="browser-default custom-select"
+                                            onChange={(e) => this.setFacultyAndDegrees(e.target.value)}>
                                         <option>Select Faculty</option>
                                         {this.state.faculties.map((faculty) => {
                                             return <option>
@@ -515,7 +541,8 @@ export default class CourseManagement extends Component {
                                     </select>
                                 </MDBCol>
                                 <MDBCol>
-                                    <select className="browser-default custom-select" onChange={(e) => this.setCourseDegree(e.target.value)}>
+                                    <select className="browser-default custom-select"
+                                            onChange={(e) => this.setCourseDegree(e.target.value)}>
                                         <option>Select Degree</option>
                                         {this.state.degrees.map((degree) => {
                                             return <option>
@@ -527,17 +554,20 @@ export default class CourseManagement extends Component {
                             </MDBRow>
                             <MDBRow>
                                 <MDBCol>
-                                    <MDBInput label="Course ID" group type="text" validate name="courseID" value={this.state.courseID}
-                                                      onChange={(e) => this.setState({courseID: e.target.value})}/>
+                                    <MDBInput label="Course ID" group type="text" validate name="courseID"
+                                              value={this.state.courseID}
+                                              onChange={(e) => this.setState({courseID: e.target.value})}/>
                                 </MDBCol>
                                 <MDBCol>
-                                    <MDBInput label="Course Name" group type="text" validate name="courseName" value={this.state.courseName}
+                                    <MDBInput label="Course Name" group type="text" validate name="courseName"
+                                              value={this.state.courseName}
                                               onChange={(e) => this.setState({courseName: e.target.value})}/>
                                 </MDBCol>
                             </MDBRow>
                             <MDBRow>
                                 <MDBCol>
-                                    <select className="browser-default custom-select" onChange={(e) => this.setYear(e.target.value)}>
+                                    <select className="browser-default custom-select"
+                                            onChange={(e) => this.setYear(e.target.value)}>
                                         <option>Select Year</option>
                                         <option>1st</option>
                                         <option>2nd</option>
@@ -546,7 +576,8 @@ export default class CourseManagement extends Component {
                                     </select>
                                 </MDBCol>
                                 <MDBCol>
-                                    <select className="browser-default custom-select" onChange={(e) => this.setSemester(e.target.value)}>
+                                    <select className="browser-default custom-select"
+                                            onChange={(e) => this.setSemester(e.target.value)}>
                                         <option>Select Semester</option>
                                         <option>1st</option>
                                         <option>2nd</option>
@@ -555,17 +586,21 @@ export default class CourseManagement extends Component {
                             </MDBRow>
                             <MDBRow>
                                 <MDBCol md={3}>
-                                    <MDBInput label="Course Credits" group type="number" validate name="courseID" value={this.state.courseCredits}
+                                    <MDBInput label="Course Credits" group type="number" validate name="courseID"
+                                              value={this.state.courseCredits}
                                               onChange={(e) => this.setState({courseCredits: e.target.value})}/>
                                 </MDBCol>
                                 <MDBCol>
-                                    <MDBInput type="textarea" label="Course Description" name="courseDescription" value={this.state.courseDescription}
-                                              onChange={(e) => this.setState({courseDescription: e.target.value})} outline />
+                                    <MDBInput type="textarea" label="Course Description" name="courseDescription"
+                                              value={this.state.courseDescription}
+                                              onChange={(e) => this.setState({courseDescription: e.target.value})}
+                                              outline/>
                                 </MDBCol>
                             </MDBRow>
                             <MDBRow>
                                 <MDBCol>
-                                    <select id="instructorSelect" className="browser-default custom-select" onChange={() => this.setSelectedInstructors()}>
+                                    <select id="instructorSelect" className="browser-default custom-select"
+                                            onChange={() => this.setSelectedInstructors()}>
                                         <option>Select Instructor</option>
                                         {this.state.instructors.map((instructor) => {
                                             return <option value={instructor.instructorEmail}>
@@ -588,7 +623,8 @@ export default class CourseManagement extends Component {
                                                 return <tr key={instructor.instructorEmail}>
                                                     <td>{instructor.instructorName}</td>
                                                     <td>
-                                                        <MDBBtn color="danger" rounded type="button" className="z-depth-1a"
+                                                        <MDBBtn color="danger" rounded type="button"
+                                                                className="z-depth-1a"
                                                                 onClick={() => this.deleteInstructorFromArray(instructor.instructorEmail)}>Delete</MDBBtn>
                                                     </td>
                                                 </tr>
@@ -630,9 +666,9 @@ export default class CourseManagement extends Component {
                                                     <td>{course.courseDegree}</td>
                                                     <td>{course.courseCredits}</td>
                                                     <td>{course.courseStatus}</td>
-                                                    <td>/*<MDBBtn color="primary" rounded type="button" className="z-depth-1a"
-                                                                onClick={() => this.addUpdateCourse(course.courseID, "fromEditCourse")}>Edit</MDBBtn>{' '}*/
-                                                        <MDBBtn color="danger" rounded type="button" className="z-depth-1a"
+                                                    <td>
+                                                        <MDBBtn color="danger" rounded type="button"
+                                                                className="z-depth-1a"
                                                                 onClick={() => this.deleteCourse(course.courseID)}>Delete</MDBBtn>
                                                     </td>
                                                 </tr>
@@ -648,3 +684,6 @@ export default class CourseManagement extends Component {
         );
     }
 }
+
+/*<MDBBtn color="primary" rounded type="button" className="z-depth-1a"
+                                                                onClick={() => this.addUpdateCourse(course.courseID, "fromEditCourse")}>Edit</MDBBtn>{' '}*/

@@ -11,6 +11,8 @@ import {
 } from "mdbreact";
 import React from "react";
 import {StyledDropzone} from "../../functions/StyledDropzone"
+import config from "../../functions/config"
+import {getCourseMaterials} from "../../functions/Services"
 
 export default class CourseMaterials extends Component {
 
@@ -19,9 +21,29 @@ export default class CourseMaterials extends Component {
     }
 
     handleSubmit = event => {
-        console.log(this.state)
+        if (this.state.files) {
+            fetch(config.nodeBaseUrl + '/courses/' + this.props.cid + "/materials", {
+                method: 'PUT',
+                body: this.state.files,
+            }).then(res => {
+
+            }).catch(err => {
+                console.log(err)
+                this.setState({MDBModalShowErr: true})
+            })
+        }
         event.preventDefault()
         event.stopPropagation()
+    }
+
+    getMeterials = () => {
+        getCourseMaterials(this.props.cid)
+            .then(res => {
+
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     getFiles = acceptedFiles => {

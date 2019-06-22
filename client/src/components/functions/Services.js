@@ -12,6 +12,10 @@ function getToken() {
     return null
 }
 
+export function getCourseMaterials(id) {
+    return callGet(nodeBaseUrl + '/faculties/' + id);
+}
+
 export function getFaculty(id) {
     return callGet(nodeBaseUrl + '/faculties/' + id);
 }

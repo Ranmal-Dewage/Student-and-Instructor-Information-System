@@ -12,7 +12,9 @@ import DegreeList from './pages/DegreeList'
 import CourseList from './pages/CourseList'
 import NotFoundPage from './pages/NotFoundPage'
 import FacultyManagement from './admin/FacultyManagement'
-import LecturerManagement from './admin/LecturerManagement'
+import InstructorManagement from './admin/InstructorManagement'
+import CourseManagement from './admin/CourseManagement'
+import AdminManagement from './admin/AdminManagement'
 
 class Routes extends React.Component {
     render() {
@@ -33,8 +35,13 @@ class Routes extends React.Component {
                 {user && user.permissionLevel === 3 &&
                 <Route exact path='/admin/facultyManagement' component={FacultyManagement}/>}
                 {user && user.permissionLevel === 3 &&
-                <Route exact path='/admin/lecturerManagement' component={LecturerManagement}/>}
-
+                <Route path='/admin/facultyManagement' component={FacultyManagement}/>}
+                {user && user.permissionLevel === 3 &&
+                <Route path='/admin/instructorManagement' component={InstructorManagement}/>}
+                {user && user.permissionLevel === 3 &&
+                <Route path='/admin/courseManagement' component={CourseManagement}/>}
+                {user && user.permissionLevel === 3 &&
+                <Route path='/admin/adminManagement' component={AdminManagement}/>}
 
                 {/*instructor, admin*/}
                 {user && (user.permissionLevel === 1 || user.permissionLevel === 3) &&

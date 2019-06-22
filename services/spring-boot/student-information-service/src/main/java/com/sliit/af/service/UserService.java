@@ -17,6 +17,10 @@ import com.sliit.af.model.User;
 public interface UserService extends UserDetailsService {
 
 	public User getUserById(String id);
+	
+	public List<User> getByRoleName(String roleName);
+	
+	public List<User> getByCourseId(String courseId);
 
 	public User getByEmailAndPassword(UserDTO userDTO);
 

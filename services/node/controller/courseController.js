@@ -190,33 +190,6 @@ route.post("/:id/materials", async (req, res) => {
 
         res.status(200).json({ success: true })
 
-
-
-
-        //     // console.log(req.body)
-        //     // const option = {
-        //     //     method: "POST",
-        //     //     body: req.body
-        //     // }
-        //     // fetch("http://192.168.8.100:9091/files", option).
-        //     //     then(res => res.json()).
-        //     //     then(res => {
-        //     //         console.log(res)
-        //     //     });
-        //     // console.log(req.body.length)
-        //     // console.log(typeof req.body)
-        //     // fetch("http://192.168.8.100:9091/files/many", {
-        //     //     method: 'POST',
-        //     //     body: req.body
-        //     // }).then(newRes => newRes.json()).
-        //     //     then(data => {
-        //     //         console.log(data)
-        //     //         res.status(200).send("miomcdioko")
-        //     //     }).catch(err => {
-        //     //         console.log(err)
-        //     //     })
-
-
     } catch (ex) {
         res.status(500).send("Server Error" + ex)
     }
@@ -262,6 +235,75 @@ route.delete("/:id/materials/:name", (req, res) => {
 
 })
 
+//update course assignments 
+route.post("/:id/assignments", (req, res) => {
+
+    try {
+        const query = { ccode: req.params.id }
+        Courses.updateOne(query, { $push: { assignments: req.body } }, (err) => {
+            if (err) {
+                console.log(err)
+                res.status(500).json({ error: err });
+            } else {
+                res.status(200).json({ success: true })
+            }
+        })
+
+    } catch (ex) {
+        res.status(500).send("Server Error" + ex)
+    }
+
+})
+
+
+//get course assignments
+route.get("/:id/assignments", (req, res) => {
+
+    try {
+        const query = { ccode: req.params.id }
+        Courses.find(query, (err, course) => {
+            if (err) {
+                console.log(err);
+                res.status(500).json({ error: err });
+            } else {
+                res.status(200).json({ assignments: course[0].assignments })
+            }
+        });
+    } catch (ex) {
+        res.status(500).send("Server Error" + ex)
+    }
+
+})
+
+//update course assignment
+route.put("/:id/assignments/:aid", (req, res) => {
+
+
+    try {
+        const query = { ccode: req.params.id, "assignments._id": req.params.aid }
+
+        // Courses.find(query, (err, data) => {
+        //     if (err) {
+        //         console.log(err)
+        //     } else {
+        //         console.log(data)
+        //     }
+        // })
+
+
+        Courses.updateOne(query, { $set: { "assignments.$.dueDate": req.body.dueDate } }, (err) => {
+            if (err) {
+                console.log(err);
+                res.status(500).json({ error: err });
+            } else {
+                res.status(200).json({ status: true })
+            }
+        });
+    } catch (ex) {
+        res.status(500).send("Server Error" + ex)
+    }
+
+})
 
 
 

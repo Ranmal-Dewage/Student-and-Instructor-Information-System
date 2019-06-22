@@ -11,7 +11,7 @@ let coursesSchema = mongoose.Schema({
     semester: String,
     accept: Boolean,  //for instructor notification purpose
     cmaterials: [{ fileName: String, fileDownloadUri: String, fileType: String, size: String }],
-    assignments: [{ topic: String, description: String, dueDate: String, fileName: String, fileDownloadUri: String, fileType: String, size: String }]
+    assignments: [{ topic: String, description: String, dueDate: String, data: [{ fileName: String, fileDownloadUri: String, fileType: String, size: String }] }]
 })
 
 const Courses = mongoose.model("Courses", coursesSchema)

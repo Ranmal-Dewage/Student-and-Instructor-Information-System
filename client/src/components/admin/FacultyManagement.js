@@ -27,6 +27,7 @@ export default class FacultyManagement extends Component {
         this.setState({facultyButtonName: "Add Faculty"});
         //Fetch from back end and assign to faculties array from here
         this.getFaculties();
+        this.getDegrees();
     }
 
     getToken = () => {
@@ -53,7 +54,7 @@ export default class FacultyManagement extends Component {
                 alert("Error when obtaining faculty")
             }
         }).then(data => {
-            data.map((item) =>{
+            data.faculties.map((item) =>{
                 return allFaculties.push({
                     facultyCode: item.fcode,
                     facultyName: item.fname,
@@ -61,6 +62,7 @@ export default class FacultyManagement extends Component {
                     //degrees: item.degrees
                 })
             });
+            console.log(allFaculties);
             this.setState({faculties: allFaculties})
         }).catch(err => {
             console.log(err)
@@ -82,7 +84,7 @@ export default class FacultyManagement extends Component {
                 alert("Error when obtaining degrees")
             }
         }).then(data => {
-            data.map((item) =>{
+            data.degrees.map((item) =>{
                 return allDegrees.push({
                     facultyCode: item.fcode,
                     degreeCode: item.dcode,
@@ -97,7 +99,7 @@ export default class FacultyManagement extends Component {
     };
 
     deleteDegree(degreeCode) {
-        fetch(nodeBaseUrl+"/degrees"+ degreeCode, {
+        fetch(nodeBaseUrl+"/degrees/"+ degreeCode, {
             method: 'DELETE',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -453,8 +455,7 @@ export default class FacultyManagement extends Component {
                                                 <td>{degree.degreeCode}</td>
                                                 <td>{degree.degreeName}</td>
                                                 <td>{degree.degreeDuration}</td>
-                                                <td>/*<MDBBtn color="primary" rounded type="button" className="z-depth-1a"
-                                                            onClick={() => this.addUpdateDegree(degree.degreeCode ,"fromEditDegree")}>Edit</MDBBtn>{' '}*/
+                                                <td>
                                                     <MDBBtn color="danger" rounded type="button" className="z-depth-1a"
                                                             onClick={() => this.deleteDegree(degree.degreeCode)}>Delete</MDBBtn>
                                                 </td>
@@ -482,8 +483,7 @@ export default class FacultyManagement extends Component {
                                                 <td>{faculty.facultyCode}</td>
                                                 <td>{faculty.facultyName}</td>
                                                 <td>{faculty.facultyDescription}</td>
-                                                <td>/*<MDBBtn color="primary" rounded type="button" className="z-depth-1a"
-                                                            onClick={() => this.addUpdateFaculty(faculty.facultyCode,"fromEditFaculty")}>Edit</MDBBtn>{' '}*/
+                                                <td>
                                                     <MDBBtn color="danger" rounded type="button" className="z-depth-1a"
                                                             onClick={() => this.deleteFaculty(faculty.facultyCode)}>Delete</MDBBtn>
                                                 </td>
@@ -499,3 +499,9 @@ export default class FacultyManagement extends Component {
     );
     }
 }
+
+/*<MDBBtn color="primary" rounded type="button" className="z-depth-1a"
+                                                            onClick={() => this.addUpdateDegree(degree.degreeCode ,"fromEditDegree")}>Edit</MDBBtn>{' '}*/
+
+/*<MDBBtn color="primary" rounded type="button" className="z-depth-1a"
+                                                            onClick={() => this.addUpdateFaculty(faculty.facultyCode,"fromEditFaculty")}>Edit</MDBBtn>{' '}*/

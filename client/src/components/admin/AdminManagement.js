@@ -82,7 +82,7 @@ export default class AdminManagement extends Component {
     };
 
     deleteAdmin(id) {
-        fetch(springBaseUrl + "/user/" + id, {
+        fetch(springBaseUrl + "/users/" + id, {
             method: 'DELETE',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -285,7 +285,7 @@ export default class AdminManagement extends Component {
                             </MDBRow>
                             <MDBRow>
                                 <MDBCol>
-                                    <MDBInput type="textarea" label="Description" name="adminAddress"
+                                    <MDBInput type="textarea" label="Address" name="adminAddress"
                                               value={this.state.adminAddress}
                                               onChange={(e) => this.setState({adminAddress: e.target.value})} outline/>
                                 </MDBCol>
@@ -316,8 +316,7 @@ export default class AdminManagement extends Component {
                                                     <td>{admin.adminPhone}</td>
                                                     <td>{admin.adminEmail}</td>
                                                     <td>{admin.adminAddress}</td>
-                                                    <td>/*<MDBBtn color="primary" rounded type="button" className="z-depth-1a"
-                                                                onClick={() => this.addUpdateAdmin(admin.adminEmail, "fromEditAdmin")}>Edit</MDBBtn>{' '}*/
+                                                    <td>
                                                         <MDBBtn color="danger" rounded type="button"
                                                                 className="z-depth-1a"
                                                                 onClick={() => this.deleteAdmin(admin.adminID)}>Delete</MDBBtn>
@@ -335,3 +334,6 @@ export default class AdminManagement extends Component {
         );
     }
 }
+
+/*<MDBBtn color="primary" rounded type="button" className="z-depth-1a"
+                                                                onClick={() => this.addUpdateAdmin(admin.adminEmail, "fromEditAdmin")}>Edit</MDBBtn>{' '}*/

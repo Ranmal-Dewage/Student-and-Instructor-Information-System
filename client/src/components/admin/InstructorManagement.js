@@ -46,7 +46,7 @@ export default class InstructorManagement extends Component {
 
     getFaculties = () => {
         let allFaculties = [];
-        fetch(nodeBaseUrl+"/admin/faculties", {
+        fetch(nodeBaseUrl+"/faculties", {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ export default class InstructorManagement extends Component {
                 alert("Error when obtaining faculty")
             }
         }).then(data => {
-            data.map((item) =>{
+            data.faculties.map((item) =>{
                 return allFaculties.push({
                     facultyCode: item.fcode,
                     facultyName: item.fname,
@@ -74,8 +74,8 @@ export default class InstructorManagement extends Component {
     };
 
     getDegreeForFaculty = (facultyCode) => {
-        let degrees = [];
-        fetch(springBaseUrl+"/admin/faculties/degrees/"+ facultyCode, {
+        let allDegrees = [];
+        fetch(nodeBaseUrl+"/degrees", {
             method: 'GET',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -88,14 +88,15 @@ export default class InstructorManagement extends Component {
                 alert("Error when obtaining degrees")
             }
         }).then(data => {
-            data.map((item) =>{
-                return degrees.push({
+            data.degrees.map((item) =>{
+                return allDegrees.push({
                     facultyCode: item.fcode,
                     degreeCode: item.dcode,
                     degreeName: item.dname,
-                    degreeDuration: item.duration})
+                    degreeDuration: item.duration
+                })
             });
-            this.setState({degrees: degrees})
+            this.setState({degrees: allDegrees})
         }).catch(err => {
             console.log(err)
         })
@@ -130,6 +131,7 @@ export default class InstructorManagement extends Component {
                     instructorAddress: item.address
                 })
             });
+
             this.setState({instructors: allInstructors})
         }).catch(err => {
             console.log(err)
@@ -137,7 +139,7 @@ export default class InstructorManagement extends Component {
     };
 
     deleteInstructor(id) {
-        fetch(springBaseUrl+"/user/"+ id, {
+        fetch(springBaseUrl+"/users/"+ id, {
             method: 'DELETE',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -193,7 +195,10 @@ export default class InstructorManagement extends Component {
                             };
 
                             this.addInstructor(instructorObj);
-                            this.getInstructors();
+                            setTimeout(() => {
+                                this.getInstructors();
+                            }, 5000);
+
                         }
                     } else {
                         let instructorObj = {
@@ -211,7 +216,9 @@ export default class InstructorManagement extends Component {
                         };
 
                         this.addInstructor(instructorObj);
-                        this.getInstructors();
+                        setTimeout(() => {
+                            this.getInstructors();
+                        }, 5000);
                     }
                 }
             } else if(this.state.instructorButtonName === "Update Instructor") {
@@ -318,8 +325,12 @@ export default class InstructorManagement extends Component {
     setFacultyAndDegrees(selectedString){
         if(selectedString !== "Select Faculty") {
             let array = selectedString.split(" ");
-            this.setState({instructorFaculty: array[0]});
-            this.getDegreeForFaculty(array[0]);
+            this.setState({instructorFaculty: array[0]}, () => {
+                console.log(this.state.instructorFaculty);
+                this.getDegreeForFaculty(this.state.instructorFaculty);
+            });
+
+
         }
     }
 
@@ -421,8 +432,7 @@ export default class InstructorManagement extends Component {
                                                     <td>{instructor.instructorPhone}</td>
                                                     <td>{instructor.instructorEmail}</td>
                                                     <td>{instructor.instructorAddress}</td>
-                                                    <td>/*<MDBBtn color="primary" rounded type="button" className="z-depth-1a"
-                                                                onClick={() => this.addUpdateInstructor(instructor.instructorEmail, "fromEditInstructor")}>Edit</MDBBtn>{' '}*/
+                                                    <td>
                                                         <MDBBtn color="danger" rounded type="button" className="z-depth-1a"
                                                                 onClick={() => this.deleteInstructor(instructor.instructorID)}>Delete</MDBBtn>
                                                     </td>
@@ -439,3 +449,6 @@ export default class InstructorManagement extends Component {
         );
     }
 }
+
+/*<MDBBtn color="primary" rounded type="button" className="z-depth-1a"
+                                                                onClick={() => this.addUpdateInstructor(instructor.instructorEmail, "fromEditInstructor")}>Edit</MDBBtn>{' '}*/

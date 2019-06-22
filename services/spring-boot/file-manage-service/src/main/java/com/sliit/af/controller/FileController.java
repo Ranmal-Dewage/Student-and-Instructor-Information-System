@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,19 +34,20 @@ import com.sliit.af.service.FileService;
  *
  */
 @RestController
+@RequestMapping("/files")
 public class FileController {
 
 	@Autowired
 	private FileService fileService;
 
-	@PostMapping("/uploadFile")
+	@PostMapping("")
 	public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
 		String fileName = null;
 		String fileDownloadUri = null;
 		try {
 			fileName = fileService.storeFile(file);
 
-			fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/downloadFile/")
+			fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/files/")
 					.path(fileName).toUriString();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -55,12 +57,12 @@ public class FileController {
 		return new UploadFileResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
 	}
 
-	@PostMapping("/uploadMultipleFiles")
+	@PostMapping("/many")
 	public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
 		return Arrays.asList(files).stream().map(file -> uploadFile(file)).collect(Collectors.toList());
 	}
 
-	@GetMapping("/downloadFile/{fileName:.+}")
+	@GetMapping("/{fileName:.+}")
 	public ResponseEntity<Object> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
 		String contentType = null;
 		Resource resource = null;

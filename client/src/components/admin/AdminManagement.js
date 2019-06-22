@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {MDBBtn, MDBCol, MDBInput, MDBRow, MDBTable, MDBTableBody, MDBTableHead, MDBCard, MDBCardHeader, MDBCardBody} from 'mdbreact';
 
+const nodeBasedUrl = "http://192.168.8.104:4000";
 
 export default class AdminManagement extends Component {
 
@@ -26,7 +27,7 @@ export default class AdminManagement extends Component {
 
     getAdmins = () => {
         let allAdmins = [];
-        fetch("http://localhost:3001/admin/admins").then(res =>{
+        fetch(nodeBasedUrl+"/admin/admins").then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -51,7 +52,7 @@ export default class AdminManagement extends Component {
     };
 
     deleteAdmin(email) {
-        fetch("http://localhost:3001/admin/admins/"+ email, {
+        fetch(nodeBasedUrl+"/admin/admins/"+ email, {
             method: 'DELETE',
             headers:{'Content-Type': 'application/json'}
         }).then(result => {
@@ -147,7 +148,7 @@ export default class AdminManagement extends Component {
     };
 
     getAdminByEmail = (email) => {
-        fetch("http://localhost:3001/admin/admins/"+ email).then(res => {
+        fetch(nodeBasedUrl+"/admin/admins/"+ email).then(res => {
             if(res.ok){
                 return res.json();
             } else {
@@ -167,7 +168,7 @@ export default class AdminManagement extends Component {
     };
 
     addAdmin = (obj) => {
-        fetch("http://localhost:3001/admin/admins", {
+        fetch(nodeBasedUrl+"/admin/admins", {
             method: 'POST',
             body: JSON.stringify(obj),
             headers:{'Content-Type': 'application/json'}
@@ -183,7 +184,7 @@ export default class AdminManagement extends Component {
     };
 
     updateAdmin = (email,obj) => {
-        fetch("http://localhost:3001/admin/admins/"+ email, {
+        fetch(nodeBasedUrl+"/admin/admins/"+ email, {
             method: 'PUT',
             body: JSON.stringify(obj),
             headers:{'Content-Type': 'application/json'}

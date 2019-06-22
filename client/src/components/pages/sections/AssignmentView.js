@@ -14,7 +14,6 @@ export default class AssignmentView extends Component {
     }
 
     readAssignments = () => {
-        console.log(this.props.cid)
         getAssignments(this.props.cid)
             .then(async res => {
                 var assignments = []

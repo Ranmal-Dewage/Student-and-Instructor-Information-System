@@ -4,9 +4,8 @@ import {
     MDBCardHeader,
     MDBCol,
     MDBRow,
-    MDBFileInput,
     MDBListGroupItem,
-    MDBListGroup, MDBIcon, MDBBtn
+    MDBListGroup, MDBIcon
 } from "mdbreact";
 import React from "react"
 import {getCourseMaterials} from "../../functions/Services"

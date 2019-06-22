@@ -75,7 +75,7 @@ export default class SubmitAssignment extends Component {
             <MDBRow>
                 <MDBCol>
                     <p style={{color: 'red'}}>Upload file name should
-                        be {this.props.cid}_{this.props.assignment.topic + "\_\<username\>.pdf"}</p>
+                        be {this.props.cid}_{this.props.assignment.topic + "_<username>.pdf"}</p>
                 </MDBCol>
             </MDBRow>
             <MDBRow className="w-100">

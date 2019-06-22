@@ -64,15 +64,15 @@ export function courseByDegree(query) {
     return callGet(nodeBaseUrl + '/courses?' + query);
 }
 
-export function login(body) {
-    return fetch(springBaseUrl + '/login', {
-        method: 'POST',
-        body: JSON.stringify(body),
-        headers: new Headers({
-            'Content-Type': 'application/json'
-        })
-    }).then(handleres);
-}
+// export function login(body) {
+//     return fetch(springBaseUrl + '/login', {
+//         method: 'POST',
+//         body: JSON.stringify(body),
+//         headers: new Headers({
+//             'Content-Type': 'application/json'
+//         })
+//     }).then(handleres);
+// }
 
 export function register(body) {
     return fetch(springBaseUrl + '/users', {
@@ -94,16 +94,16 @@ const callGet = (url) => {
     }).then(handleres);
 }
 
-const callPost = (url, body) => {
-    return fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(body),
-        headers: new Headers({
-            'Content-Type': 'application/json',
-            'Authorization': getToken()
-        })
-    }).then(handleres);
-}
+// const callPost = (url, body) => {
+//     return fetch(url, {
+//         method: 'POST',
+//         body: JSON.stringify(body),
+//         headers: new Headers({
+//             'Content-Type': 'application/json',
+//             'Authorization': getToken()
+//         })
+//     }).then(handleres);
+// }
 
 const callPut = (url, body) => {
     return fetch(url, {

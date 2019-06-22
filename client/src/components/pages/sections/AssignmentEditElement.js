@@ -2,7 +2,7 @@ import {Component} from "react";
 import {MDBBtn, MDBCol, MDBInput, MDBListGroupItem, MDBRow} from "mdbreact";
 import DatePicker from "react-datepicker";
 import React from "react";
-import {deleteAssignments, updateAssignments} from "../../functions/Services"
+import {updateAssignments} from "../../functions/Services"
 import {toast} from "react-toastify"
 import moment from 'moment'
 

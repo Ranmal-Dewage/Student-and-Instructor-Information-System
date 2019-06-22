@@ -1,4 +1,4 @@
-import React, {Component, useMemo} from "react";
+import React, {Component} from "react";
 import {MDBBtn, MDBCard, MDBCardHeader, MDBCol, MDBInput, MDBRow} from "mdbreact"
 import {StyledDropzone} from '../../functions/StyledDropzone'
 import DatePicker from "react-datepicker"

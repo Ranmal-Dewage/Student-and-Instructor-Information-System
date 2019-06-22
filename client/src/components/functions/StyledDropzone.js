@@ -1,6 +1,5 @@
 import {useDropzone} from "react-dropzone";
-import {useMemo} from "react";
-import React from "react";
+import React, {useMemo} from "react";
 import {MDBIcon} from "mdbreact";
 
 export function StyledDropzone(props) {

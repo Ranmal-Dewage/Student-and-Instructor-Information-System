@@ -5,7 +5,6 @@ import {
     MDBCardHeader,
     MDBCol,
     MDBRow,
-    MDBFileInput,
     MDBListGroupItem,
     MDBListGroup, MDBIcon
 } from "mdbreact";

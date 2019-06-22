@@ -46,6 +46,7 @@ public class UserControllerTests {
 	private UserService userService;
 
 	@Test
+	// @WithMockUser(username="admin",roles={"USER","ADMIN"})
 	public void getUsersTest() throws Exception {
 		User user = new User();
 		user.setFirstName("admin");

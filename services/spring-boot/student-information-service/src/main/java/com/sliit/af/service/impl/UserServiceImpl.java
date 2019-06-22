@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -117,6 +118,33 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getAll() {
 		return userRepository.findAll();
+	}
+
+	/**
+	 * This method will fetch all user objects from database
+	 */
+	@Override
+	public List<User> getByRoleName(String roleName) {
+		List<User> userList = userRepository.findAll();
+		List<User> returnList = new ArrayList<>();
+		for (User user : userList) {
+			Set<Role> roleSet = user.getRoles();
+			for (Role role : roleSet) {
+				if (role.getRole().equalsIgnoreCase(roleName)) {
+					returnList.add(user);
+				}
+			}
+		}
+		return returnList;
+	}
+
+	/**
+	 * This method will fetch all user objects from database
+	 */
+	@Override
+	public List<User> getByCourseId(String courseId) {
+		return userRepository.findAll().stream().filter(user -> user.getCourses().contains(courseId))
+				.collect(Collectors.toList());
 	}
 
 	/**

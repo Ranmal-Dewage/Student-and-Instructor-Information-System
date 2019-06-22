@@ -86,6 +86,34 @@ public class UserController {
 	}
 
 	/**
+	 * This method will return an users with given id
+	 */
+	@GetMapping("/roles/{roleName}")
+	public ResponseEntity<?> getByRoleName(@PathVariable("roleName") String roleName) {
+		ResponseEntity<?> responseEntity = null;
+		try {
+			responseEntity = new ResponseEntity<>(userService.getByRoleName(roleName), HttpStatus.OK);
+		} catch (Exception e) {
+			responseEntity = new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+		}
+		return responseEntity;
+	}
+	
+	/**
+	 * This method will return an users with given id
+	 */
+	@GetMapping("/courses/{courseId}")
+	public ResponseEntity<?> getByCourseId(@PathVariable("courseId") String courseId) {
+		ResponseEntity<?> responseEntity = null;
+		try {
+			responseEntity = new ResponseEntity<>(userService.getByCourseId(courseId), HttpStatus.OK);
+		} catch (Exception e) {
+			responseEntity = new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+		}
+		return responseEntity;
+	}
+	
+	/**
 	 * This method will delete an users with given id
 	 */
 	@DeleteMapping("/{id}")

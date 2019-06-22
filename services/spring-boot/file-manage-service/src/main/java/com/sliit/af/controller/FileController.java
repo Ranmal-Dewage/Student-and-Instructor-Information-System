@@ -46,22 +46,31 @@ public class FileController {
 	public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
 		String fileName = null;
 		String fileDownloadUri = null;
+		UploadFileResponse uploadFileResponse = null;
 		try {
 			fileName = fileService.storeFile(file);
 
 			fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/files/").path(fileName)
 					.toUriString();
+			uploadFileResponse = new UploadFileResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return new UploadFileResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
+		return uploadFileResponse;
 	}
 
 	@PostMapping("/many")
-	public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-		return Arrays.asList(files).stream().map(file -> uploadFile(file)).collect(Collectors.toList());
+	public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("file") MultipartFile[] files) {
+		List<UploadFileResponse> uploadFileResponses = null;
+		try {
+			uploadFileResponses = Arrays.asList(files).stream().map(file -> uploadFile(file))
+					.collect(Collectors.toList());
+		} catch (Exception e) {
+			throw e;
+		}
+		return uploadFileResponses;
 	}
 
 	@GetMapping("/{fileName:.+}")

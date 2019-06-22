@@ -20,8 +20,8 @@ export default class CourseView extends React.Component {
     render() {
         return (
             <MDBContainer>
-                <AssignmentView></AssignmentView>
-                <CourseMaterialsView></CourseMaterialsView>
+                <AssignmentView cid={this.state.cid}></AssignmentView>
+                <CourseMaterialsView cid={this.state.cid}></CourseMaterialsView>
             </MDBContainer>
         )
     }

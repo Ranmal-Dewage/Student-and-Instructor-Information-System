@@ -6,29 +6,43 @@ import {
     MDBRow,
     MDBFileInput,
     MDBListGroupItem,
-    MDBListGroup, MDBIcon
+    MDBListGroup, MDBIcon, MDBBtn
 } from "mdbreact";
-import React from "react";
-import {StyledDropzone} from "../../functions/StyledDropzone"
+import React from "react"
+import {getCourseMaterials} from "../../functions/Services"
 
 export default class CourseMaterialsView extends Component {
 
     state = {
-        saved: false
+        saved: false,
+        materials: []
     }
 
-    handleSubmit = event => {
-        console.log(this.state)
-        event.preventDefault()
-        event.stopPropagation()
+    componentDidMount() {
+        setTimeout(() => this.readMaterials(), 400)
     }
 
-    getFiles = acceptedFiles => {
-        const data = new FormData()
-        for (var x = 0; x < acceptedFiles.length; x++) {
-            data.append('files', acceptedFiles[x])
-        }
-        this.setState({files: data, saved: true})
+    readMaterials = () => {
+        getCourseMaterials(this.props.cid)
+            .then(async res => {
+                var materials = []
+                await res.materials.map((item, i) => {
+                    return materials.push(
+                        <MDBListGroupItem key={i} className="ml-3 mr-3">
+                            <MDBRow className="w-100">
+                                <MDBCol md={6} className="pl-5">
+                                    <MDBIcon icon="file-alt" className="mr-3"/>
+                                    <a href={item.fileDownloadUri}>{item.fileName}</a>
+                                </MDBCol>
+                            </MDBRow>
+                        </MDBListGroupItem>
+                    )
+                })
+                this.setState({materials: materials})
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     render() {
@@ -38,22 +52,7 @@ export default class CourseMaterialsView extends Component {
                     <MDBCard className="mb-4">
                         <MDBCardHeader>Course Materials</MDBCardHeader>
                         <MDBListGroup className="list-group-flush" style={{width: "100"}}>
-                            <MDBListGroupItem className="ml-3 mr-3">
-                                <MDBRow className="w-100">
-                                    <MDBCol md={6} className="pl-5">
-                                        <MDBIcon icon="file-alt" className="mr-3"/>
-                                        <a href="">Lecture1.ppt</a>
-                                    </MDBCol>
-                                </MDBRow>
-                            </MDBListGroupItem>
-                            <MDBListGroupItem className="ml-3 mr-3">
-                                <MDBRow className="w-100">
-                                    <MDBCol md={6} className="pl-5">
-                                        <MDBIcon icon="file-alt" className="mr-3"/>
-                                        <a href="">Lecture2.ppt</a>
-                                    </MDBCol>
-                                </MDBRow>
-                            </MDBListGroupItem>
+                            {this.state.materials}
                         </MDBListGroup>
                     </MDBCard>
                 </MDBCol>

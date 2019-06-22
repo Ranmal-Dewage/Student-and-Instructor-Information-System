@@ -12,13 +12,18 @@ import {
 import React from "react";
 import {StyledDropzone} from "../../functions/StyledDropzone"
 import config from "../../functions/config"
-import {getCourseMaterials} from "../../functions/Services"
+import {getCourseMaterials, deleteCourseMaterials} from "../../functions/Services"
 import {toast} from "react-toastify";
 
 export default class CourseMaterials extends Component {
 
     state = {
-        saved: false
+        saved: false,
+        materials: [],
+    }
+
+    componentDidMount() {
+        setTimeout(() => this.getMeterials(), 400)
     }
 
     handleSubmit = event => {
@@ -30,29 +35,63 @@ export default class CourseMaterials extends Component {
                 return res.json()
             }).then(data => {
                 fetch(config.nodeBaseUrl + '/courses/' + this.props.cid + "/materials", {
-                    method: 'PUT',
-                    body: JSON.stringify({data: data})
+                    method: 'POST',
+                    body: JSON.stringify({data: data}),
+                    headers: new Headers({
+                        'Content-Type': 'application/json'
+                    })
                 }).then(res => {
                     toast.success("Successfully added course materials")
-                    // this.getMeterials()
+                    this.getMeterials()
                 })
             }).catch(err => {
                 console.log(err)
                 toast.error("Unable to add course materials")
             })
+        } else {
+            toast.error("please select and save files")
         }
         event.preventDefault()
         event.stopPropagation()
     }
 
+    handleDelete = (id) => {
+        deleteCourseMaterials(this.props.cid, id)
+            .then(res => {
+                this.getMeterials()
+                toast.success("Successfully deleted course materials")
+            })
+            .catch(err => {
+                console.log(err)
+                toast.error("Unable to delete course materials")
+            })
+    }
+
     getMeterials = () => {
-        // getCourseMaterials(this.props.cid)
-        //     .then(res => {
-        //
-        //     })
-        //     .catch(err => {
-        //         console.log(err)
-        //     })
+        getCourseMaterials(this.props.cid)
+            .then(async res => {
+                var materials = []
+                await res.materials.map((item, i) => {
+                    return materials.push(
+                        <MDBListGroupItem key={i} className="ml-3 mr-3">
+                            <MDBRow className="w-100">
+                                <MDBCol md={6} className="pl-5">
+                                    <MDBIcon icon="file-alt" className="mr-3"/>
+                                    <a href={item.fileDownloadUri}>{item.fileName}</a>
+                                </MDBCol>
+                                <MDBCol md={6} className="text-right">
+                                    <MDBBtn size="sm" color="red"
+                                            onClick={() => this.handleDelete(item.fileName)}>Delete</MDBBtn>
+                                </MDBCol>
+                            </MDBRow>
+                        </MDBListGroupItem>
+                    )
+                })
+                this.setState({materials: materials})
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     getFiles = acceptedFiles => {
@@ -85,28 +124,7 @@ export default class CourseMaterials extends Component {
                         </MDBRow>
 
                         <MDBListGroup className="list-group-flush" style={{width: "100"}}>
-                            <MDBListGroupItem className="ml-3 mr-3">
-                                <MDBRow className="w-100">
-                                    <MDBCol md={6} className="pl-5">
-                                        <MDBIcon icon="file-alt" className="mr-3"/>
-                                        <a href="">Lecture1.ppt</a>
-                                    </MDBCol>
-                                    <MDBCol md={6} className="text-right">
-                                        <MDBBtn size="sm" color="red">Delete</MDBBtn>
-                                    </MDBCol>
-                                </MDBRow>
-                            </MDBListGroupItem>
-                            <MDBListGroupItem className="ml-3 mr-3">
-                                <MDBRow className="w-100">
-                                    <MDBCol md={6} className="pl-5">
-                                        <MDBIcon icon="file-alt" className="mr-3"/>
-                                        <a href="">Lecture2.ppt</a>
-                                    </MDBCol>
-                                    <MDBCol md={6} className="text-right">
-                                        <MDBBtn size="sm" color="red">Delete</MDBBtn>
-                                    </MDBCol>
-                                </MDBRow>
-                            </MDBListGroupItem>
+                            {this.state.materials}
                         </MDBListGroup>
                     </MDBCard>
                 </MDBCol>

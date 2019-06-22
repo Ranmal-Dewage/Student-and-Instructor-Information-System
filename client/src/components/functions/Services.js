@@ -12,8 +12,12 @@ function getToken() {
     return null
 }
 
+export function deleteCourseMaterials(cid, mid) {
+    return callDelete(nodeBaseUrl + '/courses/' + cid + '/materials/' + mid);
+}
+
 export function getCourseMaterials(id) {
-    return callGet(nodeBaseUrl + '/faculties/' + id);
+    return callGet(nodeBaseUrl + '/courses/' + id + '/materials');
 }
 
 export function getFaculty(id) {

@@ -99,6 +99,12 @@ public class UserServiceImpl implements UserService {
 				user.setRoles(new HashSet<>(
 						Arrays.asList(roleRepository.findByRole(requestedRole.get().getRole()).orElse(null))));
 			}
+		} else {
+			// for update
+			Optional<User> dbUser = userRepository.findById(user.getId());
+			if (dbUser.isPresent() && Objects.nonNull(user.getCourses())) {
+				dbUser.get().setCourses(user.getCourses());
+			}
 		}
 		// for insert and update
 		return userRepository.save(user);

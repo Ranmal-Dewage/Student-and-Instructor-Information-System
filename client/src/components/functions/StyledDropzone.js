@@ -1,6 +1,7 @@
 import {useDropzone} from "react-dropzone";
 import {useMemo} from "react";
 import React from "react";
+import {MDBIcon} from "mdbreact";
 
 export function StyledDropzone(props) {
     const {
@@ -34,7 +35,8 @@ export function StyledDropzone(props) {
                 <input {...getInputProps()}/>
                 <p>Drag 'n' drop some files here, or click to select files</p>
             </div>
-            <input type="button" value="confirm" onClick={() => props.getFiles(acceptedFiles)}/>
+            <input className="mt-1" type="button" value="save" onClick={() => props.getFiles(acceptedFiles)}/>
+            {props.saved && <MDBIcon icon="check" className="ml-3"/>}
             <aside>
                 <label className="grey-text pt-1">Files :</label>
                 <ul>

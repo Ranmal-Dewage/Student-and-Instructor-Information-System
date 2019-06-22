@@ -3,13 +3,14 @@ import {MDBBtn, MDBCard, MDBCardHeader, MDBCol, MDBInput, MDBRow} from "mdbreact
 import {StyledDropzone} from '../../functions/StyledDropzone'
 import DatePicker from "react-datepicker"
 import moment from 'moment'
-import config from "../../functions/config";
+import config from "../../functions/config"
 
 export default class AssignmentAdd extends Component {
 
     state = {
         showErr: false,
-        errMsg: "Required fields empty or invalid"
+        errMsg: "Required fields empty or invalid",
+        saved: false
     }
 
     handleChange = event => {
@@ -21,6 +22,7 @@ export default class AssignmentAdd extends Component {
     }
 
     handleSubmit = event => {
+        console.log(this.state)
         this.setState({showErr: false})
         const body = {
             data: this.state.files,
@@ -53,10 +55,9 @@ export default class AssignmentAdd extends Component {
     getFiles = acceptedFiles => {
         const data = new FormData()
         for (var x = 0; x < acceptedFiles.length; x++) {
-            console.log(acceptedFiles[x])
             data.append('files', acceptedFiles[x])
         }
-        this.setState({files: data})
+        this.setState({files: data, saved: true})
     }
 
     render() {
@@ -64,7 +65,7 @@ export default class AssignmentAdd extends Component {
             <MDBRow>
                 <MDBCol md="12 mt-2">
                     <MDBCard className="mb-4">
-                        <MDBCardHeader>Assignment</MDBCardHeader>
+                        <MDBCardHeader>Add Assignment / Exam</MDBCardHeader>
                         <MDBRow className="align-items-center justify-content-center pb-3">
                             <MDBRow className="w-75">
                                 <MDBCol md={6}>
@@ -81,7 +82,7 @@ export default class AssignmentAdd extends Component {
                             <MDBRow className="w-75">
                                 <MDBCol md={12}>
                                     <label className="grey-text pt-1">Upload Files</label>
-                                    <StyledDropzone getFiles={this.getFiles}/>
+                                    <StyledDropzone getFiles={this.getFiles} saved={this.state.saved}/>
                                 </MDBCol>
                             </MDBRow>
                             <MDBRow className="w-75 mb-2">

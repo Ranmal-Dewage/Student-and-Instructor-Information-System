@@ -1,6 +1,5 @@
 import {Component} from "react";
 import {
-    MDBBtn,
     MDBCard,
     MDBCardHeader,
     MDBCol,
@@ -12,7 +11,7 @@ import {
 import React from "react";
 import {StyledDropzone} from "../../functions/StyledDropzone"
 
-export default class CourseMaterials extends Component {
+export default class CourseMaterialsView extends Component {
 
     state = {
         saved: false
@@ -38,30 +37,12 @@ export default class CourseMaterials extends Component {
                 <MDBCol md="12">
                     <MDBCard className="mb-4">
                         <MDBCardHeader>Course Materials</MDBCardHeader>
-                        <MDBRow className="align-items-center justify-content-center p-5">
-                            <MDBRow className="w-75">
-                                <MDBCol md={12}>
-                                    <label className="grey-text pt-1">Upload Files</label>
-                                    <StyledDropzone getFiles={this.getFiles} saved={this.state.saved}/>
-                                </MDBCol>
-                            </MDBRow>
-                            <MDBRow className="w-75">
-                                <MDBCol className="text-right">
-                                    <MDBBtn className="mr-0 mt-3" color="indigo" type="submit"
-                                            onClick={this.handleSubmit}>Upload</MDBBtn>
-                                </MDBCol>
-                            </MDBRow>
-                        </MDBRow>
-
                         <MDBListGroup className="list-group-flush" style={{width: "100"}}>
                             <MDBListGroupItem className="ml-3 mr-3">
                                 <MDBRow className="w-100">
                                     <MDBCol md={6} className="pl-5">
                                         <MDBIcon icon="file-alt" className="mr-3"/>
                                         <a href="">Lecture1.ppt</a>
-                                    </MDBCol>
-                                    <MDBCol md={6} className="text-right">
-                                        <MDBBtn size="sm" color="red">Delete</MDBBtn>
                                     </MDBCol>
                                 </MDBRow>
                             </MDBListGroupItem>
@@ -70,9 +51,6 @@ export default class CourseMaterials extends Component {
                                     <MDBCol md={6} className="pl-5">
                                         <MDBIcon icon="file-alt" className="mr-3"/>
                                         <a href="">Lecture2.ppt</a>
-                                    </MDBCol>
-                                    <MDBCol md={6} className="text-right">
-                                        <MDBBtn size="sm" color="red">Delete</MDBBtn>
                                     </MDBCol>
                                 </MDBRow>
                             </MDBListGroupItem>

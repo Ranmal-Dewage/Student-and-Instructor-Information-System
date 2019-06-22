@@ -1,11 +1,8 @@
 import React, {Component} from 'react'
-import {getHash} from "../functions/Functions";
-import {register} from "../functions/Services";
-import {toast} from "react-toastify";
-import {MDBBtn, MDBCard, MDBCardHeader, MDBCol, MDBContainer, MDBInput, MDBRow} from "mdbreact";
-import Select from "./Register";
-import AssignmentAdd from "./sections/AssignmentAdd";
-import CourseMaterials from "./sections/CourseMaterials";
+import {MDBContainer} from "mdbreact"
+import AssignmentAdd from "./sections/AssignmentAdd"
+import CourseMaterials from "./sections/CourseMaterials"
+import AssignmentEdit from "./sections/AssignmentEdit";
 
 export default class CourseEdit extends React.Component {
 
@@ -45,6 +42,7 @@ export default class CourseEdit extends React.Component {
         return (
             <MDBContainer>
                 <AssignmentAdd cid={this.state.cid}/>
+                <AssignmentEdit cid={this.state.cid}/>
                 <CourseMaterials cid={this.state.cid}/>
             </MDBContainer>
         )

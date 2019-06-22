@@ -1588,3 +1588,138 @@ Thalahena, email=ranrox3@gmail.com, password=$2a$10$by5rT/8agJNaCQsJ1xs9m.IQOQXD
 2019-06-22 19:45:41.476  INFO 13768 --- [RMI TCP Connection(16)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
 2019-06-22 19:45:41.479  INFO 13768 --- [RMI TCP Connection(16)-127.0.0.1] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
 2019-06-22 19:45:41.484  INFO 13768 --- [RMI TCP Connection(16)-127.0.0.1] org.mongodb.driver.connection            : Closed connection [connectionId{localValue:2, serverValue:19}] to localhost:27017 because the pool has been closed.
+2019-06-22 19:57:44.105  INFO 10576 --- [main] s.a.StudentInformationServiceApplication : Starting StudentInformationServiceApplication on VIMUKTHI1415 with PID 10576 (D:\SLIIT\AF\final\student-and-instructor-information-system\services\spring-boot\student-information-service\target\classes started by vimukthi_r in D:\SLIIT\AF\final\student-and-instructor-information-system\services\spring-boot\student-information-service)
+2019-06-22 19:57:44.108  INFO 10576 --- [main] s.a.StudentInformationServiceApplication : The following profiles are active: dev
+2019-06-22 19:57:44.711  INFO 10576 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-06-22 19:57:44.759  INFO 10576 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 44ms. Found 2 repository interfaces.
+2019-06-22 19:57:45.285  INFO 10576 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
+2019-06-22 19:57:45.301  INFO 10576 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-06-22 19:57:45.302  INFO 10576 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.17]
+2019-06-22 19:57:45.368  INFO 10576 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-06-22 19:57:45.368  INFO 10576 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1231 ms
+2019-06-22 19:57:45.904  INFO 10576 --- [main] org.mongodb.driver.cluster               : Cluster created with settings {hosts=[localhost:27017], mode=MULTIPLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+2019-06-22 19:57:45.904  INFO 10576 --- [main] org.mongodb.driver.cluster               : Adding discovered server localhost:27017 to client view of cluster
+2019-06-22 19:57:45.956  INFO 10576 --- [cluster-ClusterId{value='5d0e3ae17624692950ef0631', description='null'}-localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:1, serverValue:20}] to localhost:27017
+2019-06-22 19:57:45.959  INFO 10576 --- [cluster-ClusterId{value='5d0e3ae17624692950ef0631', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 5]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=2077012}
+2019-06-22 19:57:45.960  INFO 10576 --- [cluster-ClusterId{value='5d0e3ae17624692950ef0631', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Discovered cluster type of STANDALONE
+2019-06-22 19:57:46.172  INFO 10576 --- [main] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:2, serverValue:21}] to localhost:27017
+2019-06-22 19:57:46.373  INFO 10576 --- [main] com.sliit.af.aspect.LoggingAspect        : begin executing execution(BCryptPasswordEncoder com.sliit.af.config.BeanConfig.bCryptPasswordEncoder()) with parameters []
+2019-06-22 19:57:46.744  INFO 10576 --- [main] com.sliit.af.aspect.LoggingAspect        : begin executing execution(void com.sliit.af.config.WebConfig.addCorsMappings(CorsRegistry)) with parameters [org.springframework.web.servlet.config.annotation.CorsRegistry@3ff8a3ad]
+2019-06-22 19:57:46.866  INFO 10576 --- [main] com.sliit.af.aspect.LoggingAspect        : begin executing execution(RestTemplate com.sliit.af.config.BeanConfig.restTemplate()) with parameters []
+2019-06-22 19:57:47.047  INFO 10576 --- [main] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2019-06-22 19:57:47.109  INFO 10576 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@77020328, org.springframework.security.web.context.SecurityContextPersistenceFilter@49d543a9, org.springframework.security.web.header.HeaderWriterFilter@21c34bf8, org.springframework.web.filter.CorsFilter@45eacb70, org.springframework.security.web.authentication.logout.LogoutFilter@8cb7185, com.sliit.af.config.JWTAuthenticationFilter@4377ed24, com.sliit.af.config.JWTAuthorizationFilter@7a30e30b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4ac19bc6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@772f3a3f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1dcca426, org.springframework.security.web.session.SessionManagementFilter@23d0944b, org.springframework.security.web.access.ExceptionTranslationFilter@77f03916, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7b2e931]
+2019-06-22 19:57:47.284  INFO 10576 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-06-22 19:57:47.429  INFO 10576 --- [main] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+2019-06-22 19:57:47.441  INFO 10576 --- [main] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2019-06-22 19:57:47.469  INFO 10576 --- [main] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2019-06-22 19:57:47.604  INFO 10576 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9090 (http) with context path ''
+2019-06-22 19:57:47.605  INFO 10576 --- [main] s.a.StudentInformationServiceApplication : Started StudentInformationServiceApplication in 3.723 seconds (JVM running for 4.345)
+2019-06-22 19:58:13.284  INFO 10576 --- [http-nio-9090-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-06-22 19:58:13.284  INFO 10576 --- [http-nio-9090-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-06-22 19:58:13.296  INFO 10576 --- [http-nio-9090-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 12 ms
+2019-06-22 19:58:13.364 ERROR 10576 --- [http-nio-9090-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+
+com.auth0.jwt.exceptions.TokenExpiredException: The Token has expired on Tue Jun 18 23:18:03 IST 2019.
+	at com.auth0.jwt.JWTVerifier.assertDateIsFuture(JWTVerifier.java:472) ~[java-jwt-3.8.0.jar:na]
+	at com.auth0.jwt.JWTVerifier.assertValidDateClaim(JWTVerifier.java:463) ~[java-jwt-3.8.0.jar:na]
+	at com.auth0.jwt.JWTVerifier.verifyClaims(JWTVerifier.java:404) ~[java-jwt-3.8.0.jar:na]
+	at com.auth0.jwt.JWTVerifier.verify(JWTVerifier.java:387) ~[java-jwt-3.8.0.jar:na]
+	at com.auth0.jwt.JWTVerifier.verify(JWTVerifier.java:370) ~[java-jwt-3.8.0.jar:na]
+	at com.sliit.af.config.JWTAuthorizationFilter.getAuthentication(JWTAuthorizationFilter.java:65) ~[classes/:na]
+	at com.sliit.af.config.JWTAuthorizationFilter.doFilterInternal(JWTAuthorizationFilter.java:50) ~[classes/:na]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334) ~[spring-security-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:200) ~[spring-security-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334) ~[spring-security-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116) ~[spring-security-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334) ~[spring-security-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:96) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334) ~[spring-security-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:74) ~[spring-security-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334) ~[spring-security-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105) ~[spring-security-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334) ~[spring-security-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56) ~[spring-security-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334) ~[spring-security-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215) ~[spring-security-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178) ~[spring-security-web-5.1.5.RELEASE.jar:5.1.5.RELEASE]
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:357) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:270) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:92) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-5.1.6.RELEASE.jar:5.1.6.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:200) ~[tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:490) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:139) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:408) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:834) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1415) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source) [na:1.8.0_144]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source) [na:1.8.0_144]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.17.jar:9.0.17]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_144]
+
+2019-06-22 20:08:30.069  INFO 10576 --- [RMI TCP Connection(18)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2019-06-22 20:08:30.072  INFO 10576 --- [RMI TCP Connection(18)-127.0.0.1] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-06-22 20:08:30.075  INFO 10576 --- [RMI TCP Connection(18)-127.0.0.1] org.mongodb.driver.connection            : Closed connection [connectionId{localValue:2, serverValue:21}] to localhost:27017 because the pool has been closed.
+2019-06-22 20:10:00.643  INFO 11052 --- [main] s.a.StudentInformationServiceApplication : Starting StudentInformationServiceApplication on VIMUKTHI1415 with PID 11052 (D:\SLIIT\AF\final\student-and-instructor-information-system\services\spring-boot\student-information-service\target\classes started by vimukthi_r in D:\SLIIT\AF\final\student-and-instructor-information-system\services\spring-boot\student-information-service)
+2019-06-22 20:10:00.646  INFO 11052 --- [main] s.a.StudentInformationServiceApplication : The following profiles are active: dev
+2019-06-22 20:10:01.260  INFO 11052 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-06-22 20:10:01.310  INFO 11052 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 46ms. Found 2 repository interfaces.
+2019-06-22 20:10:01.880  INFO 11052 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9090 (http)
+2019-06-22 20:10:01.895  INFO 11052 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-06-22 20:10:01.895  INFO 11052 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.17]
+2019-06-22 20:10:01.964  INFO 11052 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-06-22 20:10:01.965  INFO 11052 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1289 ms
+2019-06-22 20:10:02.525  INFO 11052 --- [main] org.mongodb.driver.cluster               : Cluster created with settings {hosts=[localhost:27017], mode=MULTIPLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+2019-06-22 20:10:02.525  INFO 11052 --- [main] org.mongodb.driver.cluster               : Adding discovered server localhost:27017 to client view of cluster
+2019-06-22 20:10:02.560  INFO 11052 --- [cluster-ClusterId{value='5d0e3dc27624692b2c4ff103', description='null'}-localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:1, serverValue:22}] to localhost:27017
+2019-06-22 20:10:02.564  INFO 11052 --- [cluster-ClusterId{value='5d0e3dc27624692b2c4ff103', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 5]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=2726227}
+2019-06-22 20:10:02.564  INFO 11052 --- [cluster-ClusterId{value='5d0e3dc27624692b2c4ff103', description='null'}-localhost:27017] org.mongodb.driver.cluster               : Discovered cluster type of STANDALONE
+2019-06-22 20:10:02.768  INFO 11052 --- [main] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:2, serverValue:23}] to localhost:27017
+2019-06-22 20:10:02.962  INFO 11052 --- [main] com.sliit.af.aspect.LoggingAspect        : begin executing execution(BCryptPasswordEncoder com.sliit.af.config.BeanConfig.bCryptPasswordEncoder()) with parameters []
+2019-06-22 20:10:03.288  INFO 11052 --- [main] com.sliit.af.aspect.LoggingAspect        : begin executing execution(void com.sliit.af.config.WebConfig.addCorsMappings(CorsRegistry)) with parameters [org.springframework.web.servlet.config.annotation.CorsRegistry@3f1158ee]
+2019-06-22 20:10:03.376  INFO 11052 --- [main] com.sliit.af.aspect.LoggingAspect        : begin executing execution(RestTemplate com.sliit.af.config.BeanConfig.restTemplate()) with parameters []
+2019-06-22 20:10:03.524  INFO 11052 --- [main] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2019-06-22 20:10:03.580  INFO 11052 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@8cb7185, org.springframework.security.web.context.SecurityContextPersistenceFilter@5a7e81, org.springframework.security.web.header.HeaderWriterFilter@40c28b0d, org.springframework.web.filter.CorsFilter@4dac40b, org.springframework.security.web.authentication.logout.LogoutFilter@62ab5e63, com.sliit.af.config.JWTAuthenticationFilter@2c54c497, com.sliit.af.config.JWTAuthorizationFilter@b788dc2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@13ee97af, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@10d905c1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@58ec8271, org.springframework.security.web.session.SessionManagementFilter@1fa98a22, org.springframework.security.web.access.ExceptionTranslationFilter@3220c28, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5f20b6fe]
+2019-06-22 20:10:03.809  INFO 11052 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-06-22 20:10:03.962  INFO 11052 --- [main] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+2019-06-22 20:10:03.977  INFO 11052 --- [main] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2019-06-22 20:10:04.006  INFO 11052 --- [main] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2019-06-22 20:10:04.151  INFO 11052 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9090 (http) with context path ''
+2019-06-22 20:10:04.153  INFO 11052 --- [main] s.a.StudentInformationServiceApplication : Started StudentInformationServiceApplication in 3.736 seconds (JVM running for 4.302)
+2019-06-22 20:10:17.872  INFO 11052 --- [http-nio-9090-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-06-22 20:10:17.872  INFO 11052 --- [http-nio-9090-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-06-22 20:10:17.879  INFO 11052 --- [http-nio-9090-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2019-06-22 20:10:17.987  INFO 11052 --- [http-nio-9090-exec-2] com.sliit.af.aspect.LoggingAspect        : begin executing execution(UserDetails com.sliit.af.service.impl.UserServiceImpl.loadUserByUsername(String)) with parameters [reachvimukthi@gmail.com]
+2019-06-22 20:10:17.989  INFO 11052 --- [http-nio-9090-exec-2] com.sliit.af.aspect.LoggingAspect        : begin executing execution(Optional com.sliit.af.repository.UserRepository.findByEmail(String)) with parameters [reachvimukthi@gmail.com]
+2019-06-22 20:10:18.158  INFO 11052 --- [http-nio-9090-exec-2] com.sliit.af.aspect.LoggingAspect        : begin executing execution(User com.sliit.af.service.impl.UserServiceImpl.getByEmail(String)) with parameters [reachvimukthi@gmail.com]
+2019-06-22 20:10:18.158  INFO 11052 --- [http-nio-9090-exec-2] com.sliit.af.aspect.LoggingAspect        : begin executing execution(Optional com.sliit.af.repository.UserRepository.findByEmail(String)) with parameters [reachvimukthi@gmail.com]
+2019-06-22 20:10:55.465  INFO 11052 --- [http-nio-9090-exec-3] com.sliit.af.aspect.LoggingAspect        : begin executing execution(ResponseEntity com.sliit.af.controller.UserController.temp()) with parameters []
+2019-06-22 20:11:30.390  INFO 11052 --- [RMI TCP Connection(10)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2019-06-22 20:11:30.391  INFO 11052 --- [RMI TCP Connection(10)-127.0.0.1] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-06-22 20:11:30.394  INFO 11052 --- [RMI TCP Connection(10)-127.0.0.1] org.mongodb.driver.connection            : Closed connection [connectionId{localValue:2, serverValue:23}] to localhost:27017 because the pool has been closed.

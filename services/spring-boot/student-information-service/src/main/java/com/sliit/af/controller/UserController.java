@@ -3,13 +3,17 @@
  */
 package com.sliit.af.controller;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,6 +44,8 @@ public class UserController {
 	UserService userService;
 	@Autowired
 	ApplicationEventPublisher eventPublisher;
+	@Value("${student.info.loging.url}")
+	private String logingUrl;
 
 	/**
 	 * This method will save a new user in the database
@@ -98,7 +104,7 @@ public class UserController {
 		}
 		return responseEntity;
 	}
-	
+
 	/**
 	 * This method will return an users with given id
 	 */
@@ -112,7 +118,7 @@ public class UserController {
 		}
 		return responseEntity;
 	}
-	
+
 	/**
 	 * This method will delete an users with given id
 	 */
@@ -143,17 +149,42 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/regitrationConfirm")
-	public String confirmRegistration(@RequestParam("token") String token) {
+	public ResponseEntity<?> confirmRegistration(@RequestParam("token") String token) {
 
 		User user = userService.getByToken(token);
 		if (Objects.isNull(user)) {
-			return "registration error";
+			return new ResponseEntity<>("registration error", HttpStatus.OK);
 		} else if (user.getVerificationToken().getExpiryDate().isBefore(LocalDateTime.now())) {
-			user.setEnabled(true);
+			/*user.setEnabled(true);
 			userService.save(user);
-			return "registration success";
+			return "registration success";*/
+			URI yahoo = null;
+			try {
+				yahoo = new URI("http://www.yahoo.com");
+				HttpHeaders httpHeaders = new HttpHeaders();
+				httpHeaders.setLocation(yahoo);
+				return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
 		}
-		return "registration not complete";
+		return new ResponseEntity<>("registration not complete", HttpStatus.OK);
 	}
 
+	@GetMapping(value = "/temp")
+	public ResponseEntity<?> temp() {
+		URI yahoo = null;
+		try {
+			yahoo = new URI("http://www.yahoo.com");
+			HttpHeaders httpHeaders = new HttpHeaders();
+			httpHeaders.setLocation(yahoo);
+			return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

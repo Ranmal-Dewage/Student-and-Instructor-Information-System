@@ -160,6 +160,9 @@ public class UserController {
 			 */
 			URI yahoo = null;
 			try {
+				user.setEnabled(true);
+				userService.save(user);
+
 				yahoo = new URI(logingUrl);
 				HttpHeaders httpHeaders = new HttpHeaders();
 				httpHeaders.setLocation(yahoo);

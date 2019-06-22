@@ -3,6 +3,7 @@
  */
 package com.sliit.af.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -54,7 +55,7 @@ public class User {
 	private VerificationToken verificationToken;
 	private List<String> faculty;
 	private List<String> degree;
-	private List<String> courses;
+	private List<String> courses = new ArrayList<>();
 	@Pattern(regexp = "(^[0-9]{9}[vVxX]$)||(^[0-9]{12}$)", message="Invalid NIC")
 	private String nic;
 }

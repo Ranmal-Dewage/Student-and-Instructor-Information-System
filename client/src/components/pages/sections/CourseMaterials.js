@@ -13,6 +13,7 @@ import React from "react";
 import {StyledDropzone} from "../../functions/StyledDropzone"
 import config from "../../functions/config"
 import {getCourseMaterials} from "../../functions/Services"
+import {toast} from "react-toastify";
 
 export default class CourseMaterials extends Component {
 
@@ -22,14 +23,22 @@ export default class CourseMaterials extends Component {
 
     handleSubmit = event => {
         if (this.state.files) {
-            fetch(config.nodeBaseUrl + '/courses/' + this.props.cid + "/materials", {
-                method: 'PUT',
+            fetch(config.fileService + "/files/many", {
+                method: 'POST',
                 body: this.state.files,
             }).then(res => {
-
+                return res.json()
+            }).then(data => {
+                fetch(config.nodeBaseUrl + '/courses/' + this.props.cid + "/materials", {
+                    method: 'PUT',
+                    body: JSON.stringify({data: data})
+                }).then(res => {
+                    toast.success("Successfully added course materials")
+                    // this.getMeterials()
+                })
             }).catch(err => {
                 console.log(err)
-                this.setState({MDBModalShowErr: true})
+                toast.error("Unable to add course materials")
             })
         }
         event.preventDefault()
@@ -37,19 +46,19 @@ export default class CourseMaterials extends Component {
     }
 
     getMeterials = () => {
-        getCourseMaterials(this.props.cid)
-            .then(res => {
-
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        // getCourseMaterials(this.props.cid)
+        //     .then(res => {
+        //
+        //     })
+        //     .catch(err => {
+        //         console.log(err)
+        //     })
     }
 
     getFiles = acceptedFiles => {
         const data = new FormData()
         for (var x = 0; x < acceptedFiles.length; x++) {
-            data.append('files', acceptedFiles[x])
+            data.append('file', acceptedFiles[x])
         }
         this.setState({files: data, saved: true})
     }

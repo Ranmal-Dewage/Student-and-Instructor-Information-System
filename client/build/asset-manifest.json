@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e9c9038f.chunk.css",
+    "main.js": "/static/js/main.83d8367c.chunk.js",
+    "main.js.map": "/static/js/main.83d8367c.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
+    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
+    "static/css/2.6e5907e3.chunk.css": "/static/css/2.6e5907e3.chunk.css",
+    "static/js/2.ffa7e2e6.chunk.js": "/static/js/2.ffa7e2e6.chunk.js",
+    "static/js/2.ffa7e2e6.chunk.js.map": "/static/js/2.ffa7e2e6.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.e08c979c1dd9a1bc121e5f139f2bd3f2.js": "/precache-manifest.e08c979c1dd9a1bc121e5f139f2bd3f2.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.6e5907e3.chunk.css.map": "/static/css/2.6e5907e3.chunk.css.map",
+    "static/css/main.e9c9038f.chunk.css.map": "/static/css/main.e9c9038f.chunk.css.map",
+    "static/media/mdb.css": "/static/media/arrow_right.8ef6a08c.svg",
+    "static/media/SLIIT-malabe.jpg": "/static/media/SLIIT-malabe.0b6863c8.jpg",
+    "static/media/SLIIT.png": "/static/media/SLIIT.5c488492.png",
+    "static/media/all.min.css": "/static/media/fa-solid-900.f14c3b2f.ttf",
+    "static/media/sliit-walk.JPG": "/static/media/sliit-walk.644a5c22.JPG"
+  }
+}

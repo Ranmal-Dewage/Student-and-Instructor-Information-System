@@ -1,4 +1,4 @@
-package com.sliit.af.studentinformationservice;
+package com.sliit.af.studentinformationservice.studentinformationservice;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

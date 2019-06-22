@@ -1,0 +1,12 @@
+2019-06-22 14:55:30.956  INFO 14436 --- [main] c.sliit.af.FileManageServiceApplication  : Starting FileManageServiceApplication on VIMUKTHI1415 with PID 14436 (D:\SLIIT\AF\final\student-and-instructor-information-system\services\spring-boot\file-manage-service\target\classes started by vimukthi_r in D:\SLIIT\AF\final\student-and-instructor-information-system\services\spring-boot\file-manage-service)
+2019-06-22 14:55:30.960  INFO 14436 --- [main] c.sliit.af.FileManageServiceApplication  : No active profile set, falling back to default profiles: default
+2019-06-22 14:55:31.749  INFO 14436 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 9091 (http)
+2019-06-22 14:55:31.763  INFO 14436 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-06-22 14:55:31.763  INFO 14436 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.17]
+2019-06-22 14:55:31.818  INFO 14436 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-06-22 14:55:31.818  INFO 14436 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 825 ms
+2019-06-22 14:55:35.664  INFO 14436 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-06-22 14:55:35.822  INFO 14436 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 9091 (http) with context path ''
+2019-06-22 14:55:35.825  INFO 14436 --- [main] c.sliit.af.FileManageServiceApplication  : Started FileManageServiceApplication in 5.08 seconds (JVM running for 5.718)
+2019-06-22 14:56:10.290  INFO 14436 --- [RMI TCP Connection(10)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2019-06-22 14:56:10.292  INFO 14436 --- [RMI TCP Connection(10)-127.0.0.1] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'

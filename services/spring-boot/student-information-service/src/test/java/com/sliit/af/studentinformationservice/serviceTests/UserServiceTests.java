@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.sliit.af.service;
+package com.sliit.af.studentinformationservice.serviceTests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,11 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.sliit.af.domain.UserDTO;
 import com.sliit.af.model.User;
+import com.sliit.af.repository.RoleRepository;
 import com.sliit.af.repository.UserRepository;
+import com.sliit.af.service.UserService;
 import com.sliit.af.service.impl.UserServiceImpl;
 
 /**
@@ -38,13 +41,20 @@ public class UserServiceTests {
 		public UserService userService() {
 			return new UserServiceImpl();
 		}
+		
+		@Bean
+		public BCryptPasswordEncoder bCryptPasswordEncoder() {
+			return new BCryptPasswordEncoder();
+		}
 	}
 
 	@Autowired
 	UserService userService;
 	@MockBean
 	UserRepository userRepository;
-
+	@MockBean
+	RoleRepository roleRepository;
+	
 	@Before
 	public void setup() {
 		User user = new User();
@@ -70,7 +80,7 @@ public class UserServiceTests {
 
 	@Test
 	public void whenUserId_thenUserBeanShouldReturn() {
-		assertThat(userService.getUserById("1")).hasFieldOrPropertyWithValue("username", "testUser");
+		assertThat(userService.getUserById("1")).hasFieldOrPropertyWithValue("email", "user@user.com");
 	}
 
 	@Test
@@ -81,7 +91,7 @@ public class UserServiceTests {
 			lastUserBean = user;
 		}
 		assertThat(List).hasSize(3);
-		assertThat(lastUserBean).hasFieldOrPropertyWithValue("email", "user@user.com2");
+		assertThat(lastUserBean).hasFieldOrPropertyWithValue("email", "user2@user.com");
 	}
 
 	@Test

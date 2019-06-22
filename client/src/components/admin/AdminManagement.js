@@ -1,19 +1,32 @@
 import React, {Component} from 'react';
-import {MDBBtn, MDBCol, MDBInput, MDBRow, MDBTable, MDBTableBody, MDBTableHead, MDBCard, MDBCardHeader, MDBCardBody} from 'mdbreact';
+import {
+    MDBBtn,
+    MDBCol,
+    MDBInput,
+    MDBRow,
+    MDBTable,
+    MDBTableBody,
+    MDBTableHead,
+    MDBCard,
+    MDBCardHeader,
+    MDBCardBody
+} from 'mdbreact';
+import config from "../functions/config";
+import {getHash} from "../functions/Functions";
 
-const nodeBasedUrl = "http://192.168.8.104:4000";
+const springBaseUrl = config.springBaseUrl;
 
 export default class AdminManagement extends Component {
 
     constructor(props) {
         super(props);
-        this.state ={
+        this.state = {
             adminFirstName: '',
             adminLastName: '',
             adminNic: '',
             adminPhone: '',
             adminEmail: '',
-            adminPassword:'',
+            adminPassword: '',
             adminAddress: '',
             admins: [],
             adminButtonName: ''
@@ -25,24 +38,41 @@ export default class AdminManagement extends Component {
         this.getAdmins();
     }
 
+    getToken = () => {
+        var user = localStorage.getItem('sis-user')
+        if (user) {
+            user = JSON.parse(user)
+            return user.token
+        }
+        return null
+    }
+
     getAdmins = () => {
         let allAdmins = [];
-        fetch(nodeBasedUrl+"/admin/admins").then(res =>{
-            if(res.ok){
+        fetch(springBaseUrl + "/users/roles/admin", {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(res => {
+            if (res.ok) {
                 return res.json();
             } else {
                 alert("Error when obtaining admins");
             }
         }).then(data => {
-            data.map((item) =>{
+            data.map((item) => {
                 return allAdmins.push({
-                    adminFirstName: item.adminFirstName,
-                    adminLastName: item.adminLastName,
-                    adminNic: item.adminNic,
-                    adminPhone: item.adminPhone,
-                    adminEmail: item.adminEmail,
-                    adminPassword: item.adminPassword,
-                    adminAddress: item.adminAddress
+                    adminID: item.id,
+                    adminFirstName: item.firstName,
+                    adminLastName: item.lastName,
+                    adminNic: item.nic,
+                    adminPhone: item.mobile,
+                    adminEmail: item.email,
+                    adminPassword: item.password,
+                    adminAddress: item.address,
+                    roles: item.roles
                 })
             });
             this.setState({admins: allAdmins})
@@ -51,12 +81,15 @@ export default class AdminManagement extends Component {
         })
     };
 
-    deleteAdmin(email) {
-        fetch(nodeBasedUrl+"/admin/admins/"+ email, {
+    deleteAdmin(id) {
+        fetch(springBaseUrl + "/user/" + id, {
             method: 'DELETE',
-            headers:{'Content-Type': 'application/json'}
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
         }).then(result => {
-            if(result.ok){
+            if (result.ok) {
                 alert("Admin deleted successfully");
                 this.getAdmins();
             } else {
@@ -68,19 +101,19 @@ export default class AdminManagement extends Component {
 
     }
 
-    addUpdateAdmin(email, source){
+    addUpdateAdmin(email, source) {
         let tempArray = this.state.admins;
-        if(source === "fromAddAdmin"){
-            if(this.state.adminButtonName === "Add Admin"){
-                if( this.state.adminFirstName === "" || this.state.adminLastName === "" || this.state.adminNic === "" ||  this.state.adminPhone === "" ||
+        if (source === "fromAddAdmin") {
+            if (this.state.adminButtonName === "Add Admin") {
+                if (this.state.adminFirstName === "" || this.state.adminLastName === "" || this.state.adminNic === "" || this.state.adminPhone === "" ||
                     this.state.adminEmail === "" || this.state.adminPassword === "" || this.state.adminAddress === "") {
                     //Error Message
                     alert("Error message");
                 } else {
-                    if(tempArray !== []){
+                    if (tempArray !== []) {
                         let breakCondition = false;
                         tempArray.map((item) => {
-                            if((item.adminEmail === this.state.adminEmail) && !breakCondition){
+                            if ((item.adminEmail === this.state.adminEmail) && !breakCondition) {
                                 //Error Message if ids are same
                                 alert("Error message");
                                 breakCondition = true;
@@ -89,15 +122,17 @@ export default class AdminManagement extends Component {
                             return null;
                         });
 
-                        if(!breakCondition){
+
+                        if (!breakCondition) {
                             let adminObj = {
-                                adminFirstName:  this.state.adminFirstName,
-                                adminLastName:  this.state.adminLastName,
-                                adminNic:  this.state.adminNic,
-                                adminPhone:  this.state.adminPhone,
-                                adminEmail: this.state.adminEmail,
-                                adminPassword:  this.state.adminPassword,
-                                adminAddress:  this.state.adminAddress
+                                "address": this.state.adminAddress,
+                                "firstName": this.state.adminFirstName,
+                                "lastName": this.state.adminLastName,
+                                "mobile": this.state.adminPhone,
+                                "email": this.state.adminEmail,
+                                "password": getHash(this.state.adminPassword),
+                                "roles": [{"role": "ADMIN"}],
+                                "nic": this.state.adminNic
                             };
 
                             this.addAdmin(adminObj);
@@ -105,28 +140,30 @@ export default class AdminManagement extends Component {
                         }
                     } else {
                         let adminObj = {
-                            adminFirstName:  this.state.adminFirstName,
-                            adminLastName:  this.state.adminLastName,
-                            adminNic:  this.state.adminNic,
-                            adminPhone:  this.state.adminPhone,
-                            adminEmail: this.state.adminEmail,
-                            adminPassword:  this.state.adminPassword,
-                            adminAddress:  this.state.adminAddress
+                            "address": this.state.adminAddress,
+                            "firstName": this.state.adminFirstName,
+                            "lastName": this.state.adminLastName,
+                            "mobile": this.state.adminPhone,
+                            "email": this.state.adminEmail,
+                            "password": getHash(this.state.adminPassword),
+                            "roles": [{"role": "ADMIN"}],
+                            "nic": this.state.adminNic
                         };
 
                         this.addAdmin(adminObj);
                         this.getAdmins();
                     }
                 }
-            } else if(this.state.adminButtonName === "Update Admin") {
+            } else if (this.state.adminButtonName === "Update Admin") {
                 let adminObj = {
-                    adminFirstName:  this.state.adminFirstName,
-                    adminLastName:  this.state.adminLastName,
-                    adminNic:  this.state.adminNic,
-                    adminPhone:  this.state.adminPhone,
-                    adminEmail: this.state.adminEmail,
-                    adminPassword:  this.state.adminPassword,
-                    adminAddress:  this.state.adminAddress
+                    "address": this.state.adminAddress,
+                    "firstName": this.state.adminFirstName,
+                    "lastName": this.state.adminLastName,
+                    "mobile": this.state.adminPhone,
+                    "email": this.state.adminEmail,
+                    //"password": getHash(this.state.adminPassword),
+                    "roles": [{"role": "ADMIN"}],
+                    "nic": this.state.adminNic
                 };
 
                 this.updateAdmin(email, adminObj);
@@ -140,7 +177,7 @@ export default class AdminManagement extends Component {
             this.setState({adminEmail: ''});
             this.setState({adminPassword: ''});
             this.setState({adminAddress: ''});
-        } else if(source === "fromEditAdmin"){
+        } else if (source === "fromEditAdmin") {
             this.setState({adminButtonName: "Update Admin"});
 
             this.getAdminByEmail(email)
@@ -148,32 +185,35 @@ export default class AdminManagement extends Component {
     };
 
     getAdminByEmail = (email) => {
-        fetch(nodeBasedUrl+"/admin/admins/"+ email).then(res => {
-            if(res.ok){
+        fetch(springBaseUrl + "/admin/admins/" + email).then(res => {
+            if (res.ok) {
                 return res.json();
             } else {
                 alert("Error when obtaining the admin information")
             }
         }).then(data => {
-            this.setState({adminFirstName: data.adminFirstName});
-            this.setState({adminLastName: data.adminLastName});
-            this.setState({adminNic: data.adminNic});
-            this.setState({adminPhone: data.adminPhone});
-            this.setState({adminEmail: data.adminEmail});
-            this.setState({adminPassword: data.adminPassword});
-            this.setState({adminAddress: data.adminAddress});
+            this.setState({adminFirstName: data.firstName});
+            this.setState({adminLastName: data.lastName});
+            this.setState({adminNic: data.nic});
+            this.setState({adminPhone: data.mobile});
+            this.setState({adminEmail: data.email});
+            //this.setState({adminPassword: data.password});
+            this.setState({adminAddress: data.address});
         }).catch(err => {
             console.log(err)
         })
     };
 
     addAdmin = (obj) => {
-        fetch(nodeBasedUrl+"/admin/admins", {
+        fetch(springBaseUrl + "/users", {
             method: 'POST',
             body: JSON.stringify(obj),
-            headers:{'Content-Type': 'application/json'}
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
         }).then(result => {
-            if(result.ok){
+            if (result.ok) {
                 alert("Admin added successfully");
             } else {
                 alert("The admin can't be added");
@@ -183,13 +223,16 @@ export default class AdminManagement extends Component {
         });
     };
 
-    updateAdmin = (email,obj) => {
-        fetch(nodeBasedUrl+"/admin/admins/"+ email, {
+    updateAdmin = (email, obj) => {
+        fetch(springBaseUrl + "/admin/admins/" + email, {
             method: 'PUT',
             body: JSON.stringify(obj),
-            headers:{'Content-Type': 'application/json'}
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
         }).then(result => {
-            if(result.ok){
+            if (result.ok) {
                 alert("Instructor updated successfully");
             } else {
                 alert("The Instructor can't be updated");
@@ -208,35 +251,43 @@ export default class AdminManagement extends Component {
                     <MDBCardBody>
                         <form>
                             <MDBRow>
-                                <MDBCol><MDBInput label="First Name" group type="text" validate name="adminFirstName" value={this.state.adminFirstName}
+                                <MDBCol><MDBInput label="First Name" group type="text" validate name="adminFirstName"
+                                                  value={this.state.adminFirstName}
                                                   onChange={(e) => this.setState({adminFirstName: e.target.value})}/>
                                 </MDBCol>
-                                <MDBCol><MDBInput label="Last Name" group type="text" validate name="adminLastName" value={this.state.adminLastName}
+                                <MDBCol><MDBInput label="Last Name" group type="text" validate name="adminLastName"
+                                                  value={this.state.adminLastName}
                                                   onChange={(e) => this.setState({adminLastName: e.target.value})}/>
                                 </MDBCol>
                             </MDBRow>
                             <MDBRow>
-                                <MDBCol><MDBInput label="Nic" group type="text" validate name="adminNic" value={this.state.adminNic}
+                                <MDBCol><MDBInput label="Nic" group type="text" validate name="adminNic"
+                                                  value={this.state.adminNic}
                                                   onChange={(e) => this.setState({adminNic: e.target.value})}/>
                                 </MDBCol>
                                 <MDBCol>
-                                    <MDBInput label="Phone" group type="text" validate name="adminPhone" value={this.state.adminPhone}
+                                    <MDBInput label="Phone" group type="text" validate name="adminPhone"
+                                              value={this.state.adminPhone}
                                               onChange={(e) => this.setState({adminPhone: e.target.value})}/>
                                 </MDBCol>
 
                             </MDBRow>
                             <MDBRow>
                                 <MDBCol>
-                                    <MDBInput label="Email" group type="email" validate name="adminEmail" value={this.state.adminEmail}
+                                    <MDBInput label="Email" group type="email" validate name="adminEmail"
+                                              value={this.state.adminEmail}
                                               onChange={(e) => this.setState({adminEmail: e.target.value})}/>
                                 </MDBCol>
-                                <MDBCol><MDBInput label="Password" group type="password" validate name="adminPassword" value={this.state.adminPassword}
+                                <MDBCol><MDBInput label="Password" group type="password" validate name="adminPassword"
+                                                  value={this.state.adminPassword}
                                                   onChange={(e) => this.setState({adminPassword: e.target.value})}/>
                                 </MDBCol>
                             </MDBRow>
                             <MDBRow>
                                 <MDBCol>
-                                    <MDBInput type="textarea" label="Description" name="adminAddress" value={this.state.adminAddress} onChange={(e) => this.setState({adminAddress: e.target.value})} outline />
+                                    <MDBInput type="textarea" label="Description" name="adminAddress"
+                                              value={this.state.adminAddress}
+                                              onChange={(e) => this.setState({adminAddress: e.target.value})} outline/>
                                 </MDBCol>
                             </MDBRow>
                             <MDBRow>
@@ -265,10 +316,11 @@ export default class AdminManagement extends Component {
                                                     <td>{admin.adminPhone}</td>
                                                     <td>{admin.adminEmail}</td>
                                                     <td>{admin.adminAddress}</td>
-                                                    <td><MDBBtn color="primary" rounded type="button" className="z-depth-1a"
-                                                                onClick={() => this.addUpdateAdmin(admin.adminEmail, "fromEditAdmin")}>Edit</MDBBtn>{' '}
-                                                        <MDBBtn color="danger" rounded type="button" className="z-depth-1a"
-                                                                onClick={() => this.deleteAdmin(admin.adminEmail)}>Delete</MDBBtn>
+                                                    <td>/*<MDBBtn color="primary" rounded type="button" className="z-depth-1a"
+                                                                onClick={() => this.addUpdateAdmin(admin.adminEmail, "fromEditAdmin")}>Edit</MDBBtn>{' '}*/
+                                                        <MDBBtn color="danger" rounded type="button"
+                                                                className="z-depth-1a"
+                                                                onClick={() => this.deleteAdmin(admin.adminID)}>Delete</MDBBtn>
                                                     </td>
                                                 </tr>
                                             })}

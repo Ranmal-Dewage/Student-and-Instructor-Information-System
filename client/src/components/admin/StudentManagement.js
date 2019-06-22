@@ -67,7 +67,7 @@ export default class StudentManagement extends Component {
                     facultyCode: item.facultyCode,
                     degreeCode: item.degreeCode,
                     degreeName: item.degreeName,
-                    degreeDescription: item.degreeDescription})
+                    degreeDuration: item.degreeDuration})
             });
             this.setState({degrees: degrees})
         }).catch(err => {

@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import {MDBBtn, MDBCol, MDBInput, MDBRow, MDBTable, MDBTableBody, MDBTableHead, MDBCard, MDBCardHeader, MDBCardBody} from 'mdbreact';
+import config from "../functions/config";
+import {getHash} from "../functions/Functions";
 
-const nodeBasedUrl = "http://192.168.8.104:4000";
+const nodeBaseUrl = config.nodeBaseUrl;
+const springBaseUrl = config.springBaseUrl;
 
 export default class CourseManagement extends Component {
 
@@ -21,7 +24,9 @@ export default class CourseManagement extends Component {
             degrees: [],
             faculties: [],
             courses: [],
-            courseButtonName: ''
+            courseButtonName: '',
+            cmaterials: [],
+            coursesOfAInstructor: []
         };
     }
 
@@ -32,9 +37,24 @@ export default class CourseManagement extends Component {
         this.getCourses();
     }
 
+    getToken = () => {
+        var user = localStorage.getItem('sis-user')
+        if (user) {
+            user = JSON.parse(user)
+            return user.token
+        }
+        return null
+    };
+
     getFaculties = () => {
         let allFaculties = [];
-        fetch(nodeBasedUrl+"/admin/faculties").then(res =>{
+        fetch(nodeBaseUrl+"/faculties", {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -43,10 +63,10 @@ export default class CourseManagement extends Component {
         }).then(data => {
             data.map((item) =>{
                 return allFaculties.push({
-                    facultyCode: item.facultyCode,
-                    facultyName: item.facultyName,
-                    facultyDescription: item.facultyDescription,
-                    degrees: item.degrees
+                    facultyCode: item.fcode,
+                    facultyName: item.fname,
+                    facultyDescription: item.description
+                    //degrees: item.degrees
                 })
             });
             this.setState({faculties: allFaculties})
@@ -57,7 +77,13 @@ export default class CourseManagement extends Component {
 
     getCourses = () => {
         let allCourses = [];
-        fetch(nodeBasedUrl+"/admin/courses").then(res =>{
+        fetch(nodeBaseUrl+"/courses", {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -66,16 +92,15 @@ export default class CourseManagement extends Component {
         }).then(data => {
             data.map((item) =>{
                 return allCourses.push({
-                    courseID: item.courseID,
-                    courseName: item.courseName,
-                    courseYear: item.courseYear,
-                    courseSemester: item.courseSemester,
-                    courseDescription: item.courseDescription,
-                    courseFaculty: item.courseFaculty,
-                    courseDegree: item.courseDegree,
-                    courseInstructors: item.courseInstructors,
-                    courseCredits: item.courseCredits,
-                    courseStatus: item.courseStatus
+                    courseID: item.ccode,
+                    courseName: item.cname,
+                    courseYear: item.year,
+                    courseSemester: item.semester,
+                    courseDescription: item.description,
+                    courseFaculty: item.fcode,
+                    courseDegree: item.dcode,
+                    courseCredits: item.credits,
+                    courseStatus: item.accept
                 })
             });
             this.setState({courses: allCourses})
@@ -86,7 +111,13 @@ export default class CourseManagement extends Component {
 
     getDegreeForFaculty = (facultyCode) => {
         let degrees = [];
-        fetch(nodeBasedUrl+"/admin/faculties/degrees/"+ facultyCode).then(res =>{
+        fetch(nodeBaseUrl+"/degrees/"+ facultyCode, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -95,10 +126,10 @@ export default class CourseManagement extends Component {
         }).then(data => {
             data.map((item) =>{
                 return degrees.push({
-                    facultyCode: item.facultyCode,
-                    degreeCode: item.degreeCode,
-                    degreeName: item.degreeName,
-                    degreeDescription: item.degreeDescription})
+                    facultyCode: item.fcode,
+                    degreeCode: item.dcode,
+                    degreeName: item.dname,
+                    degreeDuration: item.duration})
             });
             this.setState({degrees: degrees})
         }).catch(err => {
@@ -108,7 +139,13 @@ export default class CourseManagement extends Component {
 
     getInstructorsForFaculty = (facultyCode) => {
         let instructors = [];
-        fetch(nodeBasedUrl+"/admin/faculties/instructors/"+ facultyCode).then(res =>{
+        fetch(nodeBaseUrl+"/admin/faculties/instructors/"+ facultyCode, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -117,9 +154,10 @@ export default class CourseManagement extends Component {
         }).then(data => {
             data.map((item) =>{
                 return instructors.push({
-                    instructorFirstName: item.instructorFirstName,
-                    instructorLastName: item.instructorLastName,
-                    instructorEmail: item.instructorEmail,
+                    instructorFirstName: item.firstName,
+                    instructorLastName: item.lastName,
+                    instructorEmail: item.email,
+                    instructorCourses: item.courses
                 })
             });
             this.setState({instructors: instructors})
@@ -129,9 +167,12 @@ export default class CourseManagement extends Component {
     };
 
     deleteCourse(courseID) {
-        fetch(nodeBasedUrl+"/admin/courses/"+ courseID, {
+        fetch(nodeBaseUrl+"/courses/"+ courseID, {
             method: 'DELETE',
-            headers:{'Content-Type': 'application/json'}
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
         }).then(result => {
             if(result.ok){
                 alert("Course deleted successfully");
@@ -143,6 +184,74 @@ export default class CourseManagement extends Component {
             alert(JSON.parse(err.error));
         });
     }
+
+
+
+    getCourseByID = (courseID) => {
+        fetch(nodeBaseUrl+"/courses/"+ courseID, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(res => {
+            if(res.ok){
+                return res.json();
+            } else {
+                alert("Error when obtaining the course information")
+            }
+        }).then(data => {
+            this.setState({courseID: data.ccode});
+            this.setState({courseName: data.cname});
+            this.setState({courseYear: data.year});
+            this.setState({courseSemester: data.semester});
+            this.setState({courseDescription: data.description});
+            this.setState({courseFaculty: data.fcode});
+            this.setState({courseDegree: data.dcode});
+            this.setState({courseCredits: data.credits});
+            //this.setState({courseInstructors: data.courseInstructors});
+        }).catch(err => {
+            console.log(err)
+        })
+    };
+
+    addCourse = (obj) => {
+        fetch(nodeBaseUrl+"/courses", {
+            method: 'POST',
+            body: JSON.stringify(obj),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(result => {
+            if(result.ok){
+                alert("Course added successfully");
+            } else {
+                alert("The course can't be added");
+            }
+        }).catch(err => {
+            alert(JSON.parse(err.error));
+        });
+    };
+
+    updateCourse = (courseID,obj) => {
+        fetch(nodeBaseUrl+"/courses/"+ courseID, {
+            method: 'PUT',
+            body: JSON.stringify(obj),
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(result => {
+            if(result.ok){
+                alert("Course updated successfully");
+            } else {
+                alert("The course can't be updated");
+            }
+        }).catch(err => {
+            alert(JSON.parse(err.error));
+        });
+    };
 
     addInstructorsToArray(name,email){
         let tempArray = this.state.courseInstructors;
@@ -171,6 +280,70 @@ export default class CourseManagement extends Component {
                 instructorEmail: email
             });
             this.setState({courseInstructors: tempArray});
+        }
+    };
+
+    addCourseToInstructor = (courseID, email) => {
+        let instructorArray = this.state.instructors;
+        let tempArray = this.state.coursesOfAInstructor;
+
+        if (instructorArray !== []) {
+            let breakCondition = false;
+            instructorArray.map((item) => {
+                if ((item.instructorEmail === email) && !breakCondition) {
+                    if (item.courses !== []) {
+                        tempArray.push(item.courses);
+                        this.setState({coursesOfAInstructor: [...tempArray, courseID]}, () => {
+                            let obj = {
+                                "courses": [this.state.coursesOfAInstructor]
+                            };
+
+                            fetch(springBaseUrl + "/admin/instructors/" + email, {
+                                method: 'PUT',
+                                body: JSON.stringify(obj),
+                                headers: new Headers({
+                                    'Content-Type': 'application/json',
+                                    'Authorization': this.getToken()
+                                })
+                            }).then(result => {
+                                if (result.ok) {
+                                    console.log("OK")
+                                } else {
+                                    console.log("FAIL");
+                                }
+                            }).catch(err => {
+                                console.log(JSON.parse(err.error));
+                            });
+                        });
+                        breakCondition = true;
+                        return null;
+                    } else {
+                        this.setState({courseOfAInstructor: [courseID]}, () => {
+                            let obj = {
+                                "courses": [this.state.coursesOfAInstructor]
+                            };
+
+                            fetch(springBaseUrl + "/admin/instructors/" + email, {
+                                method: 'PUT',
+                                body: JSON.stringify(obj),
+                                headers: new Headers({
+                                    'Content-Type': 'application/json',
+                                    'Authorization': this.getToken()
+                                })
+                            }).then(result => {
+                                if (result.ok) {
+                                    console.log("OK")
+                                } else {
+                                    console.log("FAIL");
+                                }
+                            }).catch(err => {
+                                console.log(JSON.parse(err.error));
+                            });
+                        })
+                    }
+                }
+                return null;
+            });
         }
     };
 
@@ -203,34 +376,45 @@ export default class CourseManagement extends Component {
                         });
                         if(!breakCondition){
                             let courseObj = {
-                                courseID: this.state.courseID,
-                                courseName:  this.state.courseName,
-                                courseYear:  this.state.courseYear,
-                                courseSemester:  this.state.courseSemester,
-                                courseDescription:  this.state.courseDescription,
-                                courseFaculty:  this.state.courseFaculty,
-                                courseDegree:  this.state.courseDegree,
-                                courseInstructors: this.state.courseInstructors,
-                                courseCredits:  this.state.courseCredits,
-                                courseStatus: 'pending'
+                                "ccode": this.state.courseID,
+                                "cname":  this.state.courseName,
+                                "year":  this.state.courseYear,
+                                "semester":  this.state.courseSemester,
+                                "description":  this.state.courseDescription,
+                                "fcode":  this.state.courseFaculty,
+                                "dcode":  this.state.courseDegree,
+                                "credits":  this.state.courseCredits,
+                                "accept": false,
+                                "cmaterials": this.state.cmaterials,
+                                "assignments": []
                             };
+
+
+                            this.state.courseInstructors.map((instructor) => {
+                                this.addCourseToInstructor(this.state.courseID, instructor.instructorEmail);
+                            });
 
                             this.addCourse(courseObj);
                             this.getCourses();
                         }
                     } else {
                         let courseObj = {
-                            courseID: this.state.courseID,
-                            courseName:  this.state.courseName,
-                            courseYear:  this.state.courseYear,
-                            courseSemester:  this.state.courseSemester,
-                            courseDescription:  this.state.courseDescription,
-                            courseFaculty:  this.state.courseFaculty,
-                            courseDegree:  this.state.courseDegree,
-                            courseInstructors: this.state.courseInstructors,
-                            courseCredits:  this.state.courseCredits,
-                            courseStatus: 'pending'
+                            "ccode": this.state.courseID,
+                            "cname":  this.state.courseName,
+                            "year":  this.state.courseYear,
+                            "semester":  this.state.courseSemester,
+                            "description":  this.state.courseDescription,
+                            "fcode":  this.state.courseFaculty,
+                            "dcode":  this.state.courseDegree,
+                            "credits":  this.state.courseCredits,
+                            "accept": false,
+                            "cmaterials": this.state.cmaterials,
+                            "assignments": []
                         };
+
+                        this.state.courseInstructors.map((instructor) => {
+                            this.addCourseToInstructor(this.state.courseID, instructor.instructorEmail);
+                        });
 
                         this.addCourse(courseObj);
                         this.getCourses();
@@ -238,16 +422,20 @@ export default class CourseManagement extends Component {
                 }
             } else if(this.state.courseButtonName === "Update Course") {
                 let courseObj = {
-                    courseID: this.state.courseID,
-                    courseName:  this.state.courseName,
-                    courseYear:  this.state.courseYear,
-                    courseSemester:  this.state.courseSemester,
-                    courseDescription:  this.state.courseDescription,
-                    courseFaculty:  this.state.courseFaculty,
-                    courseDegree:  this.state.courseDegree,
-                    courseInstructors: this.state.courseInstructors,
-                    courseCredits:  this.state.courseCredits,
+                    "ccode": this.state.courseID,
+                    "cname":  this.state.courseName,
+                    "year":  this.state.courseYear,
+                    "semester":  this.state.courseSemester,
+                    "description":  this.state.courseDescription,
+                    "fcode":  this.state.courseFaculty,
+                    "dcode":  this.state.courseDegree,
+                    "credits":  this.state.courseCredits,
+                    "accept": false,
+                    "cmaterials": this.state.cmaterials,
+                    "assignments": []
                 };
+
+
 
                 this.updateCourse(courseID, courseObj);
                 this.setState({courseButtonName: "Add Course"});
@@ -267,60 +455,6 @@ export default class CourseManagement extends Component {
 
             this.getCourseByID(courseID)
         }
-    };
-
-    getCourseByID = (courseID) => {
-        fetch(nodeBasedUrl+"/admin/courses/"+ courseID).then(res => {
-            if(res.ok){
-                return res.json();
-            } else {
-                alert("Error when obtaining the course information")
-            }
-        }).then(data => {
-            this.setState({courseID: data.courseID});
-            this.setState({courseName: data.courseName});
-            this.setState({courseYear: data.courseYear});
-            this.setState({courseSemester: data.courseSemester});
-            this.setState({courseDescription: data.courseDescription});
-            this.setState({courseFaculty: data.courseFaculty});
-            this.setState({courseDegree: data.courseDegree});
-            this.setState({courseCredits: data.courseCredits});
-            this.setState({courseInstructors: data.courseInstructors});
-        }).catch(err => {
-            console.log(err)
-        })
-    };
-
-    addCourse = (obj) => {
-        fetch(nodeBasedUrl+"/admin/courses", {
-            method: 'POST',
-            body: JSON.stringify(obj),
-            headers:{'Content-Type': 'application/json'}
-        }).then(result => {
-            if(result.ok){
-                alert("Course added successfully");
-            } else {
-                alert("The course can't be added");
-            }
-        }).catch(err => {
-            alert(JSON.parse(err.error));
-        });
-    };
-
-    updateCourse = (courseID,obj) => {
-        fetch(nodeBasedUrl+"/admin/courses/"+ courseID, {
-            method: 'PUT',
-            body: JSON.stringify(obj),
-            headers:{'Content-Type': 'application/json'}
-        }).then(result => {
-            if(result.ok){
-                alert("Course updated successfully");
-            } else {
-                alert("The course can't be updated");
-            }
-        }).catch(err => {
-            alert(JSON.parse(err.error));
-        });
     };
 
     setFacultyAndDegrees(selectedString){
@@ -480,7 +614,6 @@ export default class CourseManagement extends Component {
                                                 <th>Course Description</th>
                                                 <th>Course Faculty</th>
                                                 <th>Course Degree</th>
-                                                <th>Course Instructors</th>
                                                 <th>Course Credit</th>
                                                 <th>Course Status</th>
                                             </tr>
@@ -495,19 +628,10 @@ export default class CourseManagement extends Component {
                                                     <td>{course.courseDescription}</td>
                                                     <td>{course.courseFaculty}</td>
                                                     <td>{course.courseDegree}</td>
-                                                    <td><MDBTable>
-                                                            <MDBTableBody>
-                                                                {course.courseInstructors.map((instructor) => {
-                                                                    return <tr>
-                                                                        <td>{instructor.instructorName}</td>
-                                                                    </tr>
-                                                                })}
-                                                            </MDBTableBody>
-                                                    </MDBTable></td>
                                                     <td>{course.courseCredits}</td>
                                                     <td>{course.courseStatus}</td>
-                                                    <td><MDBBtn color="primary" rounded type="button" className="z-depth-1a"
-                                                                onClick={() => this.addUpdateCourse(course.courseID, "fromEditCourse")}>Edit</MDBBtn>{' '}
+                                                    <td>/*<MDBBtn color="primary" rounded type="button" className="z-depth-1a"
+                                                                onClick={() => this.addUpdateCourse(course.courseID, "fromEditCourse")}>Edit</MDBBtn>{' '}*/
                                                         <MDBBtn color="danger" rounded type="button" className="z-depth-1a"
                                                                 onClick={() => this.deleteCourse(course.courseID)}>Delete</MDBBtn>
                                                     </td>

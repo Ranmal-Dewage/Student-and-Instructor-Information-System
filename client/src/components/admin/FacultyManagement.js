@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {MDBBtn, MDBCol, MDBInput, MDBRow, MDBTable, MDBTableBody, MDBTableHead, MDBCard, MDBCardHeader, MDBCardBody} from 'mdbreact';
+import config from "../functions/config";
 
-const nodeBasedUrl = "http://192.168.8.104:4000";
+const nodeBaseUrl = config.nodeBaseUrl;
 
 export default class FacultyManagement extends Component {
 
@@ -13,7 +14,7 @@ export default class FacultyManagement extends Component {
             facultyDescription: '',
             degreeCode: '',
             degreeName: '',
-            degreeDescription: '',
+            degreeDuration: '',
             degreeButtonName: '',
             facultyButtonName: '',
             degrees: [],
@@ -28,9 +29,24 @@ export default class FacultyManagement extends Component {
         this.getFaculties();
     }
 
+    getToken = () => {
+        var user = localStorage.getItem('sis-user')
+        if (user) {
+            user = JSON.parse(user)
+            return user.token
+        }
+        return null
+    };
+
     getFaculties = () => {
         let allFaculties = [];
-        fetch(nodeBasedUrl+"/admin/faculties").then(res =>{
+        fetch(nodeBaseUrl+"/faculties", {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -39,10 +55,10 @@ export default class FacultyManagement extends Component {
         }).then(data => {
             data.map((item) =>{
                 return allFaculties.push({
-                    facultyCode: item.facultyCode,
-                    facultyName: item.facultyName,
-                    facultyDescription: item.facultyDescription,
-                    degrees: item.degrees
+                    facultyCode: item.fcode,
+                    facultyName: item.fname,
+                    facultyDescription: item.description
+                    //degrees: item.degrees
                 })
             });
             this.setState({faculties: allFaculties})
@@ -53,7 +69,13 @@ export default class FacultyManagement extends Component {
 
     getDegrees = () => {
         let allDegrees = [];
-        fetch(nodeBasedUrl+"/admin/faculties/degrees").then(res =>{
+        fetch(nodeBaseUrl+"/degrees", {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -62,10 +84,10 @@ export default class FacultyManagement extends Component {
         }).then(data => {
             data.map((item) =>{
                 return allDegrees.push({
-                    facultyCode: item.facultyCode,
-                    degreeCode: item.degreeCode,
-                    degreeName: item.degreeName,
-                    degreeDescription: item.degreeDescription
+                    facultyCode: item.fcode,
+                    degreeCode: item.dcode,
+                    degreeName: item.dname,
+                    degreeDuration: item.duration
                 })
             });
             this.setState({degrees: allDegrees})
@@ -75,9 +97,12 @@ export default class FacultyManagement extends Component {
     };
 
     deleteDegree(degreeCode) {
-        fetch(nodeBasedUrl+"/admin/faculties/degrees"+ degreeCode, {
+        fetch(nodeBaseUrl+"/degrees"+ degreeCode, {
             method: 'DELETE',
-            headers:{'Content-Type': 'application/json'}
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
         }).then(result => {
             if(result.ok){
                 alert("degree deleted successfully");
@@ -91,9 +116,12 @@ export default class FacultyManagement extends Component {
     }
 
     deleteFaculty(facultyCode) {
-        fetch(nodeBasedUrl+"/admin/faculties/"+ facultyCode, {
+        fetch(nodeBaseUrl+"/faculties/"+ facultyCode, {
             method: 'DELETE',
-            headers:{'Content-Type': 'application/json'}
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
         }).then(result => {
             if(result.ok){
                 alert("faculty deleted successfully");
@@ -107,10 +135,13 @@ export default class FacultyManagement extends Component {
     }
 
     addDegree = (obj) => {
-        fetch(nodeBasedUrl+"/admin/faculties/degrees", {
+        fetch(nodeBaseUrl+"/degrees", {
             method: 'POST',
             body: JSON.stringify(obj),
-            headers:{'Content-Type': 'application/json'}
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
         }).then(result => {
             if(result.ok){
                 alert("degree added successfully");
@@ -123,10 +154,13 @@ export default class FacultyManagement extends Component {
     };
 
     addFaculty = (obj) => {
-        fetch(nodeBasedUrl+"/admin/faculties", {
+        fetch(nodeBaseUrl+"/faculties", {
             method: 'POST',
             body: JSON.stringify(obj),
-            headers:{'Content-Type': 'application/json'}
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
         }).then(result => {
             if(result.ok){
                 alert("faculty added successfully");
@@ -139,10 +173,13 @@ export default class FacultyManagement extends Component {
     };
 
     updateDegree = (degreeCode,obj) => {
-        fetch(nodeBasedUrl+"/admin/faculties/degrees"+ degreeCode, {
+        fetch(nodeBaseUrl+"/degrees"+ degreeCode, {
             method: 'PUT',
             body: JSON.stringify(obj),
-            headers:{'Content-Type': 'application/json'}
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
         }).then(result => {
             if(result.ok){
                 alert("degree updated successfully");
@@ -155,10 +192,13 @@ export default class FacultyManagement extends Component {
     };
 
     updateFaculty = (facultyCode,obj) => {
-        fetch(nodeBasedUrl+"/admin/faculties/"+ facultyCode, {
+        fetch(nodeBaseUrl+"/faculties/"+ facultyCode, {
             method: 'PUT',
             body: JSON.stringify(obj),
-            headers:{'Content-Type': 'application/json'}
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
         }).then(result => {
             if(result.ok){
                 alert("faculty updated successfully");
@@ -168,6 +208,52 @@ export default class FacultyManagement extends Component {
         }).catch(err => {
             alert(JSON.parse(err.error));
         });
+    };
+
+
+    getDegreeByID = (degreeCode) => {
+        fetch(nodeBaseUrl+"/admin/faculties/degrees/"+ degreeCode, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(res => {
+            if(res.ok){
+                return res.json();
+            } else {
+                alert("Error when obtaining the degree information")
+            }
+        }).then(data => {
+            this.setState({degreeCode: data.dcode});
+            this.setState({degreeName: data.dname});
+            this.setState({degreeDuration: data.duration});
+        }).catch(err => {
+            console.log(err)
+        })
+    };
+
+    getFacultyByID = (facultyCode) => {
+        fetch(nodeBaseUrl+"/admin/faculties/"+ facultyCode,{
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(res => {
+            if(res.ok){
+                return res.json();
+            } else {
+                alert("Error when obtaining the faculty information")
+            }
+        }).then(data => {
+            this.setState({facultyID: data.fcode});
+            this.setState({facultyName: data.fname});
+            //this.setState({degrees: data.degrees});
+            this.setState({facultyDescription: data.description});
+        }).catch(err => {
+            console.log(err)
+        })
     };
 
     addUpdateDegree(degreeCode, source){
@@ -197,10 +283,10 @@ export default class FacultyManagement extends Component {
                         });
                         if(!breakCondition){
                             let degreeObj = {
-                                facultyCode: this.state.facultyCode,
-                                degreeCode: this.state.degreeCode,
-                                degreeName: this.state.degreeName,
-                                degreeDescription: this.state.degreeDescription
+                                "fcode": this.state.facultyCode,
+                                "dcode": this.state.degreeCode,
+                                "dname": this.state.degreeName,
+                                "duration": this.state.degreeDuration
                             };
 
                             this.addDegree(degreeObj);
@@ -208,10 +294,10 @@ export default class FacultyManagement extends Component {
                         }
                     } else {
                         let degreeObj = {
-                            facultyCode: this.state.facultyCode,
-                            degreeCode: this.state.degreeCode,
-                            degreeName: this.state.degreeName,
-                            degreeDescription: this.state.degreeDescription
+                            "fcode": this.state.facultyCode,
+                            "dcode": this.state.degreeCode,
+                            "dname": this.state.degreeName,
+                            "duration": this.state.degreeDuration
                         };
 
                         this.addDegree(degreeObj);
@@ -220,9 +306,10 @@ export default class FacultyManagement extends Component {
                 }
             } else if(this.state.degreeButtonName === "Update Degree") {
                 let degreeObj = {
-                    degreeCode: this.state.degreeCode,
-                    degreeName: this.state.degreeName,
-                    degreeDescription: this.state.degreeDescription
+                    "fcode": this.state.facultyCode,
+                    "dcode": this.state.degreeCode,
+                    "dname": this.state.degreeName,
+                    "duration": this.state.degreeDuration
                 };
 
                 this.updateDegree(degreeCode, degreeObj);
@@ -230,45 +317,12 @@ export default class FacultyManagement extends Component {
 
             this.setState({degreeCode: ''});
             this.setState({degreeName: ''});
-            this.setState({degreeDescription: ''});
+            this.setState({degreeDuration: ''});
         } else if(source === "fromEditDegree"){
             this.setState({degreeButtonName: "Update Degree"});
 
             this.getDegreeByID(degreeCode);
         }
-    };
-
-    getDegreeByID = (degreeCode) => {
-        fetch(nodeBasedUrl+"/admin/faculties/degrees/"+ degreeCode).then(res => {
-            if(res.ok){
-                return res.json();
-            } else {
-                alert("Error when obtaining the degree information")
-            }
-        }).then(data => {
-            this.setState({degreeCode: data.degreeCode});
-            this.setState({degreeName: data.degreeName});
-            this.setState({degreeDescription: data.degreeDescription});
-        }).catch(err => {
-            console.log(err)
-        })
-    };
-
-    getFacultyByID = (facultyCode) => {
-        fetch(nodeBasedUrl+"/admin/faculties/"+ facultyCode).then(res => {
-            if(res.ok){
-                return res.json();
-            } else {
-                alert("Error when obtaining the faculty information")
-            }
-        }).then(data => {
-            this.setState({facultyID: data.facultyCode});
-            this.setState({facultyName: data.facultyName});
-            this.setState({degrees: data.degrees});
-            this.setState({facultyDescription: data.facultyDescription});
-        }).catch(err => {
-            console.log(err)
-        })
     };
 
     addUpdateFaculty(facultyCode, source){
@@ -298,10 +352,10 @@ export default class FacultyManagement extends Component {
                         });
                         if(!breakCondition){
                             let facultyObj = {
-                                facultyCode: this.state.facultyCode,
-                                facultyName: this.state.facultyName,
-                                degrees: this.state.degrees,
-                                facultyDescription: this.state.facultyDescription
+                                "fcode": this.state.facultyCode,
+                                "fname": this.state.facultyName,
+                               // degrees: this.state.degrees,
+                                "description": this.state.facultyDescription
                             };
 
                             this.addFaculty(facultyObj);
@@ -309,10 +363,10 @@ export default class FacultyManagement extends Component {
                         }
                     } else {
                         let facultyObj = {
-                            facultyCode: this.state.facultyCode,
-                            facultyName: this.state.facultyName,
-                            degrees: this.state.degrees,
-                            facultyDescription: this.state.facultyDescription
+                            "fcode": this.state.facultyCode,
+                            "fname": this.state.facultyName,
+                            // degrees: this.state.degrees,
+                            "description": this.state.facultyDescription
                         };
 
                         this.addFaculty(facultyObj);
@@ -321,10 +375,10 @@ export default class FacultyManagement extends Component {
                 }
             } else if(this.state.facultyButtonName === "Update Faculty") {
                 let facultyObj = {
-                    facultyCode: this.state.facultyCode,
-                    facultyName: this.state.facultyName,
-                    degrees: this.state.degrees,
-                    facultyDescription: this.state.facultyDescription
+                    "fcode": this.state.facultyCode,
+                    "fname": this.state.facultyName,
+                    // degrees: this.state.degrees,
+                    "description": this.state.facultyDescription
                 };
 
                 this.updateFaculty(facultyCode, facultyObj);
@@ -378,7 +432,7 @@ export default class FacultyManagement extends Component {
                                                   onChange={(e) => this.setState({degreeName: e.target.value})}/>
                                 </MDBCol>
                                 <MDBCol>
-                                    <MDBInput type="textarea" label="Degree Description" name="degreeDescription" value={this.state.degreeDescription} onChange={(e) => this.setState({degreeDescription: e.target.value})} outline />
+                                    <MDBInput type="number" label="Degree Duration" name="degreeDuration" value={this.state.degreeDuration} onChange={(e) => this.setState({degreeDuration: e.target.value})} outline />
                                 </MDBCol>
                                 <MDBCol><MDBBtn color="primary" rounded type="button" className="z-depth-1a"
                                                 onClick={() => this.addUpdateDegree(this.state.degreeCode, "fromAddDegree")}>{this.state.degreeButtonName}</MDBBtn>
@@ -398,9 +452,9 @@ export default class FacultyManagement extends Component {
                                             return <tr key={degree.degreeCode}>
                                                 <td>{degree.degreeCode}</td>
                                                 <td>{degree.degreeName}</td>
-                                                <td>{degree.degreeDescription}</td>
-                                                <td><MDBBtn color="primary" rounded type="button" className="z-depth-1a"
-                                                            onClick={() => this.addUpdateDegree(degree.degreeCode ,"fromEditDegree")}>Edit</MDBBtn>{' '}
+                                                <td>{degree.degreeDuration}</td>
+                                                <td>/*<MDBBtn color="primary" rounded type="button" className="z-depth-1a"
+                                                            onClick={() => this.addUpdateDegree(degree.degreeCode ,"fromEditDegree")}>Edit</MDBBtn>{' '}*/
                                                     <MDBBtn color="danger" rounded type="button" className="z-depth-1a"
                                                             onClick={() => this.deleteDegree(degree.degreeCode)}>Delete</MDBBtn>
                                                 </td>
@@ -419,7 +473,6 @@ export default class FacultyManagement extends Component {
                                         <tr>
                                             <th>Faculty Code</th>
                                             <th>Faculty Name</th>
-                                            <th>Degrees</th>
                                             <th>Faculty Description</th>
                                         </tr>
                                     </MDBTableHead>
@@ -428,29 +481,9 @@ export default class FacultyManagement extends Component {
                                             return <tr key={faculty.facultyCode}>
                                                 <td>{faculty.facultyCode}</td>
                                                 <td>{faculty.facultyName}</td>
-                                                <td>
-                                                    <MDBTable>
-                                                        <MDBTableHead>
-                                                            <tr>
-                                                                <th>Degree Code</th>
-                                                                <th>Degree Name</th>
-                                                                <th>Degree Description</th>
-                                                            </tr>
-                                                        </MDBTableHead>
-                                                        <MDBTableBody>
-                                                            {faculty.degrees.map((degree) => {
-                                                                return <tr key={degree.degreeCode}>
-                                                                    <td>{degree.degreeCode}</td>
-                                                                    <td>{degree.degreeName}</td>
-                                                                    <td>{degree.degreeDescription}</td>
-                                                                </tr>
-                                                            })}
-                                                        </MDBTableBody>
-                                                    </MDBTable>
-                                                </td>
                                                 <td>{faculty.facultyDescription}</td>
-                                                <td><MDBBtn color="primary" rounded type="button" className="z-depth-1a"
-                                                            onClick={() => this.addUpdateFaculty(faculty.facultyCode,"fromEditFaculty")}>Edit</MDBBtn>{' '}
+                                                <td>/*<MDBBtn color="primary" rounded type="button" className="z-depth-1a"
+                                                            onClick={() => this.addUpdateFaculty(faculty.facultyCode,"fromEditFaculty")}>Edit</MDBBtn>{' '}*/
                                                     <MDBBtn color="danger" rounded type="button" className="z-depth-1a"
                                                             onClick={() => this.deleteFaculty(faculty.facultyCode)}>Delete</MDBBtn>
                                                 </td>

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {MDBBtn, MDBCol, MDBInput, MDBRow, MDBTable, MDBTableBody, MDBTableHead, MDBCard, MDBCardHeader, MDBCardBody, MDBBadge} from 'mdbreact';
 
+const nodeBasedUrl = "http://192.168.8.104:4000";
 
 export default class StudentManagement extends Component {
 
@@ -31,7 +32,7 @@ export default class StudentManagement extends Component {
 
     getFaculties = () => {
         let allFaculties = [];
-        fetch("http://localhost:3001/admin/faculties").then(res =>{
+        fetch(nodeBasedUrl+"/admin/faculties").then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -54,7 +55,7 @@ export default class StudentManagement extends Component {
 
     getDegreeForFaculty = (facultyCode) => {
         let degrees = [];
-        fetch("http://localhost:3001/admin/faculties/degrees/"+ facultyCode).then(res =>{
+        fetch(nodeBasedUrl+"/admin/faculties/degrees/"+ facultyCode).then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -76,7 +77,7 @@ export default class StudentManagement extends Component {
 
     getStudents = () => {
         let allStudents = [];
-        fetch("http://localhost:3001/admin/students").then(res =>{
+        fetch(nodeBasedUrl+"/admin/students").then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -102,7 +103,7 @@ export default class StudentManagement extends Component {
     };
 
     deleteStudent(studentID) {
-        fetch("http://localhost:3001/admin/students/"+ studentID, {
+        fetch(nodeBasedUrl+"/admin/students/"+ studentID, {
             method: 'DELETE',
             headers:{'Content-Type': 'application/json'}
         }).then(result => {
@@ -204,7 +205,7 @@ export default class StudentManagement extends Component {
     };
 
     getStudentByID = (studentID) => {
-        fetch("http://localhost:3001/admin/students/"+ studentID).then(res => {
+        fetch(nodeBasedUrl+"/admin/students/"+ studentID).then(res => {
             if(res.ok){
                 return res.json();
             } else {
@@ -225,7 +226,7 @@ export default class StudentManagement extends Component {
     };
 
     addStudent = (obj) => {
-        fetch("http://localhost:3001/admin/students", {
+        fetch(nodeBasedUrl+"/admin/students", {
             method: 'POST',
             body: JSON.stringify(obj),
             headers:{'Content-Type': 'application/json'}
@@ -241,7 +242,7 @@ export default class StudentManagement extends Component {
     };
 
     updateStudent = (studentID,obj) => {
-        fetch("http://localhost:3001/admin/students"+ studentID, {
+        fetch(nodeBasedUrl+"/admin/students"+ studentID, {
             method: 'PUT',
             body: JSON.stringify(obj),
             headers:{'Content-Type': 'application/json'}

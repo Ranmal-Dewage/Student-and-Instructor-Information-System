@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {MDBBtn, MDBCol, MDBInput, MDBRow, MDBTable, MDBTableBody, MDBTableHead, MDBCard, MDBCardHeader, MDBCardBody} from 'mdbreact';
 
+const nodeBasedUrl = "http://192.168.8.104:4000";
+
 export default class CourseManagement extends Component {
 
     constructor(props) {
@@ -32,7 +34,7 @@ export default class CourseManagement extends Component {
 
     getFaculties = () => {
         let allFaculties = [];
-        fetch("http://localhost:3001/admin/faculties").then(res =>{
+        fetch(nodeBasedUrl+"/admin/faculties").then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -55,7 +57,7 @@ export default class CourseManagement extends Component {
 
     getCourses = () => {
         let allCourses = [];
-        fetch("http://localhost:3001/admin/courses").then(res =>{
+        fetch(nodeBasedUrl+"/admin/courses").then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -84,7 +86,7 @@ export default class CourseManagement extends Component {
 
     getDegreeForFaculty = (facultyCode) => {
         let degrees = [];
-        fetch("http://localhost:3001/admin/faculties/degrees/"+ facultyCode).then(res =>{
+        fetch(nodeBasedUrl+"/admin/faculties/degrees/"+ facultyCode).then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -106,7 +108,7 @@ export default class CourseManagement extends Component {
 
     getInstructorsForFaculty = (facultyCode) => {
         let instructors = [];
-        fetch("http://localhost:3001/admin/faculties/instructors/"+ facultyCode).then(res =>{
+        fetch(nodeBasedUrl+"/admin/faculties/instructors/"+ facultyCode).then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -127,7 +129,7 @@ export default class CourseManagement extends Component {
     };
 
     deleteCourse(courseID) {
-        fetch("http://localhost:3001/admin/courses/"+ courseID, {
+        fetch(nodeBasedUrl+"/admin/courses/"+ courseID, {
             method: 'DELETE',
             headers:{'Content-Type': 'application/json'}
         }).then(result => {
@@ -268,7 +270,7 @@ export default class CourseManagement extends Component {
     };
 
     getCourseByID = (courseID) => {
-        fetch("http://localhost:3001/admin/courses/"+ courseID).then(res => {
+        fetch(nodeBasedUrl+"/admin/courses/"+ courseID).then(res => {
             if(res.ok){
                 return res.json();
             } else {
@@ -290,7 +292,7 @@ export default class CourseManagement extends Component {
     };
 
     addCourse = (obj) => {
-        fetch("http://localhost:3001/admin/courses", {
+        fetch(nodeBasedUrl+"/admin/courses", {
             method: 'POST',
             body: JSON.stringify(obj),
             headers:{'Content-Type': 'application/json'}
@@ -306,7 +308,7 @@ export default class CourseManagement extends Component {
     };
 
     updateCourse = (courseID,obj) => {
-        fetch("http://localhost:3001/admin/courses/"+ courseID, {
+        fetch(nodeBasedUrl+"/admin/courses/"+ courseID, {
             method: 'PUT',
             body: JSON.stringify(obj),
             headers:{'Content-Type': 'application/json'}

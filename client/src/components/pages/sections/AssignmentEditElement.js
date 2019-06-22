@@ -34,17 +34,6 @@ export default class AssignmentEditElement extends Component {
         }
     }
 
-    handleDelete = id => {
-        deleteAssignments(this.props.cid, id)
-            .then(res => {
-                toast.success("Assignment deleted")
-            })
-            .catch(err => {
-                console.log(err)
-                toast.error("Server error")
-            })
-    }
-
     render() {
         return <MDBListGroupItem>
             <MDBRow className="w-100">
@@ -75,8 +64,6 @@ export default class AssignmentEditElement extends Component {
                 <MDBCol md={12} className="text-right">
                     <MDBBtn size="sm" color="indigo"
                             onClick={() => this.handleUpdate(this.props.item._id)}>Update</MDBBtn>
-                    <MDBBtn size="sm" color="red"
-                            onClick={() => this.handleDelete(this.props.item._id)}>Delete</MDBBtn>
                 </MDBCol>
             </MDBRow>
         </MDBListGroupItem>;

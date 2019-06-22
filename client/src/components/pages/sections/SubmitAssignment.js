@@ -3,6 +3,8 @@ import {MDBBtn, MDBCol, MDBInput, MDBListGroupItem, MDBRow} from "mdbreact"
 import DatePicker from "react-datepicker"
 import {StyledDropzone} from "../../functions/StyledDropzone"
 import React from "react";
+import config from "../../functions/config"
+import {toast} from "react-toastify"
 
 export default class SubmitAssignment extends Component {
 
@@ -22,7 +24,23 @@ export default class SubmitAssignment extends Component {
 
     handleSubmit = event => {
         if (this.state.files) {
-            console.log(this.state)
+            if (new Date() < new Date(this.props.assignment.dueDate)) {
+                fetch(config.fileService + "/files/many", {
+                    method: 'POST',
+                    body: this.state.files,
+                }).then(res => {
+                    return res.json()
+                }).then(data => {
+                    toast.success("File uploaded")
+                }).catch(err => {
+                    console.log(err)
+                    toast.error("Unable to add assignment")
+                })
+            } else {
+                toast.error("due date exceeded")
+            }
+        } else {
+            toast.error("please select and save files or select data")
         }
         this.setState({showErr: false})
         event.preventDefault()
@@ -39,7 +57,7 @@ export default class SubmitAssignment extends Component {
                         name="topic"
                         error="wrong"
                         success="right"
-                        value={"topic from service"}
+                        value={this.props.assignment.topic}
                         disabled
                     />
                 </MDBCol>
@@ -48,10 +66,16 @@ export default class SubmitAssignment extends Component {
                     <DatePicker
                         className="form-control"
                         minDate={new Date()}
-                        value={"2019-06-23"}
+                        value={this.props.assignment.dueDate}
                         placeholderText="YYYY-MM-DD"
                         disabled
                     />
+                </MDBCol>
+            </MDBRow>
+            <MDBRow>
+                <MDBCol>
+                    <p style={{color: 'red'}}>Upload file name should
+                        be {this.props.cid}_{this.props.assignment.topic + "\_\<username\>.pdf"}</p>
                 </MDBCol>
             </MDBRow>
             <MDBRow className="w-100">

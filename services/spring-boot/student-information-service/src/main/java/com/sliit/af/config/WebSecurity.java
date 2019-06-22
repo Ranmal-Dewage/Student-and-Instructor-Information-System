@@ -44,6 +44,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 		// permit all requests for login end point
 		http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/login").permitAll()
+		.antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
 				.antMatchers(HttpMethod.GET, "/users/regitrationConfirm").permitAll()
 				// POST requests for /users end point authentication needed for instructors
 				.antMatchers(HttpMethod.POST, "/users").permitAll()

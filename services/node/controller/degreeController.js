@@ -68,6 +68,25 @@ route.get("/", tf.verifyToken, (req, res) => {
 
 })
 
+//get degree by code
+route.get("/:code", (req, res) => {
+
+    try {
+        const query = { dcode: req.params.code }
+        Degrees.find(query, (err, degree) => {
+            if (err) {
+                console.log(err);
+                res.status(500).json({ error: err });
+            } else {
+                res.status(200).json({ degrees: degree })
+            }
+        });
+    } catch (ex) {
+        res.status(500).send("Server Error" + ex)
+    }
+
+})
+
 //update degrees
 route.put("/:code", tf.verifyToken, (req, res) => {
 

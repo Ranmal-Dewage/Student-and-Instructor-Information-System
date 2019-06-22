@@ -63,6 +63,25 @@ route.get("/", (req, res) => {
 
 })
 
+//get faculty by code
+route.get("/:code", (req, res) => {
+
+    try {
+        const query = { fcode: req.params.code }
+        Faculties.find(query, (err, faculty) => {
+            if (err) {
+                console.log(err);
+                res.status(500).json({ error: err });
+            } else {
+                res.status(200).json({ faculties: faculty })
+            }
+        });
+    } catch (ex) {
+        res.status(500).send("Server Error" + ex)
+    }
+
+})
+
 //update faculties
 route.put("/:code", tf.verifyToken, (req, res) => {
 

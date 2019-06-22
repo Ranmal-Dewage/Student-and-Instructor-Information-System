@@ -1,19 +1,21 @@
 /**
  * 
  */
-package com.sliit.af.repository;
+package com.sliit.af.studentinformationservice.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.sliit.af.model.User;
+import com.sliit.af.repository.UserRepository;
 
 /**
  * @author Vimukthi_r
@@ -22,8 +24,6 @@ import com.sliit.af.model.User;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class UserRepositoryTests {
-	@Autowired
-	private TestEntityManager entityManager;
 	@Autowired
 	UserRepository userRepository;
 
@@ -40,9 +40,7 @@ public class UserRepositoryTests {
 		user1.setEmail("user1@user.com");
 		user1.setPassword("password1");
 
-		entityManager.persist(user);
-		entityManager.persist(user1);
-		entityManager.flush();
+		userRepository.saveAll(Arrays.asList(user, user1));
 	}
 
 	@Test

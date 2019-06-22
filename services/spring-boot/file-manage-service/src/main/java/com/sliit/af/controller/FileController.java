@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +36,7 @@ import com.sliit.af.service.FileService;
  */
 @RestController
 @RequestMapping("/files")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class FileController {
 
 	@Autowired
@@ -47,8 +49,8 @@ public class FileController {
 		try {
 			fileName = fileService.storeFile(file);
 
-			fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/files/")
-					.path(fileName).toUriString();
+			fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/files/").path(fileName)
+					.toUriString();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

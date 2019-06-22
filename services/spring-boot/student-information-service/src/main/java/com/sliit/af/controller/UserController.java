@@ -104,7 +104,7 @@ public class UserController {
 	 * This method will update an user in the database
 	 */
 	@PutMapping("")
-	public ResponseEntity<?> update(@RequestBody @Valid User user) {
+	public ResponseEntity<?> update(@RequestBody User user) {
 		ResponseEntity<?> responseEntity = null;
 		try {
 			responseEntity = new ResponseEntity<>(userService.save(user), HttpStatus.OK);

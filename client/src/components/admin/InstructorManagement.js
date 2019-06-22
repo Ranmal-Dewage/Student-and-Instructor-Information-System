@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import {MDBBtn, MDBCol, MDBInput, MDBRow, MDBTable, MDBTableBody, MDBTableHead, MDBCard, MDBCardHeader, MDBCardBody} from 'mdbreact';
+import config from "../functions/config";
+import {getHash} from "../functions/Functions";
 
-const nodeBasedUrl = "http://192.168.8.104:4000";
+const nodeBaseUrl = config.nodeBaseUrl;
+const springBaseUrl = config.springBaseUrl;
 
 export default class InstructorManagement extends Component {
 
@@ -25,6 +28,15 @@ export default class InstructorManagement extends Component {
         };
     }
 
+    getToken = () => {
+        var user = localStorage.getItem('sis-user')
+        if (user) {
+            user = JSON.parse(user)
+            return user.token
+        }
+        return null
+    };
+
     componentDidMount() {
         this.setState({instructorButtonName: "Add Instructor"});
         //Fetch from back end and assign to faculties array from here
@@ -34,7 +46,13 @@ export default class InstructorManagement extends Component {
 
     getFaculties = () => {
         let allFaculties = [];
-        fetch(nodeBasedUrl+"/admin/faculties").then(res =>{
+        fetch(nodeBaseUrl+"/admin/faculties", {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -43,10 +61,10 @@ export default class InstructorManagement extends Component {
         }).then(data => {
             data.map((item) =>{
                 return allFaculties.push({
-                    facultyCode: item.facultyCode,
-                    facultyName: item.facultyName,
-                    facultyDescription: item.facultyDescription,
-                    degrees: item.degrees
+                    facultyCode: item.fcode,
+                    facultyName: item.fname,
+                    facultyDescription: item.description
+                    //degrees: item.degrees
                 })
             });
             this.setState({faculties: allFaculties})
@@ -57,7 +75,13 @@ export default class InstructorManagement extends Component {
 
     getDegreeForFaculty = (facultyCode) => {
         let degrees = [];
-        fetch(nodeBasedUrl+"/admin/faculties/degrees/"+ facultyCode).then(res =>{
+        fetch(springBaseUrl+"/admin/faculties/degrees/"+ facultyCode, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -66,10 +90,10 @@ export default class InstructorManagement extends Component {
         }).then(data => {
             data.map((item) =>{
                 return degrees.push({
-                    facultyCode: item.facultyCode,
-                    degreeCode: item.degreeCode,
-                    degreeName: item.degreeName,
-                    degreeDescription: item.degreeDescription})
+                    facultyCode: item.fcode,
+                    degreeCode: item.dcode,
+                    degreeName: item.dname,
+                    degreeDuration: item.duration})
             });
             this.setState({degrees: degrees})
         }).catch(err => {
@@ -79,7 +103,13 @@ export default class InstructorManagement extends Component {
 
     getInstructors = () => {
         let allInstructors = [];
-        fetch(nodeBasedUrl+"/admin/instructors").then(res =>{
+        fetch(springBaseUrl+"/users/roles/instructor", {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(res =>{
             if(res.ok){
                 return res.json();
             } else {
@@ -88,15 +118,16 @@ export default class InstructorManagement extends Component {
         }).then(data => {
             data.map((item) =>{
                 return allInstructors.push({
-                    instructorFaculty: item.instructorFaculty,
-                    instructorDegree: item.instructorDegree,
-                    instructorFirstName: item.instructorFirstName,
-                    instructorLastName: item.instructorLastName,
-                    instructorNic: item.instructorNic,
-                    instructorPhone: item.instructorPhone,
-                    instructorEmail: item.instructorEmail,
-                    instructorPassword: item.instructorPassword,
-                    instructorAddress: item.instructorAddress
+                    instructorID: item.id,
+                    instructorFaculty: item.faculty,
+                    instructorDegree: item.degree,
+                    instructorFirstName: item.firstName,
+                    instructorLastName: item.lastName,
+                    instructorNic: item.nic,
+                    instructorPhone: item.mobile,
+                    instructorEmail: item.email,
+                    instructorPassword: item.password,
+                    instructorAddress: item.address
                 })
             });
             this.setState({instructors: allInstructors})
@@ -105,10 +136,13 @@ export default class InstructorManagement extends Component {
         })
     };
 
-    deleteInstructor(email) {
-        fetch(nodeBasedUrl+"/admin/instructors/"+ email, {
+    deleteInstructor(id) {
+        fetch(springBaseUrl+"/user/"+ id, {
             method: 'DELETE',
-            headers:{'Content-Type': 'application/json'}
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
         }).then(result => {
             if(result.ok){
                 alert("Instructor deleted successfully");
@@ -145,15 +179,17 @@ export default class InstructorManagement extends Component {
                         });
                         if(!breakCondition){
                             let instructorObj = {
-                                instructorFaculty: this.state.instructorFaculty,
-                                instructorDegree:  this.state.instructorDegree,
-                                instructorFirstName:  this.state.instructorFirstName,
-                                instructorLastName:  this.state.instructorLastName,
-                                instructorNic:  this.state.instructorNic,
-                                instructorPhone:  this.state.instructorPhone,
-                                instructorEmail:  this.state.instructorEmail,
-                                instructorPassword: this.state.instructorPassword,
-                                instructorAddress:  this.state.instructorAddress
+                                "address": this.state.instructorAddress,
+                                "firstName": this.state.instructorFirstName,
+                                "lastName": this.state.instructorLastName,
+                                "mobile": this.state.instructorPhone,
+                                "email": this.state.instructorEmail,
+                                "password": getHash(this.state.instructorPassword),
+                                "roles": [{"role": "INSTRUCTOR"}],
+                                "faculty": [this.state.instructorFaculty],
+                                "degree": [this.state.instructorDegree],
+                                "courses": [],
+                                "nic": this.state.instructorNic
                             };
 
                             this.addInstructor(instructorObj);
@@ -161,15 +197,17 @@ export default class InstructorManagement extends Component {
                         }
                     } else {
                         let instructorObj = {
-                            instructorFaculty: this.state.instructorFaculty,
-                            instructorDegree:  this.state.instructorDegree,
-                            instructorFirstName:  this.state.instructorFirstName,
-                            instructorLastName:  this.state.instructorLastName,
-                            instructorNic:  this.state.instructorNic,
-                            instructorPhone:  this.state.instructorPhone,
-                            instructorEmail:  this.state.instructorEmail,
-                            instructorPassword: this.state.instructorPassword,
-                            instructorAddress:  this.state.instructorAddress
+                            "address": this.state.instructorAddress,
+                            "firstName": this.state.instructorFirstName,
+                            "lastName": this.state.instructorLastName,
+                            "mobile": this.state.instructorPhone,
+                            "email": this.state.instructorEmail,
+                            "password": getHash(this.state.instructorPassword),
+                            "roles": [{"role": "INSTRUCTOR"}],
+                            "faculty": [this.state.instructorFaculty],
+                            "degree": [this.state.instructorDegree],
+                            "courses": [],
+                            "nic": this.state.instructorNic
                         };
 
                         this.addInstructor(instructorObj);
@@ -178,15 +216,16 @@ export default class InstructorManagement extends Component {
                 }
             } else if(this.state.instructorButtonName === "Update Instructor") {
                 let instructorObj = {
-                    instructorFaculty: this.state.instructorFaculty,
-                    instructorDegree:  this.state.instructorDegree,
-                    instructorFirstName:  this.state.instructorFirstName,
-                    instructorLastName:  this.state.instructorLastName,
-                    instructorNic:  this.state.instructorNic,
-                    instructorPhone:  this.state.instructorPhone,
-                    instructorEmail:  this.state.instructorEmail,
-                    instructorPassword: this.state.instructorPassword,
-                    instructorAddress:  this.state.instructorAddress
+                    "address": this.state.instructorAddress,
+                    "firstName": this.state.instructorFirstName,
+                    "lastName": this.state.instructorLastName,
+                    "mobile": this.state.instructorPhone,
+                    "email": this.state.instructorEmail,
+                    //"password": getHash(this.state.instructorPassword),
+                    "roles": [{"role": "INSTRUCTOR"}],
+                    "faculty": [this.state.instructorFaculty],
+                    "degree": [this.state.instructorDegree],
+                    "nic": this.state.instructorNic
                 };
 
                 this.updateInstructor(email, instructorObj);
@@ -210,32 +249,41 @@ export default class InstructorManagement extends Component {
     };
 
     getInstructorByEmail = (email) => {
-        fetch(nodeBasedUrl+"/admin/instructors/"+ email).then(res => {
+        fetch(springBaseUrl+"/admin/instructors/"+ email, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
+        }).then(res => {
             if(res.ok){
                 return res.json();
             } else {
                 alert("Error when obtaining the instructor information")
             }
         }).then(data => {
-            this.setState({instructorFaculty: data.instructorFaculty});
-            this.setState({instructorDegree: data.instructorDegree});
-            this.setState({instructorFirstName: data.instructorFirstName});
-            this.setState({instructorLastName: data.instructorLastName});
-            this.setState({instructorNic: data.instructorNic});
-            this.setState({instructorPhone: data.instructorPhone});
-            this.setState({instructorEmail: data.instructorEmail});
-            this.setState({instructorPassword: data.instructorPassword});
-            this.setState({instructorAddress: data.instructorAddress});
+            this.setState({instructorFaculty: data.faculty});
+            this.setState({instructorDegree: data.degree});
+            this.setState({instructorFirstName: data.firstName});
+            this.setState({instructorLastName: data.lastName});
+            this.setState({instructorNic: data.nic});
+            this.setState({instructorPhone: data.mobile});
+            this.setState({instructorEmail: data.email});
+            this.setState({instructorPassword: data.password});
+            this.setState({instructorAddress: data.address});
         }).catch(err => {
             console.log(err)
         })
     };
 
     addInstructor = (obj) => {
-        fetch(nodeBasedUrl+"/admin/instructors", {
+        fetch(springBaseUrl+"/users", {
             method: 'POST',
             body: JSON.stringify(obj),
-            headers:{'Content-Type': 'application/json'}
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
         }).then(result => {
             if(result.ok){
                 alert("Instructor added successfully");
@@ -248,10 +296,13 @@ export default class InstructorManagement extends Component {
     };
 
     updateInstructor = (email,obj) => {
-        fetch(nodeBasedUrl+"/admin/instructors/"+ email, {
+        fetch(springBaseUrl+"/admin/instructors/"+ email, {
             method: 'PUT',
             body: JSON.stringify(obj),
-            headers:{'Content-Type': 'application/json'}
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': this.getToken()
+            })
         }).then(result => {
             if(result.ok){
                 alert("Instructor updated successfully");
@@ -309,7 +360,7 @@ export default class InstructorManagement extends Component {
                                 </MDBCol>
                             </MDBRow>
                             <MDBRow>
-                                <MDBCol><MDBInput label="First Name" group type="text" validate name="instructorFirstName" value={this.state.instructorFirstName}
+                                <MDBCol><MDBInput  label="First Name" group type="text" validate name="instructorFirstName" value={this.state.instructorFirstName}
                                                   onChange={(e) => this.setState({instructorFirstName: e.target.value})}/>
                                 </MDBCol>
                                 <MDBCol><MDBInput label="Last Name" group type="text" validate name="instructorLastName" value={this.state.instructorLastName}
@@ -370,10 +421,10 @@ export default class InstructorManagement extends Component {
                                                     <td>{instructor.instructorPhone}</td>
                                                     <td>{instructor.instructorEmail}</td>
                                                     <td>{instructor.instructorAddress}</td>
-                                                    <td><MDBBtn color="primary" rounded type="button" className="z-depth-1a"
-                                                                onClick={() => this.addUpdateInstructor(instructor.instructorEmail, "fromEditInstructor")}>Edit</MDBBtn>{' '}
+                                                    <td>/*<MDBBtn color="primary" rounded type="button" className="z-depth-1a"
+                                                                onClick={() => this.addUpdateInstructor(instructor.instructorEmail, "fromEditInstructor")}>Edit</MDBBtn>{' '}*/
                                                         <MDBBtn color="danger" rounded type="button" className="z-depth-1a"
-                                                                onClick={() => this.deleteInstructor(instructor.instructorEmail)}>Delete</MDBBtn>
+                                                                onClick={() => this.deleteInstructor(instructor.instructorID)}>Delete</MDBBtn>
                                                     </td>
                                                 </tr>
                                             })}

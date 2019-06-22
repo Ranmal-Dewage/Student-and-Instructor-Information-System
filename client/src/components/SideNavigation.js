@@ -133,7 +133,7 @@ class SideNavigation extends Component {
                         </NavLink>
                     </>
                     }
-                    {user && user.permissionLevel == 3 &&
+                    {user && user.permissionLevel === 3 &&
                     <>
                         <NavLink to="#">
                             <MDBListGroupItem onClick={this.toggleCollapse("fmCollapse")}>

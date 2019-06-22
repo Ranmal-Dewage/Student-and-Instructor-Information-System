@@ -10,7 +10,7 @@ import {
     MDBRow
 } from "mdbreact"
 import {getHash} from '../functions/Functions'
-import {register} from '../functions/Services'
+import {getDegrees, getFaculties, register} from '../functions/Services'
 import {toast} from 'react-toastify'
 
 export default class Register extends React.Component {
@@ -18,8 +18,9 @@ export default class Register extends React.Component {
     state = {
         showErr: false,
         errMsg: "Required fields empty or invalid!!!",
-        degrees: [{name: "degree", value: "bm", label: "business"}],
-        faculties: [{name: "faculty", value: "cf", label: "computing"}]
+        degrees: [],
+        faculties: [],
+        degreeDisplay: ''
     }
 
     handleChange = event => {
@@ -28,9 +29,35 @@ export default class Register extends React.Component {
             value = event.target.value;
             this.setState({[event.target.name]: value})
         } else {
-            this.setState({[event.name]: event.value})
+            this.setState({[event.name]: event})
+            if (event.name === "faculty") {
+                getDegrees(event.value)
+                    .then(res => {
+                        const degrees = []
+                        res.degrees.map((degree, i) => {
+                            return degrees.push({name: "degree", value: degree.dcode, label: degree.dname})
+                        })
+                        this.setState({degrees: degrees, degree: ''})
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            }
         }
+    }
 
+    componentDidMount() {
+        getFaculties()
+            .then(res => {
+                const faculties = []
+                res.faculties.map((faculty, i) => {
+                    return faculties.push({name: "faculty", value: faculty.fcode, label: faculty.fname})
+                })
+                this.setState({faculties: faculties})
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
     handleSubmit = event => {
@@ -38,15 +65,15 @@ export default class Register extends React.Component {
 
         if (this.state.degree && this.state.faculty) {
             const body = {
-                "address":this.state.address,
+                "address": this.state.address,
                 "firstName": this.state.fname,
                 "lastName": this.state.lname,
                 "mobile": this.state.phone,
                 "email": this.state.email,
                 "password": getHash(this.state.password),
                 "roles": [{"role": "STUDENT"}],
-                "faculty": [this.state.faculty],
-                "degree": [this.state.degree],
+                "faculty": [this.state.faculty.value],
+                "degree": [this.state.degree.value],
                 "nic": this.state.nic
             }
             register(body)
@@ -85,8 +112,7 @@ export default class Register extends React.Component {
                                         <MDBCol md={6}>
                                             <label className="grey-text pt-1">Degree</label>
                                             <Select options={this.state.degrees} name="degree"
-                                                    onChange={this.handleChange}
-                                                    value={this.state.to}/>
+                                                    onChange={this.handleChange} value={this.state.degree}/>
                                         </MDBCol>
                                     </MDBRow>
                                     <MDBRow className="w-75">

@@ -67,8 +67,7 @@ export default class CourseList extends React.Component {
                 <MDBRow className="mb-4">
                     <MDBCol md="12" className="mb-4">
                         <MDBCard className="mb-4">
-                            <MDBCardHeader>Year {this.state.year},
-                                semester {this.state.semester} courses</MDBCardHeader>
+                            <MDBCardHeader>{this.state.year} Year, {this.state.semester} semester courses</MDBCardHeader>
                             <MDBCardBody>
                                 <MDBListGroup className="list-group-flush">
                                     {this.state.courses.map((course, i) => {

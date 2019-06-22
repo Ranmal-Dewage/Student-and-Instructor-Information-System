@@ -7,9 +7,9 @@ export default class MyCourses extends React.Component {
         var user = localStorage.getItem('sis-user')
         if (user) {
             user = JSON.parse(user)
-            if (user.permissionLevel == 1) {
+            if (user.permissionLevel === 1) {
                 window.location = '/courses/' + id + '/view'
-            } else if (user.permissionLevel == 2 || user.permissionLevel == 3) {
+            } else if (user.permissionLevel === 2 || user.permissionLevel === 3) {
                 window.location = '/courses/' + id + '/edit'
             }
         }

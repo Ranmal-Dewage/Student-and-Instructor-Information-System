@@ -281,16 +281,6 @@ route.put("/:id/assignments/:aid", (req, res) => {
 
     try {
         const query = { ccode: req.params.id, "assignments._id": req.params.aid }
-
-        // Courses.find(query, (err, data) => {
-        //     if (err) {
-        //         console.log(err)
-        //     } else {
-        //         console.log(data)
-        //     }
-        // })
-
-
         Courses.updateOne(query, { $set: { "assignments.$.dueDate": req.body.dueDate } }, (err) => {
             if (err) {
                 console.log(err);

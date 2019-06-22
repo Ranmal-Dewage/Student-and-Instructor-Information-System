@@ -4,6 +4,7 @@ import {StyledDropzone} from '../../functions/StyledDropzone'
 import DatePicker from "react-datepicker"
 import moment from 'moment'
 import config from "../../functions/config"
+import {toast} from "react-toastify";
 
 export default class AssignmentAdd extends Component {
 
@@ -22,26 +23,36 @@ export default class AssignmentAdd extends Component {
     }
 
     handleSubmit = event => {
-        console.log(this.state)
         this.setState({showErr: false})
-        const body = {
-            data: this.state.files,
-            topic: this.state.topic,
-            description: this.state.description,
-            date: this.state.date
-        }
-        if (this.state.date) {
-            fetch(config.springBaseUrl + '/mala', {
+        if (this.state.files && this.state.date) {
+            const body = {
+                topic: this.state.topic,
+                description: this.state.description,
+                dueDate: this.state.date
+            }
+            fetch(config.fileService + "/files/many", {
                 method: 'POST',
-                body: this.state.files
+                body: this.state.files,
+            }).then(res => {
+                return res.json()
+            }).then(data => {
+                console.log(data)
+                fetch(config.nodeBaseUrl + '/courses/' + this.props.cid + "/assignments", {
+                    method: 'POST',
+                    body: JSON.stringify({data: data, ...body}),
+                    headers: new Headers({
+                        'Content-Type': 'application/json'
+                    })
+                }).then(res => {
+                    toast.success("Successfully added assignment")
+                    window.location = "/courses/" + this.props.cid + "/edit"
+                })
+            }).catch(err => {
+                console.log(err)
+                toast.error("Unable to add assignment")
             })
-                .then(res => {
-                })
-                .catch(err => {
-                    console.log(err)
-                })
         } else {
-            this.setState({showErr: true})
+            toast.error("please select and save files or select data")
         }
         event.preventDefault()
         event.stopPropagation()
@@ -55,7 +66,7 @@ export default class AssignmentAdd extends Component {
     getFiles = acceptedFiles => {
         const data = new FormData()
         for (var x = 0; x < acceptedFiles.length; x++) {
-            data.append('files', acceptedFiles[x])
+            data.append('file', acceptedFiles[x])
         }
         this.setState({files: data, saved: true})
     }

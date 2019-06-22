@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import { MDBCard, MDBCardHeader, MDBCol, MDBListGroup, MDBRow} from "mdbreact"
+import {MDBCard, MDBCardHeader, MDBCol, MDBListGroup, MDBRow} from "mdbreact"
 import SubmitAssignment from './SubmitAssignment'
 
-export default class AssignmentEdit extends Component {
+export default class AssignmentView extends Component {
 
     state = {}
 

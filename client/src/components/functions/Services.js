@@ -12,6 +12,18 @@ function getToken() {
     return null
 }
 
+export function updateAssignments(cid, aid, body) {
+    return callPut(nodeBaseUrl + '/courses/' + cid + '/assignments/' + aid, body);
+}
+
+export function deleteAssignments(cid, aid) {
+    return callDelete(nodeBaseUrl + '/courses/' + cid + '/assignments/' + aid);
+}
+
+export function getAssignments(id) {
+    return callGet(nodeBaseUrl + '/courses/' + id + '/assignments');
+}
+
 export function deleteCourseMaterials(cid, mid) {
     return callDelete(nodeBaseUrl + '/courses/' + cid + '/materials/' + mid);
 }

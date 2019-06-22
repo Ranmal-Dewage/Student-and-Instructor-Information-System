@@ -3,6 +3,7 @@ import {MDBBtn, MDBCard, MDBCardHeader, MDBCol, MDBInput, MDBRow} from "mdbreact
 import {StyledDropzone} from '../../functions/StyledDropzone'
 import DatePicker from "react-datepicker"
 import moment from 'moment'
+import config from "../../functions/config";
 
 export default class AssignmentAdd extends Component {
 
@@ -21,8 +22,22 @@ export default class AssignmentAdd extends Component {
 
     handleSubmit = event => {
         this.setState({showErr: false})
+        const body = {
+            data: this.state.files,
+            topic: this.state.topic,
+            description: this.state.description,
+            date: this.state.date
+        }
         if (this.state.date) {
-            console.log(this.state)
+            fetch(config.springBaseUrl + '/mala', {
+                method: 'POST',
+                body: this.state.files
+            })
+                .then(res => {
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         } else {
             this.setState({showErr: true})
         }
@@ -41,7 +56,7 @@ export default class AssignmentAdd extends Component {
             console.log(acceptedFiles[x])
             data.append('files', acceptedFiles[x])
         }
-        console.log(data)
+        this.setState({files: data})
     }
 
     render() {

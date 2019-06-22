@@ -28,14 +28,13 @@ export function StyledDropzone(props) {
         </li>
     ));
 
-    props.getFiles(acceptedFiles)
-
     return (
         <div>
             <div {...getRootProps({style})}>
                 <input {...getInputProps()}/>
                 <p>Drag 'n' drop some files here, or click to select files</p>
             </div>
+            <input type="button" value="confirm" onClick={() => props.getFiles(acceptedFiles)}/>
             <aside>
                 <label className="grey-text pt-1">Files :</label>
                 <ul>

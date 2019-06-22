@@ -155,12 +155,12 @@ public class UserController {
 		if (Objects.isNull(user)) {
 			return new ResponseEntity<>("registration error", HttpStatus.OK);
 		} else if (user.getVerificationToken().getExpiryDate().isBefore(LocalDateTime.now())) {
-			/*user.setEnabled(true);
-			userService.save(user);
-			return "registration success";*/
+			/*
+			 * user.setEnabled(true); userService.save(user); return "registration success";
+			 */
 			URI yahoo = null;
 			try {
-				yahoo = new URI("http://www.yahoo.com");
+				yahoo = new URI(logingUrl);
 				HttpHeaders httpHeaders = new HttpHeaders();
 				httpHeaders.setLocation(yahoo);
 				return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
@@ -171,20 +171,5 @@ public class UserController {
 			return null;
 		}
 		return new ResponseEntity<>("registration not complete", HttpStatus.OK);
-	}
-
-	@GetMapping(value = "/temp")
-	public ResponseEntity<?> temp() {
-		URI yahoo = null;
-		try {
-			yahoo = new URI("http://www.yahoo.com");
-			HttpHeaders httpHeaders = new HttpHeaders();
-			httpHeaders.setLocation(yahoo);
-			return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
 	}
 }

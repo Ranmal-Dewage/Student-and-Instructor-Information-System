@@ -1,4 +1,7 @@
 import React from 'react'
+import {MDBContainer} from "mdbreact"
+import CourseMaterialsView from "./sections/CourseMaterialsView"
+import AssignmentView from "./sections/AssignmentView"
 
 export default class CourseView extends React.Component {
 
@@ -16,7 +19,10 @@ export default class CourseView extends React.Component {
 
     render() {
         return (
-            <div>CourseView : {this.state.cid}</div>
+            <MDBContainer>
+                <AssignmentView cid={this.state.cid}></AssignmentView>
+                <CourseMaterialsView cid={this.state.cid}></CourseMaterialsView>
+            </MDBContainer>
         )
     }
 }

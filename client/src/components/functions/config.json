@@ -1,0 +1,5 @@
+{
+  "nodeBaseUrl": "http://192.168.8.104:4000",
+  "springBaseUrl": "http://localhost:9090",
+  "fileService": "http://localhost:9091"
+}

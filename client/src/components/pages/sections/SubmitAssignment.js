@@ -1,5 +1,5 @@
 import {Component} from "react";
-import {MDBBtn, MDBCol, MDBInput, MDBListGroupItem, MDBRow} from "mdbreact"
+import {MDBBtn, MDBCol, MDBIcon, MDBInput, MDBListGroupItem, MDBRow} from "mdbreact"
 import DatePicker from "react-datepicker"
 import {StyledDropzone} from "../../functions/StyledDropzone"
 import React from "react";
@@ -71,6 +71,18 @@ export default class SubmitAssignment extends Component {
                         disabled
                     />
                 </MDBCol>
+            </MDBRow>
+            <MDBRow className="w-100 mb-3">
+                {
+                    this.props.assignment.data.map((item, i) => {
+                        return <MDBRow className="w-100">
+                            <MDBCol md={6} className="pl-5">
+                                <MDBIcon icon="file-alt" className="mr-3"/>
+                                <a href={item.fileDownloadUri}>{item.fileName}</a>
+                            </MDBCol>
+                        </MDBRow>
+                    })
+                }
             </MDBRow>
             <MDBRow>
                 <MDBCol>

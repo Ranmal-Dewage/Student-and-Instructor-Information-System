@@ -30,54 +30,54 @@ All the Admin/Instructors/Students cans search courses by providing course name 
 
 ## User Guide
 
-##### * Following Figure show the the landing page of the student and instructor management system.
+##### Following Figure show the the landing page of the student and instructor management system.
 
 <img src="https://imgbbb.com/images/2019/06/26/1.png" alt="1.png" border="0">
 Figure_1: landing page
 <p></p><br />
 
-Students can register to the system by clicking the Sign-up button. Student must provide faculty and degree they want to register.
+##### Students can register to the system by clicking the Sign-up button. Student must provide faculty and degree they want to register.
 <img src="https://imgbbb.com/images/2019/06/26/2.png" alt="2.png" border="0">
 Figure_2: register
 <p></p><br />
 
-Once student registers to the system it will send a confirmation email to the given email. Student needs to click the confirmation link in the email in order to activate the account.
+##### Once student registers to the system it will send a confirmation email to the given email. Student needs to click the confirmation link in the email in order to activate the account.
 <img src="https://imgbbb.com/images/2019/06/26/3.png" alt="3.png" border="0">
 Figure_3: confirm email
 <p></p><br />
 
-After confirming the registration user can login to the system.
+##### After confirming the registration user can login to the system.
 <img src="https://imgbbb.com/images/2019/06/26/4.png" alt="4.png" border="0">
 Figure_4: login
 <p></p><br />
 
-Following figure shows the Home page of login user with my courses, faculties and profile options.
+##### Following figure shows the Home page of login user with my courses, faculties and profile options.
 <img src="https://imgbbb.com/images/2019/06/26/5.png" alt="5.png" border="0">
 Figure_5: student home
 <p></p><br />
 
 
-Students can view their profile details by clicking profile button in side navigation
+##### Students can view their profile details by clicking profile button in side navigation
 <img src="https://imgbbb.com/images/2019/06/26/6.png" alt="6.png" border="0">
 Figure_6: user profile
 <p></p><br />
 
-Students can view available faculties in side navigation. Once student click the faculty, they can view the degrees available in that selected faculty.
+##### Students can view available faculties in side navigation. Once student click the faculty, they can view the degrees available in that selected faculty.
 <img src="https://imgbbb.com/images/2019/06/26/7.png" alt="7.png" border="0">
 Figure_7: view degrees
 <p></p><br />
 
-Once student click the degree, they can view the courses available in that degree.  They can filter courses by year and the semester. Also, they can enroll to the courses.
+##### Once student click the degree, they can view the courses available in that degree.  They can filter courses by year and the semester. Also, they can enroll to the courses.
 <img src="https://imgbbb.com/images/2019/06/26/8.png" alt="8.png" border="0">
 Figure_8: view courses
 <p></p><br />
 
-Students can search courses by typing the course name in top navigation panel.
+##### Students can search courses by typing the course name in top navigation panel.
 <img src="https://imgbbb.com/images/2019/06/26/9.png" alt="9.png" border="0">
 Figure_9: search course
 <p></p><br />
 
-Students can view the enrolled courses by clicking my course link in the side navigation.
+##### Students can view the enrolled courses by clicking my course link in the side navigation.
 <img src="https://imgbbb.com/images/2019/06/26/10.png" alt="10.png" border="0">
 Figure_10: upload answers to assignments
 <p></p><br />
@@ -85,7 +85,7 @@ Figure_10: upload answers to assignments
 Figure_11: view and download course materials
 <p></p><br />
 
-Once the Instructor login to the system they can edit the courses (add assignment/exam, update due dates, add course materials) by selecting the course in my course dropdown in the side navigation.
+##### Once the Instructor login to the system they can edit the courses (add assignment/exam, update due dates, add course materials) by selecting the course in my course dropdown in the side navigation.
 <img src="https://imgbbb.com/images/2019/06/26/12.png" alt="12.png" border="0">
 Figure_12: add exam or assignment
 <p></p><br />
@@ -93,22 +93,22 @@ Figure_12: add exam or assignment
 Figure_13: edit assignment and add course materials
 <p></p><br />
 
-Once admin login to the system they can manage faculties, courses, users (admin, instructor), degrees.
+##### Once admin login to the system they can manage faculties, courses, users (admin, instructor), degrees.
 <img src="https://imgbbb.com/images/2019/06/26/14.png" alt="14.png" border="0">
 Figure_14: admin home
 <p></p><br />
 
-Admins can manage faculties.
+##### Admins can manage faculties.
 <img src="https://imgbbb.com/images/2019/06/26/15.png" alt="15.png" border="0">
 Figure_15: faculty management
 <p></p><br />
 
-Admins can manage courses.
+##### Admins can manage courses.
 <img src="https://imgbbb.com/images/2019/06/26/16.png" alt="16.png" border="0">
 Figure_16: course management
 <p></p><br />
 
-Admins can add or delete users.
+##### Admins can add or delete users.
 <img src="https://imgbbb.com/images/2019/06/26/17.png" alt="17.png" border="0">
 Figure_17: add user
 <p></p><br />
@@ -116,17 +116,17 @@ Figure_17: add user
 Figure_18: delete users
 <p></p><br />
 
-A short description about the SLIIT and objectives are containing in about us page.
+##### A short description about the SLIIT and objectives are containing in about us page.
 <img src="https://imgbbb.com/images/2019/06/26/19.png" alt="19.png" border="0">
 Figure_19: about us page
 <p></p><br />
 
-By using the “contact us” page users can contact the support team and the location, contact details are available in the contact us page.
+##### By using the “contact us” page users can contact the support team and the location, contact details are available in the contact us page.
 <img src="https://imgbbb.com/images/2019/06/26/20.png" alt="20.png" border="0">
 Figure_20: contact us page
 <p></p><br />
 
-In the home page it contains latest notices and event plan of the university.
+##### In the home page it contains latest notices and event plan of the university.
 <img src="https://imgbbb.com/images/2019/06/26/21.png" alt="21.png" border="0">
 Figure_21: event calendar
 <p></p><br />

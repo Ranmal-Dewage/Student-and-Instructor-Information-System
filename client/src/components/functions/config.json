@@ -1,5 +1,5 @@
 {
-  "nodeBaseUrl": "http://40.76.84.144:4000",
-  "springBaseUrl": "http://40.76.84.144:9090",
-  "fileService": "http://40.76.84.144:9091"
+  "nodeBaseUrl": "http://192.168.43.98:4000",
+  "springBaseUrl": "http://localhost:9090",
+  "fileService": "http://localhost:9091"
 }

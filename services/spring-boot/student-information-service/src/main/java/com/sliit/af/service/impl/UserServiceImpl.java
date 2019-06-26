@@ -105,6 +105,7 @@ public class UserServiceImpl implements UserService {
 			Optional<User> dbUser = userRepository.findById(user.getId());
 			if (dbUser.isPresent() && Objects.nonNull(user.getCourses())) {
 				dbUser.get().setCourses(user.getCourses());
+				dbUser.get().setEnabled(user.isEnabled());
 			}
 			return userRepository.save(dbUser.get());
 		}

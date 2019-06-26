@@ -44,7 +44,7 @@ class Routes extends React.Component {
                 <Route path='/admin/adminManagement' component={AdminManagement}/>}
 
                 {/*instructor, admin*/}
-                {user && (user.permissionLevel === 2 || user.permissionLevel === 3) &&
+                {user && (user.permissionLevel === 1 || user.permissionLevel === 3) &&
                 <Route exact path='/courses/:id/edit' component={CourseEdit}/>}
 
                 {/*instructor , student, admin*/}

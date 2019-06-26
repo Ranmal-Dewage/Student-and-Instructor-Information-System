@@ -66,7 +66,7 @@ export default class AssignmentAdd extends Component {
     getFiles = acceptedFiles => {
         const data = new FormData()
         for (var x = 0; x < acceptedFiles.length; x++) {
-            data.append('file', acceptedFiles[x])
+            data.append('files', acceptedFiles[x])
         }
         this.setState({files: data, saved: true})
     }

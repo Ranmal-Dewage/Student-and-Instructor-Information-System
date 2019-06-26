@@ -30,7 +30,7 @@ All the Admin/Instructors/Students cans search courses by providing course name 
 
 ## User Guide
 
-Following Figure show the the landing page of the student and instructor management system.
+##### * Following Figure show the the landing page of the student and instructor management system.
 
 <img src="https://imgbbb.com/images/2019/06/26/1.png" alt="1.png" border="0">
 Figure_1: landing page

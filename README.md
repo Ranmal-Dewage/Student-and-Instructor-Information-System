@@ -134,14 +134,15 @@ Figure_21: event calendar
 
 •	When student uploading answers to the assignments, they need to follow the given file naming convention as we currently don’t maintain a folder structure in the file server. The name of the upload file should be <course>_<assignment>_<idNo> ( ex: af_assignment1_it16170162.pdf)
 
-## Developers
+#### Developed by Team VIKING RAIDERS;
+* Ranmal Dewage
 * Tenusha Guruge
 * Vimukthi Rajapaksha
 * Aravinda Kulasooriya
-* Ranmal Dewage
+
 
 ## Copyright
 
-(C) 2019 Viking Raiders
+(C) 2019 Ranmal Dewage (ranmal.b.dewage@gmail.com)
 <br>
-[tenusha.wordpress.com](https://tenusha.wordpress.com)
+[ranmaldewage.wordpress.com](https://ranmaldewage.wordpress.com)
